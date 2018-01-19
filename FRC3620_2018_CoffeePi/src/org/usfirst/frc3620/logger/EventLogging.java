@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.hal.HAL;
 
 public class EventLogging {
 
