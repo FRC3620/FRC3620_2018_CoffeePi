@@ -10,10 +10,16 @@ package org.usfirst.frc.team3620.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.RobotMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,8 +29,14 @@ import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
+	// Team 3620 custom stuff
+	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
+	static Logger logger;
+	
+	// subsystems
+	public static ExampleSubsystem kExampleSubsystem;
+	
+	// OI
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
@@ -36,6 +48,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		// set up logging
+		logger = EventLogging.getLogger(Robot.class, Level.INFO);
+		
+		// initialize hardware
+		RobotMap.init();
+		
+		// initialize subsystems
+		kExampleSubsystem = new ExampleSubsystem();
+
 		m_oi = new OI();
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
@@ -49,12 +70,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		processRobotModeChange(RobotMode.DISABLED);
 	}
 
 	@Override
 	public void disabledPeriodic() {
+		beginPeriodic();
 		Scheduler.getInstance().run();
+		endPeriodic();
 	}
 
 	/**
@@ -70,6 +93,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		processRobotModeChange(RobotMode.AUTONOMOUS);
+		
 		m_autonomousCommand = m_chooser.getSelected();
 
 		/*
@@ -90,7 +115,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		beginPeriodic();
 		Scheduler.getInstance().run();
+		endPeriodic();
 	}
 
 	@Override
@@ -102,6 +129,8 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		processRobotModeChange(RobotMode.TELEOP);
 	}
 
 	/**
@@ -109,13 +138,69 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		beginPeriodic();
 		Scheduler.getInstance().run();
+		endPeriodic();
 	}
+	
+	public void testInit() {
+		// This makes sure that the autonomous stops running when
+		// test starts running.
+		if (m_autonomousCommand != null)
+			((Command) m_autonomousCommand).cancel();
+
+		processRobotModeChange(RobotMode.TEST);
+	}
+
 
 	/**
 	 * This function is called periodically during test mode.
 	 */
 	@Override
 	public void testPeriodic() {
+		beginPeriodic();
+		//LiveWindow.run();
+		endPeriodic();
+	}
+	
+	/************************************************************************
+	 * here are the 3620 goodies
+	 ************************************************************************/
+	/*
+	 * this routine gets called whenever we change modes
+	 */
+	void processRobotModeChange(RobotMode newMode) {
+		logger.info("Switching from {} to {}", currentRobotMode, newMode);
+		previousRobotMode = currentRobotMode;
+		currentRobotMode = newMode;
+
+		// if any subsystems need to know about mode changes, let
+		// them know here.
+		// exampleSubsystem.processRobotModeChange(newMode);
+	}
+
+	/*
+	 * these routines get called at the beginning and end of all periodics.
+	 */
+	void beginPeriodic() {
+		// if some subsystems need to get called in all modes at the beginning
+		// of periodic, do it here
+
+		// don't need to do anything
+	}
+
+	void endPeriodic() {
+		// if some subsystems need to get called in all modes at the end
+		// of periodic, do it here
+		//gearSubsystem.updateDashboard();
+
+		// and log data!
+		updateDashboard();
+		
+	}
+	
+	void updateDashboard() {
+		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
+		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
 	}
 }
