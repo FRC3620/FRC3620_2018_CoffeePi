@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
+import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
@@ -34,6 +36,8 @@ public class Robot extends TimedRobot {
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
+	public static DriveSubsystem driveSubsystem;
+	public static LightSubsystem lightSubsystem;
 	
 	// OI
 	public static OI m_oi;
@@ -55,8 +59,11 @@ public class Robot extends TimedRobot {
 		
 		// initialize subsystems
 		kExampleSubsystem = new ExampleSubsystem();
-
-		m_oi = new OI();
+		driveSubsystem = new DriveSubsystem();
+		lightSubsystem = new LightSubsystem();
+		
+		// Initialize Operator Interface 
+		m_oi = new OI(); 
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
