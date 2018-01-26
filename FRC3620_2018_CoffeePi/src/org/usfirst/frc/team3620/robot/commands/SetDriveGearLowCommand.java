@@ -16,7 +16,7 @@ public class SetDriveGearLowCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	ZoomZoomSubsystem.lowGear();
+    	DriveSubsystem.lowGear();
     }
 
     // Called repeatedly when this Command is scheduled to run
