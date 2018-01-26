@@ -16,7 +16,7 @@ public class SetDriveGearHighCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	ZoomZoomSubsystem.highGear();
+    	DriveSubsystem.highGear();
     }
 
     // Called repeatedly when this Command is scheduled to run
