@@ -186,6 +186,12 @@ public class Robot extends TimedRobot {
 		// if any subsystems need to know about mode changes, let
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
+		if (newMode == RobotMode.DISABLED) {
+			lightSubsystem.setEnabled(false);
+		}
+		else {
+			lightSubsystem.setEnabled(true);
+		}
 	}
 
 	/*
