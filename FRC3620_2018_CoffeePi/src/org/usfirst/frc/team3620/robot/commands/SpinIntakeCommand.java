@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class spinIntakeCommand extends Command {
+public class SpinIntakeCommand extends Command {
 
-    public spinIntakeCommand() {
+    public SpinIntakeCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.intakeSubsystem);

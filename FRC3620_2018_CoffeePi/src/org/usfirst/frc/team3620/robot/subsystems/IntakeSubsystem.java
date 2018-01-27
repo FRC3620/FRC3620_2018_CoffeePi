@@ -3,11 +3,13 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.commands.spinIntakeCommand;
+import org.usfirst.frc.team3620.robot.commands.SpinIntakeCommand;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -20,7 +22,7 @@ public class IntakeSubsystem extends Subsystem {
     private final SpeedController intakeRoller1 = RobotMap.intakeSubsystemIntakeRoller1;
     private final SpeedController intakeRoller2 = RobotMap.intakeSubsystemIntakeRoller2;
     private final WPI_TalonSRX intakePivot = RobotMap.intakeSubsystemIntakePivot;
-
+    private final DoubleSolenoid intakeClamperSolenoid = RobotMap.intakeSubsystemIntakeClamperSolenoid;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -28,7 +30,7 @@ public class IntakeSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new spinIntakeCommand());
+    	setDefaultCommand(new SpinIntakeCommand());
     }
     
     //bring the cube in by spinning the motors backwards
@@ -51,12 +53,12 @@ public class IntakeSubsystem extends Subsystem {
    
    //clamps cube
    public void clampCube () {
-	   
+	   intakeClamperSolenoid.set(Value.kForward);
    }
    
    //releases clamp
    public void clampRelease() {
-	   
+	   intakeClamperSolenoid.set(Value.kReverse);
 	   
    }
    

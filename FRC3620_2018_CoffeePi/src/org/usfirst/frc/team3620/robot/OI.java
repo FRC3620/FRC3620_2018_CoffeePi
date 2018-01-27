@@ -7,7 +7,12 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.ClampCommand;
+import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,10 +21,14 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OI {
 	public Joystick driverJoystick;
 	public Joystick operatorJoystick;
-
+	
 	public OI() {
 	       driverJoystick = new Joystick(0);
 	       operatorJoystick = new Joystick(1);
+	       Button clamp = new JoystickButton(operatorJoystick,1);
+	       clamp.whenPressed(new ClampCommand());
+	       Button unclamp = new JoystickButton(operatorJoystick,2);
+	       unclamp.whenPressed(new UnClampCommand());
        //Button button = new JoystickButton(stick,9);
        //button.whileHeld(new OperatorViewTestCommand());
 	       
