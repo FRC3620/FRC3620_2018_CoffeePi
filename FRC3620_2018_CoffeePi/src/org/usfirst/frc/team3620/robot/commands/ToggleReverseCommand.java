@@ -1,8 +1,7 @@
 package org.usfirst.frc.team3620.robot.commands;
 
-import java.awt.Robot;
 
-import org.usfirst.frc.team3620.robot.subsystems.ZoomZoomSubsystem;
+import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -18,7 +17,7 @@ public class ToggleReverseCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	DriveSubsystem.toggleReverseFlag();
+    	Robot.driveSubsystem.toggleReverseFlag();
     }
 
     // Called repeatedly when this Command is scheduled to run

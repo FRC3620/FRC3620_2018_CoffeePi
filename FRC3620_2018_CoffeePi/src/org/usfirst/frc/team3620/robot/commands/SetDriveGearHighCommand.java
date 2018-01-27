@@ -1,6 +1,6 @@
 package org.usfirst.frc.team3620.robot.commands;
 
-import org.usfirst.frc.team3620.robot.subsystems.ZoomZoomSubsystem;
+import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -16,7 +16,7 @@ public class SetDriveGearHighCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	DriveSubsystem.highGear();
+    	Robot.driveSubsystem.setHighGear();
     }
 
     // Called repeatedly when this Command is scheduled to run
