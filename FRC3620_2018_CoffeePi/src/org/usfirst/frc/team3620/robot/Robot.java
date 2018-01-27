@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 	public static DriveSubsystem driveSubsystem;
 	public static LightSubsystem lightSubsystem;
 	public static OperatorView operatorView;
+	public static IntakeSubsystem intakeSubsystem;
 	
 	// OI
 	public static OI m_oi;
@@ -62,8 +64,10 @@ public class Robot extends TimedRobot {
 		kExampleSubsystem = new ExampleSubsystem();
 		driveSubsystem = new DriveSubsystem();
 		lightSubsystem = new LightSubsystem();
+		intakeSubsystem = new IntakeSubsystem();
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
+		
 		
 		// Initialize Operator Interface 
 		m_oi = new OI(); 

@@ -3,6 +3,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 import org.usfirst.frc.team3620.robot.RobotMap;
+import org.usfirst.frc.team3620.robot.commands.spinIntakeCommand;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -27,6 +28,7 @@ public class IntakeSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new spinIntakeCommand());
     }
     
     //bring the cube in by spinning the motors backwards
@@ -46,5 +48,18 @@ public class IntakeSubsystem extends Subsystem {
    	intakeRoller2.set(-intakeSpeed);
 	   
    }
+   
+   //clamps cube
+   public void clampCube () {
+	   
+   }
+   
+   //releases clamp
+   public void clampRelease() {
+	   
+	   
+   }
+   
+   
 }
 
