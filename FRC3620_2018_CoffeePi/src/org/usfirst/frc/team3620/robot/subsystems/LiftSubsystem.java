@@ -23,13 +23,39 @@ public class LiftSubsystem extends Subsystem {
     private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
     private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
 
+    
+  
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
+        // Set the default000000000 command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    }
+    
+    //reads encoder
+    double readEncoder() {
+		return 0;
+    	
+    }
+    
+    //resets encoder value
+    void resetEncoder() {
+    	
+    }
+    
+    //moves elevator motor vertSpeed
+    void moveElevator(double vertSpeed) {
+    	//runs lift motor for vertSpeed
+    	climbSpeedControllerGroup.set(vertSpeed);
+    	
+    }
+    
+    //checks to see if lift is at lowest position
+    boolean isAtHome() {
+    	return true;
+    	
     }
 }
 

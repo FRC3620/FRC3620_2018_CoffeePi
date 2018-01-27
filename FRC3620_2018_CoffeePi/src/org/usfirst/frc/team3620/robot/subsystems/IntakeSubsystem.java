@@ -28,5 +28,23 @@ public class IntakeSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+    
+    //bring the cube in by spinning the motors backwards
+   public void bringCubeIn(double intakeSpeed){
+    	intakeRoller1.set(-intakeSpeed);
+    	intakeRoller2.set(intakeSpeed);
+    	
+    }
+   
+   public void pivot() {
+	   
+   }
+   
+   //push cube out by spinning motor out
+   public void pushCubeOut(double intakeSpeed) {
+	intakeRoller1.set(intakeSpeed);
+   	intakeRoller2.set(-intakeSpeed);
+	   
+   }
 }
 
