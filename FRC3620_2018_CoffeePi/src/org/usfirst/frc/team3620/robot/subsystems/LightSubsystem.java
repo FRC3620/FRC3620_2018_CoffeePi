@@ -51,6 +51,8 @@ public class LightSubsystem extends Subsystem {
 	static final double STROBE_WHITE = -0.05;
 	static final double HEARTBEART_WHITE = -0.21;
 	static final double LIGHT_CHASE_RED = -0.31;
+	static final double RAINBOW_RAINBOW_PALETTE = -0.99;
+	
 
 	HashMap<Integer, Double> lightsPriority = new HashMap<Integer, Double>();
 	
