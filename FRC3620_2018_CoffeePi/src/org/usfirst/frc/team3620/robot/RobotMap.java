@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -146,7 +147,7 @@ public class RobotMap {
         intakeSubsystemIntakeRoller2 = new Spark(3);
         LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (Spark) intakeSubsystemIntakeRoller2);
         intakeSubsystemIntakeRoller2.setInverted(false);
-        intakeSubsystemIntakePivot = new WPI_TalonSRX(12);
+        intakeSubsystemIntakePivot = new WPI_TalonSRX(5);
         intakeSubsystemIntakeClamperSolenoid = new DoubleSolenoid(0, 0, 1);
         LiveWindow.addActuator("IntakeSubsystem", "IntakeClamperSolenoid", intakeSubsystemIntakeClamperSolenoid);
         

@@ -3,13 +3,14 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.commands.SpinIntakeCommand;
+import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -30,7 +31,7 @@ public class IntakeSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new SpinIntakeCommand());
+    	
     }
     
     //bring the cube in by spinning the motors backwards
@@ -40,8 +41,12 @@ public class IntakeSubsystem extends Subsystem {
     	
     }
    
-   public void pivot() {
-	   
+   public void pivotUp(double speed){
+	   intakePivot.set(speed);
+   }
+   
+   public void pivotDown(double speed){
+	   intakePivot.set(-speed);
    }
    
    //push cube out by spinning motor out

@@ -91,7 +91,8 @@ public class DriveSubsystem extends Subsystem {
 	}
 	
 	private int getSpeedModifier() {
-		return reverse ? -1 : 1;//this will return 1 if reverse is false, and -1 if reverse is true.
+		//return reverse ? -1 : 1;//this will return 1 if reverse is false, and -1 if reverse is true.
+		return 1;
 	}
 	
 	
@@ -99,9 +100,9 @@ public class DriveSubsystem extends Subsystem {
 		speed=speed*getSpeedModifier();
 		turn=turn*getSpeedModifier();
 		if(practice) {
-			pWMDifferentialDrive.arcadeDrive(speed, turn);
+			pWMDifferentialDrive.arcadeDrive(-speed, turn);
 		} else {
-			cANDifferentialDrive.arcadeDrive(speed, turn);
+			cANDifferentialDrive.arcadeDrive(-speed, turn);
 		}
 	}
 

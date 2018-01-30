@@ -1,32 +1,27 @@
 package org.usfirst.frc.team3620.robot.commands;
 
-import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.OI;
 import org.usfirst.frc.team3620.robot.Robot;
-import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
-import org.usfirst.frc3620.logger.EventLogging;
-import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj.command.Command;
 
+/**
+ *
+ */
+public class PivotUpCommand extends Command {
 
-public class TeleOpDriveCommand extends Command {
-	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-
-    public TeleOpDriveCommand() {
+    public PivotUpCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.driveSubsystem);
+    	requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	logger.info("Starting TeleOpDriveCommand");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.driverJoystick.getRawAxis(1),Robot.m_oi.driverJoystick.getRawAxis(4));
+    	Robot.intakeSubsystem.pivotUp(0.6);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,12 +31,12 @@ public class TeleOpDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending TeleOpDriveCommand");
+    	Robot.intakeSubsystem.pivotUp(0);
     }
 
     // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run5
+    // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting TeleOpDriveCommand");
+    	Robot.intakeSubsystem.pivotUp(0);
     }
 }
