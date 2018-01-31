@@ -11,9 +11,15 @@ package org.usfirst.frc.team3620.robot;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public Joystick joystick
+public Joystick joystick;//Previously, there was an merge conflict with this code, delete it if there is again ~Sean
+public JoystickButton lBumper; 
+public JoystickButton rBumper; 
 public class OI {
-	joystick = new Joystick(0);
+	joystick = new Joystick(0);//Previously, there was an merge conflict with this code, delete it if there is again ~Sean
+	lBumper = new JoystickButton(5);
+	lBumper.whilePressed(new setDriveGearLowCommand());
+	rBumper = new JoystickButton(6);
+	rBumper.whilePressed(new setDriveGearHighCommand());
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
