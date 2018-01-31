@@ -7,19 +7,27 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
+import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public Joystick joystick;//Previously, there was an merge conflict with this code, delete it if there is again ~Sean
-public JoystickButton lBumper; 
-public JoystickButton rBumper; 
+
 public class OI {
-	joystick = new Joystick(0);//Previously, there was an merge conflict with this code, delete it if there is again ~Sean
-	lBumper = new JoystickButton(5);
-	lBumper.whilePressed(new setDriveGearLowCommand());
-	rBumper = new JoystickButton(6);
-	rBumper.whilePressed(new setDriveGearHighCommand());
+	public static Joystick joystick; //Previously, there was an merge conflict with this code, delete it if there is again ~Sean
+	public JoystickButton lBumper; 
+	public JoystickButton rBumper; 
+	public OI(){
+	joystick = new Joystick(1);//Previously, there was an merge conflict with this code, delete it if there is again ~Sean
+	lBumper = new JoystickButton(joystick, 5);
+	lBumper.whileHeld(new SetDriveGearLowCommand());
+	rBumper = new JoystickButton(joystick, 6);
+	rBumper.whileHeld(new SetDriveGearHighCommand());
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
@@ -47,4 +55,5 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+}
 }

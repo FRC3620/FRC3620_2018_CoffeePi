@@ -1,5 +1,9 @@
 package org.usfirst.frc.team3620.robot.commands;
 
+import org.usfirst.frc.team3620.robot.OI;
+import org.usfirst.frc.team3620.robot.Robot;
+import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -18,7 +22,7 @@ public class TeleOpDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	DriveSubsystem.teleOpDrive(OI.joystick.getRawAxis(1),OI.joystick.getRawAxis(4));
+    	Robot.driveSubsystem.teleOpDrive(OI.joystick.getRawAxis(1),OI.joystick.getRawAxis(4));
     }
 
     // Make this return true when this Command no longer needs to run execute()
