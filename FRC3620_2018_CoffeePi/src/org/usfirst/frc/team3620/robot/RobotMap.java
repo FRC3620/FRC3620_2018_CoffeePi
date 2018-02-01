@@ -147,7 +147,7 @@ public class RobotMap {
         intakeSubsystemIntakeRoller2 = new Spark(3);
         LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (Spark) intakeSubsystemIntakeRoller2);
         intakeSubsystemIntakeRoller2.setInverted(false);
-        intakeSubsystemIntakePivot = new WPI_TalonSRX(5);
+        intakeSubsystemIntakePivot = new WPI_TalonSRX(12);
         intakeSubsystemIntakeClamperSolenoid = new DoubleSolenoid(0, 0, 1);
         LiveWindow.addActuator("IntakeSubsystem", "IntakeClamperSolenoid", intakeSubsystemIntakeClamperSolenoid);
         
