@@ -38,7 +38,6 @@ public class Robot extends TimedRobot {
 	public static ExampleSubsystem kExampleSubsystem;
 	public static DriveSubsystem driveSubsystem;
 	public static LightSubsystem lightSubsystem;
-	public static OperatorView operatorView;
 	
 	// OI
 	public static OI m_oi;
@@ -62,8 +61,6 @@ public class Robot extends TimedRobot {
 		kExampleSubsystem = new ExampleSubsystem();
 		driveSubsystem = new DriveSubsystem();
 		lightSubsystem = new LightSubsystem();
-		operatorView = new OperatorView();
-		operatorView.operatorViewInit();
 		
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
