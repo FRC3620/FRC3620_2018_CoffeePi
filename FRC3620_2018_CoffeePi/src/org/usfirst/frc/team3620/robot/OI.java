@@ -82,4 +82,14 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 	}
+	
+	public double getDriveVerticalJoystick() {
+		return driverJoystick.getRawAxis(1);
+	}
+	public double getDriveHorizontalJoystick() {
+		return driverJoystick.getRawAxis(4);
+	}
+	public double getLiftJoystick() {
+		return operatorJoystick.getRawAxis(1);
+	}
 }

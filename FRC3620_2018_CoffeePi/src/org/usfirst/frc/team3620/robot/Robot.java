@@ -18,6 +18,7 @@ import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
+import org.usfirst.frc.team3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
 	public static DriveSubsystem driveSubsystem;
 	public static LightSubsystem lightSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
+	public static LiftSubsystem liftSubsystem;
 	
 	// no subsystem globals
 	public static OperatorView operatorView;
