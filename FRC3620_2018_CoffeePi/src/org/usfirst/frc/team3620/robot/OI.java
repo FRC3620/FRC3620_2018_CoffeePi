@@ -44,9 +44,9 @@ public class OI {
 	       pivotUp.whileHeld(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 6);
 	       pivotDown.whileHeld(new PivotDownCommand());
+	       
 	       Button lBumper = new JoystickButton(driverJoystick, 5);
 	       lBumper.whileHeld(new SetDriveGearLowCommand());
-	       
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
 	       

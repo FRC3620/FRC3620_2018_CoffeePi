@@ -21,6 +21,7 @@ import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.CANDeviceFinder;
 import org.usfirst.frc3620.misc.RobotMode;
 
 /**
@@ -39,8 +40,11 @@ public class Robot extends TimedRobot {
 	public static ExampleSubsystem kExampleSubsystem;
 	public static DriveSubsystem driveSubsystem;
 	public static LightSubsystem lightSubsystem;
-	public static OperatorView operatorView;
 	public static IntakeSubsystem intakeSubsystem;
+	
+	// no subsystem globals
+	public static OperatorView operatorView;
+	public static CANDeviceFinder canDeviceFinder;
 	
 	// OI
 	public static OI m_oi;
@@ -56,6 +60,9 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		// set up logging
 		logger = EventLogging.getLogger(Robot.class, Level.INFO);
+		
+		// let's see what's on the CAN bus
+		canDeviceFinder = new CANDeviceFinder();
 		
 		// initialize hardware
 		RobotMap.init();
