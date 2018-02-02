@@ -85,6 +85,7 @@ public class RobotMap {
 		driveSubsystemPWMDifferentialDrive.setExpiration(0.1);
 		driveSubsystemPWMDifferentialDrive.setMaxOutput(1.0);
 
+
 			// TODO - make this absolutely bulletproof
 		if (Robot.canDeviceFinder.isSRXPresent(1)) {
 			driveSubsystemTalonSRX1 = new WPI_TalonSRX(1);
@@ -160,4 +161,5 @@ public class RobotMap {
 		
 
 	}
+
 }
