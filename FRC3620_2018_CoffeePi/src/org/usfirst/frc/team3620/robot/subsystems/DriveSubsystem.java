@@ -44,14 +44,6 @@ public class DriveSubsystem extends Subsystem {
     
     
     private final WPI_TalonSRX talonSRX1 = RobotMap.driveSubsystemTalonLeft1;
-    private final WPI_VictorSPX victorSPX2 = RobotMap.driveSubsystemVictorLeft2;
-    private final WPI_VictorSPX victorSPX3 = RobotMap.driveSubsystemVictorLeft3;
-    private final SpeedControllerGroup leftSpeedControllerGroup = RobotMap.driveSubsystemLeftSpeedControllerGroup;
-    
-    private final WPI_TalonSRX talonSRX4 = RobotMap.driveSubsystemTalonRight1;
-    private final WPI_VictorSPX victorSPX5 = RobotMap.driveSubsystemVictorRight2;
-    private final WPI_VictorSPX victorSPX6 = RobotMap.driveSubsystemVictorRight3;
-    private final SpeedControllerGroup rightSpeedControllerGroup = RobotMap.driveSubsystemRightSpeedControllerGroup;
     
     private final DifferentialDrive cANDifferentialDrive = RobotMap.driveSubsystemCANDifferentialDrive;
     
@@ -67,6 +59,7 @@ public class DriveSubsystem extends Subsystem {
 			practice = true;
 			
 		}
+		practice = false;
 	}
 	
 	@Override
@@ -106,6 +99,7 @@ public class DriveSubsystem extends Subsystem {
 	
 	
 	public void teleOpDrive(double speed,double turn) {
+		System.out.println ("teleop " + speed + " " + turn);
 		speed=speed*getSpeedModifier();
 		turn=turn*getSpeedModifier();
 		if(practice) {
@@ -116,8 +110,6 @@ public class DriveSubsystem extends Subsystem {
 	}
 
 	public void autoDrive(double speed,double turn) {
-		speed=speed*getSpeedModifier();
-		turn=turn*getSpeedModifier();
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(speed, turn);
 		} else {
