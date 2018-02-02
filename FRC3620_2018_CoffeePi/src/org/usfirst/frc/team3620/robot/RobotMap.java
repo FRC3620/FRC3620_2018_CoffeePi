@@ -43,19 +43,22 @@ public class RobotMap {
 	public static SpeedController driveSubsystemLeftSpeedController;
 	public static SpeedController driveSubsystemRightSpeedController;
 	public static DifferentialDrive driveSubsystemPWMDifferentialDrive;
-	public static WPI_TalonSRX driveSubsystemTalonSRX1;
-	public static WPI_VictorSPX driveSubsystemVictorSPX2;
-	public static WPI_VictorSPX driveSubsystemVictorSPX3;
+	public static WPI_TalonSRX driveSubsystemTalonLeft1;
+	public static WPI_VictorSPX driveSubsystemVictorLeft2;
+	public static WPI_VictorSPX driveSubsystemVictorLeft3;
+	public static WPI_VictorSPX driveSubsystemVictorLeft4;
 	public static SpeedControllerGroup driveSubsystemLeftSpeedControllerGroup;
-	public static WPI_TalonSRX driveSubsystemTalonSRX4;
-	public static WPI_VictorSPX driveSubsystemVictorSPX5;
-	public static WPI_VictorSPX driveSubsystemVictorSPX6;
+	public static WPI_TalonSRX driveSubsystemTalonRight1;
+	public static WPI_VictorSPX driveSubsystemVictorRight2;
+	public static WPI_VictorSPX driveSubsystemVictorRight3;
+	public static WPI_VictorSPX driveSubsystemVictorRight4;
 	public static SpeedControllerGroup driveSubsystemRightSpeedControllerGroup;
 	public static DifferentialDrive driveSubsystemCANDifferentialDrive;
 	public static SpeedController lightSubsystemLightPWM9;
-	public static WPI_TalonSRX liftSubsystemTalonSRX7;
-	public static WPI_VictorSPX liftSubsystemVictorSPX8;
-	public static WPI_VictorSPX liftSubsystemVictorSPX9;
+	public static WPI_TalonSRX liftSubsystemTalon1;
+	public static WPI_VictorSPX liftSubsystemVictor2;
+	public static WPI_VictorSPX liftSubsystemVictor3;
+	public static WPI_VictorSPX liftSubsystemVictor4;
 	public static SpeedControllerGroup liftSubsystemClimbSpeedControllerGroup;
 	public static DigitalInput liftSubsystemElevatorHomeSwitch;
 	public static DigitalInput liftSubsystemIntakeInPos;
@@ -88,7 +91,7 @@ public class RobotMap {
 		driveSubsystemPWMDifferentialDrive.setMaxOutput(1.0);
 
         
-        liftSubsystemClimbSpeedControllerGroup = new SpeedControllerGroup(liftSubsystemTalonSRX7, liftSubsystemVictorSPX8 , liftSubsystemVictorSPX9 );
+        liftSubsystemClimbSpeedControllerGroup = new SpeedControllerGroup(liftSubsystemTalon1, liftSubsystemVictor2 , liftSubsystemVictor3 );
         LiveWindow.addActuator("LiftSubsystem", "ClimbSpeedControllerGroup", liftSubsystemClimbSpeedControllerGroup);
         
         liftSubsystemElevatorHomeSwitch = new DigitalInput(1);
@@ -111,21 +114,23 @@ public class RobotMap {
 
 			// TODO - make this absolutely bulletproof
 		if (Robot.canDeviceFinder.isSRXPresent(1)) {
-			driveSubsystemTalonSRX1 = new WPI_TalonSRX(1);
-			driveSubsystemVictorSPX2 = new WPI_VictorSPX(2);
-			driveSubsystemVictorSPX3 = new WPI_VictorSPX(3);
-
-			driveSubsystemLeftSpeedControllerGroup = new SpeedControllerGroup(driveSubsystemTalonSRX1,
-					driveSubsystemVictorSPX2, driveSubsystemVictorSPX3);
+			driveSubsystemTalonLeft1 = new WPI_TalonSRX(1);
+			driveSubsystemVictorLeft2 = new WPI_VictorSPX(2);
+			driveSubsystemVictorLeft3 = new WPI_VictorSPX(3);
+			driveSubsystemVictorLeft4 = new WPI_VictorSPX(4);
+			
+			driveSubsystemLeftSpeedControllerGroup = new SpeedControllerGroup(driveSubsystemTalonLeft1,
+					driveSubsystemVictorLeft2, driveSubsystemVictorLeft3, driveSubsystemVictorLeft4);
 			LiveWindow.addActuator("DriveSubsystem", "LeftSpeedControllerGroup",
 					driveSubsystemLeftSpeedControllerGroup);
 
-			driveSubsystemTalonSRX4 = new WPI_TalonSRX(4);
-			driveSubsystemVictorSPX5 = new WPI_VictorSPX(5);
-			driveSubsystemVictorSPX6 = new WPI_VictorSPX(6);
-
-			driveSubsystemRightSpeedControllerGroup = new SpeedControllerGroup(driveSubsystemTalonSRX4,
-					driveSubsystemVictorSPX5, driveSubsystemVictorSPX6);
+			driveSubsystemTalonRight1 = new WPI_TalonSRX(5);
+			driveSubsystemVictorRight2 = new WPI_VictorSPX(6);
+			driveSubsystemVictorRight3 = new WPI_VictorSPX(7);
+			driveSubsystemVictorRight4 = new WPI_VictorSPX(8);
+			
+			driveSubsystemRightSpeedControllerGroup = new SpeedControllerGroup(driveSubsystemTalonRight1,
+					driveSubsystemVictorRight2, driveSubsystemVictorRight3, driveSubsystemVictorRight4);
 			LiveWindow.addActuator("DriveSubsystem", "RightSpeedControllerGroup",
 					driveSubsystemRightSpeedControllerGroup);
 
@@ -143,14 +148,16 @@ public class RobotMap {
 		LiveWindow.addActuator("LightSubsystem", "LightPWM9", (Spark) lightSubsystemLightPWM9);
 		lightSubsystemLightPWM9.setInverted(false);
 		
-		liftSubsystemTalonSRX7 = new WPI_TalonSRX(7);
+		liftSubsystemTalon1 = new WPI_TalonSRX(9);
 
-		liftSubsystemVictorSPX8 = new WPI_VictorSPX(8);
+		liftSubsystemVictor2 = new WPI_VictorSPX(10);
 
-		liftSubsystemVictorSPX9 = new WPI_VictorSPX(9);
+		liftSubsystemVictor3 = new WPI_VictorSPX(11);
+		
+		liftSubsystemVictor4 = new WPI_VictorSPX(12);
 
-		liftSubsystemClimbSpeedControllerGroup = new SpeedControllerGroup(liftSubsystemTalonSRX7,
-				liftSubsystemVictorSPX8, liftSubsystemVictorSPX9);
+		liftSubsystemClimbSpeedControllerGroup = new SpeedControllerGroup(liftSubsystemTalon1,
+				liftSubsystemVictor2, liftSubsystemVictor3, liftSubsystemVictor4);
 		LiveWindow.addActuator("LiftSubsystem", "ClimbSpeedControllerGroup", liftSubsystemClimbSpeedControllerGroup);
 
 		liftSubsystemElevatorHomeSwitch = new DigitalInput(1);
@@ -168,13 +175,15 @@ public class RobotMap {
 		intakeSubsystemScaleSensed = new DigitalInput(5);
 		LiveWindow.addSensor("IntakeSubsystem", "ScaleSensed", intakeSubsystemScaleSensed);
 
-		 intakeSubsystemIntakeRoller1 = new WPI_TalonSRX(10);
+		 intakeSubsystemIntakeRoller1 = new WPI_TalonSRX(13);
 	        LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller1", (Talon) intakeSubsystemIntakeRoller1);
 	        intakeSubsystemIntakeRoller1.setInverted(false);
-	        intakeSubsystemIntakeRoller2 = new WPI_TalonSRX(11);
+	        
+	        intakeSubsystemIntakeRoller2 = new WPI_TalonSRX(14);
 	        LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (Talon) intakeSubsystemIntakeRoller2);
 	        intakeSubsystemIntakeRoller2.setInverted(false);
-	        intakeSubsystemIntakePivot = new WPI_TalonSRX(12);
+	        
+	        intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
 	        
 		if(Robot.canDeviceFinder.isPCMPresent(0)) {
 		intakeSubsystemIntakeClamperSolenoid = new DoubleSolenoid(0, 0, 1);

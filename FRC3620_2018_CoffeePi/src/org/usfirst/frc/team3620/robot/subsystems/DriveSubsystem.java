@@ -43,14 +43,14 @@ public class DriveSubsystem extends Subsystem {
     private final DifferentialDrive pWMDifferentialDrive = RobotMap.driveSubsystemPWMDifferentialDrive;
     
     
-    private final WPI_TalonSRX talonSRX1 = RobotMap.driveSubsystemTalonSRX1;
-    private final WPI_VictorSPX victorSPX2 = RobotMap.driveSubsystemVictorSPX2;
-    private final WPI_VictorSPX victorSPX3 = RobotMap.driveSubsystemVictorSPX3;
+    private final WPI_TalonSRX talonSRX1 = RobotMap.driveSubsystemTalonLeft1;
+    private final WPI_VictorSPX victorSPX2 = RobotMap.driveSubsystemVictorLeft2;
+    private final WPI_VictorSPX victorSPX3 = RobotMap.driveSubsystemVictorLeft3;
     private final SpeedControllerGroup leftSpeedControllerGroup = RobotMap.driveSubsystemLeftSpeedControllerGroup;
     
-    private final WPI_TalonSRX talonSRX4 = RobotMap.driveSubsystemTalonSRX4;
-    private final WPI_VictorSPX victorSPX5 = RobotMap.driveSubsystemVictorSPX5;
-    private final WPI_VictorSPX victorSPX6 = RobotMap.driveSubsystemVictorSPX6;
+    private final WPI_TalonSRX talonSRX4 = RobotMap.driveSubsystemTalonRight1;
+    private final WPI_VictorSPX victorSPX5 = RobotMap.driveSubsystemVictorRight2;
+    private final WPI_VictorSPX victorSPX6 = RobotMap.driveSubsystemVictorRight3;
     private final SpeedControllerGroup rightSpeedControllerGroup = RobotMap.driveSubsystemRightSpeedControllerGroup;
     
     private final DifferentialDrive cANDifferentialDrive = RobotMap.driveSubsystemCANDifferentialDrive;
