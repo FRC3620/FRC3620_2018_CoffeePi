@@ -90,7 +90,7 @@ public class DriveSubsystem extends Subsystem {
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
-		System.out.println ("teleop " + speed + " " + turn);
+		
 		speed=speed*getSpeedModifier();
 		turn=turn*getSpeedModifier();
 		if(practice) {
