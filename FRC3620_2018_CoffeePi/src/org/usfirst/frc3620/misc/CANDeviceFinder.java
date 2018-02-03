@@ -103,11 +103,15 @@ public class CANDeviceFinder {
                 deviceList.add("PCM " + i);
                 pcms.add(i);
             }
+        }
+        for (int i = 0; i < 63; ++i) {
             if (srx_timeStamp0[i] >= 0 && srx_timeStamp1[i] >= 0
                     && srx_timeStamp0[i] != srx_timeStamp1[i]) {
                 deviceList.add("SRX " + i);
                 srxs.add(i);
             }
+        }
+        for (int i = 0; i < 63; ++i) {
             if (spx_timeStamp0[i] >= 0 && spx_timeStamp1[i] >= 0
                     && spx_timeStamp0[i] != spx_timeStamp1[i]) {
                 deviceList.add("SPX " + i);

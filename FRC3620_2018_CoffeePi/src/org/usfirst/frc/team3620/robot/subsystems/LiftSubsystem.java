@@ -25,7 +25,7 @@ public class LiftSubsystem extends Subsystem {
     private final WPI_VictorSPX victor1 = RobotMap.liftSubsystemVictor2;
     private final WPI_VictorSPX victor2 = RobotMap.liftSubsystemVictor3;
     private final WPI_VictorSPX victor3 = RobotMap.liftSubsystemVictor4;
-    private final SpeedControllerGroup climbSpeedControllerGroup = RobotMap.liftSubsystemClimbSpeedControllerGroup;
+
     private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
     private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
     private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
@@ -99,7 +99,8 @@ public class LiftSubsystem extends Subsystem {
     //moves elevator motor vertSpeed
     public void moveElevator(double vertSpeed) {
     	//runs lift motor for vertSpeed
-    	climbSpeedControllerGroup.set(vertSpeed);
+    	// TODO FIX MEclimbSpeedControllerGroup.set(vertSpeed);
+    	
     	
     }
     

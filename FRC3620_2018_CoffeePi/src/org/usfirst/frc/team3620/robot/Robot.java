@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 		
 		// let's see what's on the CAN bus
 		canDeviceFinder = new CANDeviceFinder();
+		System.out.println (canDeviceFinder.getDeviceList());
 		
 		// initialize hardware
 		RobotMap.init();
@@ -74,8 +75,8 @@ public class Robot extends TimedRobot {
 		driveSubsystem = new DriveSubsystem();
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
-		operatorView = new OperatorView();
-		operatorView.operatorViewInit();
+		//operatorView = new OperatorView();
+		//operatorView.operatorViewInit();
 		
 		
 		// Initialize Operator Interface 
