@@ -8,6 +8,7 @@ import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -28,6 +29,7 @@ public class IntakeSubsystem extends Subsystem {
     private final SpeedController intakeRoller2 = RobotMap.intakeSubsystemIntakeRoller2;
     private final WPI_TalonSRX intakePivot = RobotMap.intakeSubsystemIntakePivot;
     private final DoubleSolenoid intakeClamperSolenoid = RobotMap.intakeSubsystemIntakeClamperSolenoid;
+    private final 
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
    
@@ -38,7 +40,7 @@ public class IntakeSubsystem extends Subsystem {
     public static boolean isHome = false;
     public static boolean isMax = false;
     public static final int homePosition = 0;
-    public static final int maxPostion = 0;
+    public static final int maxPosition = 8300;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
@@ -49,12 +51,18 @@ public class IntakeSubsystem extends Subsystem {
     public IntakeSubsystem() {
     	super();
     	
-    	kP = 0;
-    	kI = 0;
-    	kD = 0;
-    	kF = 0;
-    	
+    	//set motor sensor
     	intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
+    	intakePivot.setSensorPhase(true);
+    	intakePivot.setInverted(false);
+    	
+    	//set PID values
+    	intakePivot.config_kF(kSlotIdx, kF, kTimeoutms);
+    	intakePivot.config_kP(kSlotIdx, kP, kTimeoutms);
+    	intakePivot.config_kI(kSlotIdx, kI, kTimeoutms);
+    	intakePivot.config_kD(kSlotIdx, kD, kTimeoutms);
+    	intakePivot.config_kF(kSlotIdx, kF, kTimeoutms);
+    	
     }
    
 
@@ -80,9 +88,16 @@ public class IntakeSubsystem extends Subsystem {
 	   }
     }
    
-   public void pivotUp(double speed){
+   public void pivotUp(double position){
+	   
+	   
 	   if(intakePivot != null) {
-		   intakePivot.set(speed);
+		   while (position < maxPosition) {
+			   intakePivot.set(ControlMode.Position, position);
+			   logger.info("Moving pivot Up");
+		   }
+		   logger.info("Pivot at max position");
+		   
 	   } else {
 		  logger.info("Tried to pivot up - no CANTalons!");
 	   }
@@ -109,8 +124,8 @@ public class IntakeSubsystem extends Subsystem {
 
    public boolean checkHome() {
 	   int readEncoder = intakePivot.getSensorCollection().getQuadraturePosition(); 
-	   if(readEncoder == homePosition) {
-		   isHome = true; 
+	   if(readEncoder < homePosition + 50 && readEncoder > homePosition - 50) {
+		   isHome = true;
 	   }
 	   else {
 		   isHome = false;
@@ -119,11 +134,11 @@ public class IntakeSubsystem extends Subsystem {
    }
    public boolean checkMax() {
 	   int readEncoder = intakePivot.getSensorCollection().getQuadraturePosition(); 
-	   if (readEncoder == maxPostion) {
+	   if (readEncoder < maxPosition + 50 && readEncoder > maxPosition -50) {
 		   isMax = true;
 	   }
 	   else {
-		   isMax = true;
+		   isMax = false;
 	   }
 	   return isMax; 
    }
