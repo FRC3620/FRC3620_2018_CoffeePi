@@ -8,6 +8,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class TeleOpDriveCommand extends Command {
@@ -27,7 +28,9 @@ public class TeleOpDriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.driverJoystick.getRawAxis(1),Robot.m_oi.driverJoystick.getRawAxis(4));
-    }
+    	SmartDashboard.putNumber("Encoder Position", Robot.intakeSubsystem.getRawEncoderPosition());
+    	}
+    
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {

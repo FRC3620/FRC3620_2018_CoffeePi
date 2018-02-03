@@ -127,10 +127,11 @@ public class IntakeSubsystem extends Subsystem {
 	   }
 	   return isMax; 
    }
-   public void moveToHome() {
-	    
+  
+   public int getRawEncoderPosition() {
+	   int readEncoder = intakePivot.getSensorCollection().getQuadraturePosition();
+	   return readEncoder;
    }
-
    
    //clamps cube
    public void clampCube () {

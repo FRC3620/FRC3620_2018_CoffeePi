@@ -3,6 +3,7 @@ package org.usfirst.frc.team3620.robot.commands;
 import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -22,6 +23,7 @@ public class PivotDownCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.intakeSubsystem.pivotDown(0.4);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
