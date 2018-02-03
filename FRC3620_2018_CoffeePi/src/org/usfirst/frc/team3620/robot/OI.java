@@ -36,20 +36,21 @@ public class OI {
 	       clamp.whenPressed(new ClampCommand());
 	       Button unclamp = new JoystickButton(operatorJoystick,2);
 	       unclamp.whenPressed(new UnClampCommand());
-	       Button spinIn = new JoystickButton(operatorJoystick, 3);
-	       spinIn.whileHeld(new IntakeCubeCommand());
-	       Button spinOut = new JoystickButton(operatorJoystick, 4);
-	       spinOut.whileHeld(new OutakeCubeCommand());
-	       Button pivotUp = new JoystickButton(operatorJoystick, 5);
+	       Button pivotUp = new JoystickButton(operatorJoystick, 3);
 	       pivotUp.whileHeld(new PivotUpCommand());
-	       Button pivotDown = new JoystickButton(operatorJoystick, 6);
+	       Button pivotDown = new JoystickButton(operatorJoystick, 4);
 	       pivotDown.whileHeld(new PivotDownCommand());
+	       Button spinIn = new JoystickButton(operatorJoystick, 5);
+	       spinIn.whileHeld(new IntakeCubeCommand());
+	       Button spinOut = new JoystickButton(operatorJoystick, 6);
+	       spinOut.whileHeld(new OutakeCubeCommand());
 	       
 	       Button lBumper = new JoystickButton(driverJoystick, 5);
 	       lBumper.whileHeld(new SetDriveGearLowCommand());
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
-	       
+	       Button changedirection = new JoystickButton(driverJoystick, 1);
+	       changedirection.whenPressed(new reverseDirectionCommand());
 	       
        //Button button = new JoystickButton(stick,9);
        //button.whileHeld(new OperatorViewTestCommand());
