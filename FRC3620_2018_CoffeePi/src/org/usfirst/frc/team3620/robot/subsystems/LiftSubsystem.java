@@ -2,10 +2,13 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 
+import org.usfirst.frc.team3620.robot.OI;
+import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
 import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -33,36 +36,32 @@ public class LiftSubsystem extends Subsystem {
     public static final int kSlotIdx = 0;
     public static final int kTimeoutMs = 0;
     public static final boolean kMotorInvert  = false;
+    public static boolean isHome = false;
     public static final int homePosition = 0;
     public static final int maxPosition = 0;
+    public static double kP = 0;
+    public static double kI = 0;
+    public static double kD = 0;
+    public static double kIZone = 0;
+    public static double joystick = Robot.m_oi.getLiftJoystick();
+    
     
     public LiftSubsystem() {
     	super();
     	
-    	double kP = 0;
-		double kI = 0;
-		double kD = 0;
-		double kF = 0;
+    	kP = 0;
+		kI = 0;
+		kD = 0;
 		
 		//Setting feedback device type
+		talon.set(ControlMode.Position, 0);
 		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
-		
-		//Set SPX's as slaves
-		victor1.follow(talon);
-		victor2.follow(talon);
-		victor3.follow(talon);
-		
-		
-
-	
     		
     }
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-   
 
-    
     public void initDefaultCommand() {
         // Set the default000000000 command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
@@ -84,27 +83,14 @@ public class LiftSubsystem extends Subsystem {
     	talon.setSelectedSensorPosition(sensorPos, kSlotIdx, 10);
     }
     
-    public void moveLiftToSetpoint(double liftPosition, double p, double i, double d, double f, int iZone, int talonIDX) {
-    	
-    	
-    	talon.config_kP(talonIDX,p,0);
-    	talon.config_kI(talonIDX,i,0);
-    	talon.config_kD(talonIDX,d,0);
-    	talon.config_IntegralZone(talonIDX, iZone, 0);
-    	
-    	//talon.getClosedLoopTarget(pidIdx)
-    	
-    }
     
     //moves elevator motor vertSpeed
     public void moveElevator(double vertSpeed) {
-    	//runs lift motor for vertSpeed
-    	// TODO FIX MEclimbSpeedControllerGroup.set(vertSpeed);
-    	
+    	//runs lift motor for vertSpeed    	
+    
+    	//talon.set(ControlMode.Position, joystick.getY)
     	
     }
-    
-    
     
     //checks to see if lift is at lowest position
     boolean isAtHome() {
