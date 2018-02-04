@@ -4,10 +4,7 @@ package org.usfirst.frc.team3620.robot;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -30,8 +27,6 @@ public class OperatorView {
 	public void turnCrosshairsGreen(){	
 		TurnCrosshairsRed = false;
 	}
-	
-
 	
 	public void operatorViewInit() {
 		m_visionThread = new Thread(() -> {
