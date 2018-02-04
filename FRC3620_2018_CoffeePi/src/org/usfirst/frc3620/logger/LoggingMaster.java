@@ -25,7 +25,7 @@ public class LoggingMaster {
                         _timestampString = formatName.format(new Date());
                         String logMessage = String.format(
                                 "timestamp for logs is %s\n", _timestampString);
-                        EventLogging.writeToDS(logMessage);
+                        EventLogging.writeWarningToDS(logMessage);
                     }
                 }
             }
