@@ -96,7 +96,7 @@ public class DriveSubsystem extends Subsystem {
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(-speed, turn);
 		} else {
-			cANDifferentialDrive.arcadeDrive(-speed, turn);
+			cANDifferentialDrive.arcadeDrive(-speed*0.83, turn);
 		}
 	}
 
@@ -124,9 +124,13 @@ public class DriveSubsystem extends Subsystem {
 		
 	}
 	
-	public double readEncoder() {
+	public double readLeftEncoder() {
 	return 0.0;
 	}
+	
+	public double readRightEncoder() {
+		return 0.0;
+		}
 	
 	public void setHighGear() {//@Doug, HoW DOOOooOOOoOooOooOooOOOOOooOOoOooOo??????????????/????//??/??/?????/?
 		highGear = true;
@@ -138,6 +142,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
+    	
         // Put code here to be run every loop
 
     }

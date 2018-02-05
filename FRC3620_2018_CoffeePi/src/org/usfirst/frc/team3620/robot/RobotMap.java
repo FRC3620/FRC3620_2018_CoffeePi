@@ -111,18 +111,22 @@ public class RobotMap {
 
 			driveSubsystemTalonRight1 = new WPI_TalonSRX(5);
 			resetControllerToKnownState(driveSubsystemTalonRight1);
+			driveSubsystemTalonRight1.setInverted(true);
 			
 			driveSubsystemVictorRight2 = new WPI_VictorSPX(6);
 			resetControllerToKnownState(driveSubsystemVictorRight2);
 			driveSubsystemVictorRight2.follow(driveSubsystemTalonRight1);
+			driveSubsystemVictorRight2.setInverted(true);
 			
 			driveSubsystemVictorRight3 = new WPI_VictorSPX(7);
 			resetControllerToKnownState(driveSubsystemVictorRight3);
 			driveSubsystemVictorRight3.follow(driveSubsystemTalonRight1);
+			driveSubsystemVictorRight3.setInverted(true);
 			
 			driveSubsystemVictorRight4 = new WPI_VictorSPX(8);
 			resetControllerToKnownState(driveSubsystemVictorRight4);
 			driveSubsystemVictorRight4.follow(driveSubsystemTalonRight1);
+			driveSubsystemVictorRight4.setInverted(true);
 
 			driveSubsystemCANDifferentialDrive = new DifferentialDrive(driveSubsystemTalonLeft1,
 					driveSubsystemTalonRight1);
