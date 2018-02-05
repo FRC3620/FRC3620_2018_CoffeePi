@@ -60,8 +60,8 @@ public class LightSubsystem extends Subsystem {
 	}
 	public void setEvent (String event, Boolean condition) {
 		if (event == "cube") {
-			if(condition) {lightsPriority.put(1, Color.HEARTBEART_WHITE.value);}
-			else {lightsPriority.remove(1, Color.HEARTBEART_WHITE.value);}
+			if(condition) {lightsPriority.put(1, Color.HEARTBEAT_WHITE.value);}
+			else {lightsPriority.remove(1, Color.HEARTBEAT_WHITE.value);}
 		}
 		if (event == "lift") {
 			if(condition) {lightsPriority.put(1, Color.CONFETTI.value);}
