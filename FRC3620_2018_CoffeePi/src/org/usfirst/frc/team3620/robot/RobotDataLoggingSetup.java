@@ -7,16 +7,16 @@ import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.hal.PowerJNI;
 
 public class RobotDataLoggingSetup {
 	PowerDistributionPanel powerDistributionPanel = null;
-	public DriverStation driverStation = DriverStation.getInstance();
+	DriverStation driverStation = DriverStation.getInstance();
 
 	public RobotDataLoggingSetup (DataLogger robotDataLogger, CANDeviceFinder canDeviceFinder) {
 		robotDataLogger.addDataProvider("robotMode", () -> Robot.currentRobotMode.toString());
 		robotDataLogger.addDataProvider("robotModeInt", () -> Robot.currentRobotMode.ordinal());
-		robotDataLogger.addDataProvider("batteryVoltage", () -> f2(RobotController.getBatteryVoltage()));
+		robotDataLogger.addDataProvider("batteryVoltage", () -> f2(PowerJNI.getVinVoltage()));
 
 		if (Robot.canDeviceFinder.isPDPPresent()) {
 			powerDistributionPanel = new PowerDistributionPanel();
