@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FulllSpeedDriveCommand extends Command {
+public class FullSpeedDriveCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public FulllSpeedDriveCommand() {
+    public FullSpeedDriveCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveSubsystem);
