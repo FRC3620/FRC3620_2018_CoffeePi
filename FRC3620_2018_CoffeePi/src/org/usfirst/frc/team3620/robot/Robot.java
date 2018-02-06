@@ -95,7 +95,6 @@ public class Robot extends TimedRobot {
 		//operatorView = new OperatorView();
 		//operatorView.operatorViewInit();
 		
-		
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
 		
