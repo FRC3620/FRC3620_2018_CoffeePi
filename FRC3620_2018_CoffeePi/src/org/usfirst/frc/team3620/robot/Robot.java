@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -54,6 +55,22 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+	@Override
+	protected void loopFunc()
+	{
+		try
+		{
+			// calls user code
+			super.loopFunc();
+		} // catch all the things
+		catch(Throwable throwable)
+		{
+			DriverStation.reportError("Unhandled exception: " + throwable.toString(),
+					throwable.getStackTrace());
+			System.exit(1); // kill the program so it can restart
+		}
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
