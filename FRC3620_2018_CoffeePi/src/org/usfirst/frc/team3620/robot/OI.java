@@ -8,6 +8,7 @@
 package org.usfirst.frc.team3620.robot;
 
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
+import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
@@ -49,10 +50,16 @@ public class OI {
 	       lBumper.whileHeld(new SetDriveGearLowCommand());
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
+	       Button fullspeed = new JoystickButton(driverJoystick, 1);
+	       fullspeed.whileHeld(new FullSpeedDriveCommand());
 	       
 	       
        //Button button = new JoystickButton(stick,9);
+
+       //button.wh
+	    //   ileHeld(new OperatorViewTestCommand());
        //button.whileHeld(new OperatorViewTestCommand());
+	}
 	       
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
@@ -81,5 +88,4 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-	}
 }

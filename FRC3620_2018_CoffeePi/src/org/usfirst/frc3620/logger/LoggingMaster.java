@@ -10,6 +10,8 @@ public class LoggingMaster {
     private static String _timestampString = null;
 
     private static File _logDirectory = null;
+    
+    private static String defaultLogLocation = "/home/lvuser/logs"; 
 
     // http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
     public static String getTimestampString() {
@@ -25,12 +27,16 @@ public class LoggingMaster {
                         _timestampString = formatName.format(new Date());
                         String logMessage = String.format(
                                 "timestamp for logs is %s\n", _timestampString);
-                        EventLogging.writeToDS(logMessage);
+                        EventLogging.writeWarningToDS(logMessage);
                     }
                 }
             }
         }
         return _timestampString;
+    }
+    
+    public static void setDefaultLogLocation (String s) {
+    	defaultLogLocation = s;
     }
 
     public static File getLoggingDirectory() {
@@ -50,7 +56,7 @@ public class LoggingMaster {
                     if (_logDirectory == null)
                         _logDirectory = searchForLogDirectory(new File("/y"));
                     if (_logDirectory == null) {
-                        _logDirectory = new File("/home/lvuser/logs");
+                        _logDirectory = new File(defaultLogLocation);
                         if (!_logDirectory.exists()) {
                             _logDirectory.mkdir();
                         }

@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -19,6 +20,7 @@ import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
+import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
@@ -35,6 +37,7 @@ public class Robot extends TimedRobot {
 	// Team 3620 custom stuff
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
+	public static DataLogger robotDataLogger;
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
@@ -42,7 +45,7 @@ public class Robot extends TimedRobot {
 	public static LightSubsystem lightSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
 	
-	// no subsystem globals
+	// non subsystem globals
 	public static OperatorView operatorView;
 	public static CANDeviceFinder canDeviceFinder;
 	
@@ -52,6 +55,22 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+	@Override
+	protected void loopFunc()
+	{
+		try
+		{
+			// calls user code
+			super.loopFunc();
+		} // catch all the things
+		catch(Throwable throwable)
+		{
+			DriverStation.reportError("Unhandled exception: " + throwable.toString(),
+					throwable.getStackTrace());
+			System.exit(1); // kill the program so it can restart
+		}
+	}
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -63,6 +82,7 @@ public class Robot extends TimedRobot {
 		
 		// let's see what's on the CAN bus
 		canDeviceFinder = new CANDeviceFinder();
+		logger.info("CAN bus: {}", canDeviceFinder.getDeviceList());
 		
 		// initialize hardware
 		RobotMap.init();
@@ -75,12 +95,19 @@ public class Robot extends TimedRobot {
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 		
-		
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
+		
+		// Initial the autonomous chooser
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		
+		// get data logging going
+		robotDataLogger = new DataLogger();
+		new RobotDataLoggingSetup(robotDataLogger, canDeviceFinder);
+		robotDataLogger.setInterval(1.000);
+		robotDataLogger.start();
 	}
 
 	/**

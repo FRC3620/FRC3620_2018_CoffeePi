@@ -15,10 +15,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class LiftSubsystem extends Subsystem {
-	private final WPI_TalonSRX talonSRX7 = RobotMap.liftSubsystemTalonSRX7;
-    private final WPI_VictorSPX victorSPX8 = RobotMap.liftSubsystemVictorSPX8;
-    private final WPI_VictorSPX victorSPX9 = RobotMap.liftSubsystemVictorSPX9;
-    private final SpeedControllerGroup climbSpeedControllerGroup = RobotMap.liftSubsystemClimbSpeedControllerGroup;
+	private final WPI_TalonSRX talonSRX7 = RobotMap.liftSubsystemTalon1;
+    private final WPI_VictorSPX victorSPX8 = RobotMap.liftSubsystemVictor2;
+    private final WPI_VictorSPX victorSPX9 = RobotMap.liftSubsystemVictor3;
     private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
     private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
     private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
@@ -48,7 +47,8 @@ public class LiftSubsystem extends Subsystem {
     //moves elevator motor vertSpeed
     void moveElevator(double vertSpeed) {
     	//runs lift motor for vertSpeed
-    	climbSpeedControllerGroup.set(vertSpeed);
+    	// TODO FIX MEclimbSpeedControllerGroup.set(vertSpeed);
+    	
     	
     }
     

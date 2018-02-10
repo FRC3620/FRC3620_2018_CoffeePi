@@ -82,18 +82,28 @@ public class EventLogging {
 
     
     /**
-     * Write a message to the DriverStation.
+     * Write a warning message to the DriverStation.
      * 
      * @param message
      *            Message to log.
      */
-    public static final void writeToDS(String message) {
+    public static final void writeWarningToDS(String message) {
         if (DriverStation.getInstance().isDSAttached()) {
-        	// TODO fix me
-        	// HAL.setErrorData(message);
+        	DriverStation.reportWarning(message, false);
         }
     }
 
+    /**
+     * Write an error message to the DriverStation.
+     * 
+     * @param message
+     *            Message to log.
+     */
+    public static final void writeErrorToDS(String message) {
+        if (DriverStation.getInstance().isDSAttached()) {
+        	DriverStation.reportError(message, false);
+        }
+    }
 
     /**
      * Create a String representation of an Exception.
@@ -137,44 +147,51 @@ public class EventLogging {
         setup(LoggingMaster.getLoggingDirectory());
     }
 
-    /**
-     * Set up a j.u.l logger that will start logging to a file (with a
-     * timestamped name). The logging to the file will not start until the
-     * system time is set.
-     * 
-     * @param logDirectory
-     *            Directory to create the logging file in
-     */
-    public static void setup(File logDirectory) {
-        if (!setupDone) // quickly check to see if we are initialized
-        {
-            synchronized (EventLogging.class) // check slowly and carefully
-            {
-                if (!setupDone) {
-                    Logger rootLogger = Logger.getLogger("");
-                    // get all the existing handlers
-                    Handler[] handlers = rootLogger.getHandlers();
-                    // and remove them
-                    for (Handler handler : handlers) {
-                        rootLogger.removeHandler(handler);
-                    }
+	/**
+	 * Set up a j.u.l logger that will start logging to a file (with a timestamped
+	 * name). The logging to the file will not start until the system time is set.
+	 * 
+	 * @param logDirectory
+	 *            Directory to create the logging file in
+	 */
+	public static boolean useDriverStation = true;
+	public static void setup(File logDirectory) {
+		if (!setupDone) // quickly check to see if we are initialized
+		{
+			synchronized (EventLogging.class) // check slowly and carefully
+			{
+				if (!setupDone) {
+					Logger rootLogger = Logger.getLogger("");
+					// get all the existing handlers
+					Handler[] handlers = rootLogger.getHandlers();
+					// and remove them
+					for (Handler handler : handlers) {
+						rootLogger.removeHandler(handler);
+					}
 
-                    // add the handlers we want
-                    Handler h = new ConsoleHandler();
-                    h.setFormatter(new FormatterForFileHandler());
-                    h.setLevel(Level.DEBUG.julLevel);
-                    rootLogger.addHandler(h);
+					// add the handlers we want
+					Handler h;
+					if (useDriverStation) {
+						h = new DriverStationLoggingHandler();
+						h.setLevel(Level.DEBUG.julLevel);
+						rootLogger.addHandler(h);
+					} else {
+						h = new ConsoleHandler();
+						h.setFormatter(new FormatterForFileHandler());
+						h.setLevel(Level.DEBUG.julLevel);
+						rootLogger.addHandler(h);
+					}
 
-                    h = new MyFileHandler(logDirectory);
-                    h.setFormatter(new FormatterForFileHandler());
-                    h.setLevel(Level.DEBUG.julLevel);
-                    rootLogger.addHandler(h);
+					h = new MyFileHandler(logDirectory);
+					h.setFormatter(new FormatterForFileHandler());
+					h.setLevel(Level.DEBUG.julLevel);
+					rootLogger.addHandler(h);
 
-                    setupDone = true;
-                }
-            }
-        }
-    }
+					setupDone = true;
+				}
+			}
+		}
+	}
 
     static class MyFileHandler extends StreamHandler {
         File logDirectory;
