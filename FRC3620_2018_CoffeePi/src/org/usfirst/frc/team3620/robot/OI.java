@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.AutonomousCenter;
+import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
+import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
@@ -15,10 +18,12 @@ import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
+        
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -54,6 +59,15 @@ public class OI {
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
+	       
+	       
+	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
+	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
+	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
+	       
+	       
+	       
+	       
 	       
 	       
        //Button button = new JoystickButton(stick,9);
