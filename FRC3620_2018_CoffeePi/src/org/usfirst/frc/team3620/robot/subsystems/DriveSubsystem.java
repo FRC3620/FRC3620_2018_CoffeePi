@@ -90,13 +90,12 @@ public class DriveSubsystem extends Subsystem {
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
-		
 		speed=speed*getSpeedModifier();
 		turn=turn*getSpeedModifier();
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(-speed, turn);
 		} else {
-			cANDifferentialDrive.arcadeDrive(-speed*0.83, turn);
+			cANDifferentialDrive.arcadeDrive(-speed, turn);
 		}
 	}
 
@@ -105,6 +104,14 @@ public class DriveSubsystem extends Subsystem {
 			pWMDifferentialDrive.arcadeDrive(speed, turn);
 		} else {
 			cANDifferentialDrive.arcadeDrive(speed, turn);
+		}
+	}
+	
+	public void autoDriveNoSquared(double speed,double turn) {
+		if(practice) {
+			pWMDifferentialDrive.arcadeDrive(speed, turn, false);
+		} else {
+			cANDifferentialDrive.arcadeDrive(speed, turn, false);
 		}
 	}
 	

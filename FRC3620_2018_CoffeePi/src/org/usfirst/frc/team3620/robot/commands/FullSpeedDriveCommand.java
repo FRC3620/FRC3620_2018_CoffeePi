@@ -28,7 +28,7 @@ public class FullSpeedDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveSubsystem.teleOpDrive(-1, 0);
+    	Robot.driveSubsystem.autoDriveNoSquared(1, 0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
