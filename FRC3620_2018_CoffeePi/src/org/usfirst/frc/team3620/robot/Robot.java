@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
 		driveSubsystem = new DriveSubsystem();
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
+		liftSubsystem = new LiftSubsystem();
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 		

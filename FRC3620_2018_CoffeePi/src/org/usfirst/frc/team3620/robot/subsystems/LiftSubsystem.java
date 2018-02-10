@@ -38,12 +38,15 @@ public class LiftSubsystem extends Subsystem {
     public static final boolean kMotorInvert  = false;
     public static boolean isHome = false;
     public static final int homePosition = 0;
-    public static final int maxPosition = 0;
+    public static final int scalePosition = 0;
+    public static final int switchPosition = 0;
     public static double kP = 0;
     public static double kI = 0;
     public static double kD = 0;
+    public static double kF = 0;
     public static double kIZone = 0;
-    public static double joystick = Robot.m_oi.getLiftJoystick();
+    public static int peakSpeed = 0;
+    public static int positionErrorMargin = 50;
     
     
     public LiftSubsystem() {
@@ -52,6 +55,7 @@ public class LiftSubsystem extends Subsystem {
     	kP = 0;
 		kI = 0;
 		kD = 0;
+		kF = 0;
 		
 		//Setting feedback device type
 		talon.set(ControlMode.Position, 0);
@@ -69,7 +73,7 @@ public class LiftSubsystem extends Subsystem {
     }
     
     //reads encoder
-    double readEncoder() {
+    public double readEncoder() {
     	
     	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
 		return encoderPos;
@@ -77,7 +81,7 @@ public class LiftSubsystem extends Subsystem {
     }
     
     //resets encoder value
-    void resetEncoder() {
+    public void resetEncoder() {
     	
     	int sensorPos = 0;
     	talon.setSelectedSensorPosition(sensorPos, kSlotIdx, 10);
@@ -85,18 +89,54 @@ public class LiftSubsystem extends Subsystem {
     
     
     //moves elevator motor vertSpeed
-    public void moveElevator(double vertSpeed) {
+    public void moveElevator(double joyPos) {
     	//runs lift motor for vertSpeed    	
     
-    	//talon.set(ControlMode.Position, joystick.getY)
+    	talon.set(ControlMode.Velocity, joyPos * peakSpeed);
     	
     }
     
+    public void moveElevatorTestUp() {
+    	talon.set(ControlMode.PercentOutput, .50);
+    }
+    public void moveElevatorTestDown() {
+    	talon.set(ControlMode.PercentOutput, -.50);
+    }
+    
     //checks to see if lift is at lowest position
-    boolean isAtHome() {
+    public boolean isAtHome() {
     	
-    	return true;
+    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    	if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    public boolean isAtScale() {
     	
+    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    	if  (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    public boolean isAtSwitch() {
+    	
+    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    	if  (encoderPos > switchPosition - positionErrorMargin && encoderPos < switchPosition + positionErrorMargin) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
+    public boolean getHomeSwitch() {
+    	boolean home = elevatorHomeSwitch.get();
+    	return home;
     }
 }
 

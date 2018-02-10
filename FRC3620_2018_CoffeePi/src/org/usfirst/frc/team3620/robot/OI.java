@@ -10,6 +10,8 @@ package org.usfirst.frc.team3620.robot;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.LiftToHome;
+import org.usfirst.frc.team3620.robot.commands.LiftToScale;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
@@ -52,8 +54,10 @@ public class OI {
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
 	       Button fullspeed = new JoystickButton(driverJoystick, 1);
 	       fullspeed.whileHeld(new FullSpeedDriveCommand());
-	       
-	       
+	       Button moveLiftUp = new JoystickButton(driverJoystick, 2);
+	       moveLiftUp.whileHeld(new LiftToHome());
+	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
+	       moveLiftDown.whileHeld(new LiftToScale());
        //Button button = new JoystickButton(stick,9);
 
        //button.wh
