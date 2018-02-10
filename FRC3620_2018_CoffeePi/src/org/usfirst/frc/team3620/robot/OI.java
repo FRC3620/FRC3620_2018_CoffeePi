@@ -27,11 +27,13 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	public Joystick driverJoystick;
 	public Joystick operatorJoystick;
+	public Joystick kaiBox;
 	
 
 	public OI() {
 	       driverJoystick = new Joystick(0);
 	       operatorJoystick = new Joystick(1);
+	       kaiBox = new Joystick(2);
 	       Button clamp = new JoystickButton(operatorJoystick,1);
 	       clamp.whenPressed(new ClampCommand());
 	       Button unclamp = new JoystickButton(operatorJoystick,2);
@@ -49,6 +51,9 @@ public class OI {
 	       lBumper.whileHeld(new SetDriveGearLowCommand());
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
+	       
+	       Button posSet8 = new JoystickButton(kaiBox, 8);
+	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
 	       
        //Button button = new JoystickButton(stick,9);

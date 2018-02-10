@@ -7,14 +7,21 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
+import edu.wpi.first.wpilibj.GamepadBase;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Preferences;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
+import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
@@ -36,11 +43,16 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	
+	public static int gameSwitch1;
+	public static int gameScale;
+	public static int gameSwitch2;
+	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
 	public static DriveSubsystem driveSubsystem;
 	public static LightSubsystem lightSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
+	public static Preferences preferences;
 	
 	// no subsystem globals
 	public static OperatorView operatorView;
@@ -50,7 +62,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	static AverageSendableChooser m_chooser = new AverageSendableChooser();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -58,6 +70,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		preferences = Preferences.getInstance();
 		// set up logging
 		logger = EventLogging.getLogger(Robot.class, Level.INFO);
 		
@@ -73,6 +86,7 @@ public class Robot extends TimedRobot {
 		driveSubsystem = new DriveSubsystem();
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
+		
 		//operatorView = new OperatorView();
 		//operatorView.operatorViewInit();
 		
@@ -80,6 +94,10 @@ public class Robot extends TimedRobot {
 		m_oi = new OI(); 
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
+		
+		m_chooser.addDefault("Left auto", new AutonomousLeft());
+		m_chooser.addObject("Center auto", new AutonomousCenter());
+		m_chooser.addObject("Right auto", new AutonomousRight());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
@@ -98,6 +116,11 @@ public class Robot extends TimedRobot {
 		beginPeriodic();
 		Scheduler.getInstance().run();
 		endPeriodic();
+		
+		/*
+		 * Runs to check Kai box for robot position
+		 */
+
 	}
 
 	/**
@@ -114,9 +137,21 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
+		m_autonomousCommand = (Command) m_chooser.getSelected();
+		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+		Command autoCommand = (Command) m_chooser.getSelected();
 		
-		m_autonomousCommand = m_chooser.getSelected();
-
+		/*
+		 * SEND THREE DIGIT CODE TO COMMANDS. 0 FOR LEFT, 1 FOR RIGHT
+		 */
+		
+		if (gameMessage.substring(0) == "L") {gameSwitch1 = 0;}
+		else {gameSwitch1 = 1;}
+		if (gameMessage.substring(1) == "L") {gameScale = 0;}
+		else {gameScale = 1;}
+		if (gameMessage.substring(2) == "L") {gameSwitch2 = 0;}
+		else {gameSwitch2 = 1;}
+		autoCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
