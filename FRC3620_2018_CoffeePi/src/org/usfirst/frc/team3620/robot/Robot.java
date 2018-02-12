@@ -43,10 +43,6 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	
-	public static int gameSwitch1;
-	public static int gameScale;
-	public static int gameSwitch2;
-	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
 	public static DriveSubsystem driveSubsystem;
@@ -62,7 +58,8 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	static AverageSendableChooser m_chooser = new AverageSendableChooser();
+	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
+	static AverageSendableChooser2018<String> wtdChooser = new AverageSendableChooser2018<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -92,14 +89,25 @@ public class Robot extends TimedRobot {
 		
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
 		
-		m_chooser.addDefault("Left auto", new AutonomousLeft());
-		m_chooser.addObject("Center auto", new AutonomousCenter());
-		m_chooser.addObject("Right auto", new AutonomousRight());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		posChooser.addDefault("None",  "None");
+		posChooser.addObject("Left",  "Left");
+		posChooser.addObject("Center",  "Center");
+		posChooser.addObject("Right",  "Right");
+		SmartDashboard.putData ("Position chooser", posChooser);
+		
+		wtdChooser.addDefault("None", "None");
+		wtdChooser.addObject("1 and 1", "1 and 1");
+		wtdChooser.addObject("Double SW", "Double SW");
+		wtdChooser.addObject("Double Sc", "Double Sc");
+		SmartDashboard.putData ("WTD chooser", wtdChooser);
+		
+        // start the thingy that keeps the operator console and the chooser in
+        // sync
+        new ControlPanelWatcher();
 	}
+	
+	
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -137,13 +145,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
+		
+		/*
 		m_autonomousCommand = (Command) m_chooser.getSelected();
+		*/
 		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-		Command autoCommand = (Command) m_chooser.getSelected();
+		// Command autoCommand = (Command) m_chooser.getSelected();
 		
 		/*
 		 * SEND THREE DIGIT CODE TO COMMANDS. 0 FOR LEFT, 1 FOR RIGHT
 		 */
+		
+		int gameSwitch1;
+		int gameScale;
+		int gameSwitch2;
 		
 		if (gameMessage.substring(0) == "L") {gameSwitch1 = 0;}
 		else {gameSwitch1 = 1;}
@@ -151,7 +166,9 @@ public class Robot extends TimedRobot {
 		else {gameScale = 1;}
 		if (gameMessage.substring(2) == "L") {gameSwitch2 = 0;}
 		else {gameSwitch2 = 1;}
-		autoCommand.start();
+		
+		logger.info("WTD = {}, pos = {}", wtdChooser.getSelected(), posChooser.getSelected());
+		//autoCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -232,6 +249,7 @@ public class Robot extends TimedRobot {
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
 		lightSubsystem.modeChange(newMode, previousRobotMode);
+		
 	}
 
 	/*

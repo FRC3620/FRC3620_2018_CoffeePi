@@ -16,9 +16,6 @@ public class AutonomousCenter extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	int gameSwitch1 = Robot.gameSwitch1;
-    	int gameScale = Robot.gameScale;
-    	int gameSwitch2 = Robot.gameSwitch2;
     }
 
     // Called repeatedly when this Command is scheduled to run
