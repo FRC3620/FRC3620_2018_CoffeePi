@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.usfirst.frc.team3620.robot;
+package org.usfirst.frc3620.misc;
 
 import java.util.LinkedHashMap;
 import java.util.List;
