@@ -8,14 +8,20 @@
 package org.usfirst.frc.team3620.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
+import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Preferences;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.commands.ExampleCommand;
+import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.PathPicker;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
@@ -46,6 +52,7 @@ public class Robot extends TimedRobot {
 	public static LightSubsystem lightSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
 	public static LiftSubsystem liftSubsystem;
+	public static Preferences preferences;
 	
 	// non subsystem globals
 	public static OperatorView operatorView;
@@ -55,7 +62,8 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
+	static AverageSendableChooser2018<Boolean> trustChooser = new AverageSendableChooser2018<>();
 
 	@Override
 	protected void loopFunc()
@@ -79,16 +87,17 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		preferences = Preferences.getInstance();
 		// set up logging
 		logger = EventLogging.getLogger(Robot.class, Level.INFO);
-		
+
 		// let's see what's on the CAN bus
 		canDeviceFinder = new CANDeviceFinder();
 		logger.info("CAN bus: {}", canDeviceFinder.getDeviceList());
-		
+
 		// initialize hardware
 		RobotMap.init();
-		
+
 		// initialize subsystems
 		kExampleSubsystem = new ExampleSubsystem();
 		driveSubsystem = new DriveSubsystem();
@@ -97,21 +106,31 @@ public class Robot extends TimedRobot {
 		liftSubsystem = new LiftSubsystem();
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
-		
+
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
-		
-		// Initial the autonomous chooser
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-		
+
+		posChooser.addDefault("Left",  "L");
+		posChooser.addObject("Center",  "C");
+		posChooser.addObject("Right",  "R");
+		SmartDashboard.putData ("Position chooser", posChooser);
+
+		trustChooser.addDefault("No", false);
+		trustChooser.addObject("Yes", true);
+		SmartDashboard.putData ("trust chooser", trustChooser);
+
+		// start the thingy that keeps the operator console and the chooser in
+		// sync
+		new ControlPanelWatcher();
+
 		// get data logging going
 		robotDataLogger = new DataLogger();
 		new RobotDataLoggingSetup(robotDataLogger, canDeviceFinder);
 		robotDataLogger.setInterval(1.000);
 		robotDataLogger.start();
 	}
+
+	
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -128,6 +147,11 @@ public class Robot extends TimedRobot {
 		beginPeriodic();
 		Scheduler.getInstance().run();
 		endPeriodic();
+		
+		/*
+		 * Runs to check Kai box for robot position
+		 */
+
 	}
 
 	/**
@@ -145,8 +169,38 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
 		
-		m_autonomousCommand = m_chooser.getSelected();
-
+		/*
+		m_autonomousCommand = (Command) m_chooser.getSelected();
+		*/
+		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+		// Command autoCommand = (Command) m_chooser.getSelected();
+		
+		/*
+		 * SEND THREE DIGIT CODE TO COMMANDS. 0 FOR LEFT, 1 FOR RIGHT
+		 */
+		
+		int gameSwitch1;
+		int gameScale;
+		int gameSwitch2;
+		
+		if (gameMessage.substring(0) == "L") {gameSwitch1 = 0;}
+		else {gameSwitch1 = 1;}
+		if (gameMessage.substring(1) == "L") {gameScale = 0;}
+		else {gameScale = 1;}
+		if (gameMessage.substring(2) == "L") {gameSwitch2 = 0;}
+		else {gameSwitch2 = 1;}
+		
+		logger.info("WTD = {}, pos = {}", trustChooser.getSelected(), posChooser.getSelected());
+		Class chosenOne = PathPicker.pickFirstPath(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
+		Command choosen;
+		try {
+			choosen = (Command) chosenOne.newInstance();
+			choosen.start();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//autoCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
@@ -227,6 +281,7 @@ public class Robot extends TimedRobot {
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
 		lightSubsystem.modeChange(newMode, previousRobotMode);
+		
 	}
 
 	/*

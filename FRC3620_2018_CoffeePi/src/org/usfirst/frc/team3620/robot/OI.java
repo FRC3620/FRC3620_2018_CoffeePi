@@ -7,6 +7,9 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.AutonomousCenter;
+import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
+import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
@@ -23,6 +26,7 @@ import org.usfirst.frc.team3620.robot.paths.Path_1_E;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -31,11 +35,13 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	public Joystick driverJoystick;
 	public Joystick operatorJoystick;
+	public Joystick kaiBox;
 	
 
 	public OI() {
 	       driverJoystick = new Joystick(0);
 	       operatorJoystick = new Joystick(1);
+
 
 	   	//// CREATING BUTTONS
 	   	// One type of button is a joystick button which is any button on a
@@ -69,6 +75,7 @@ public class OI {
 
 	       
 	       //Button A
+	       kaiBox = new Joystick(2);
 	       Button clamp = new JoystickButton(operatorJoystick,1);
 	       clamp.whenPressed(new ClampCommand());
 	       Button unclamp = new JoystickButton(operatorJoystick,2);
@@ -86,12 +93,23 @@ public class OI {
 	       lBumper.whileHeld(new SetDriveGearLowCommand());
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
+
 	       Button fullspeed = new JoystickButton(driverJoystick, 1);
 	       fullspeed.whileHeld(new FullSpeedDriveCommand());
 	       Button moveLiftUp = new JoystickButton(driverJoystick, 2);
 	       moveLiftUp.whileHeld(new LiftToHome());
 	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
 	       moveLiftDown.whileHeld(new LiftToScale());
+
+	       
+	       Button posSet8 = new JoystickButton(kaiBox, 8);
+	       Button posSet9 = new JoystickButton(kaiBox, 9);
+	       
+	       
+	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
+	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
+	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
+	       
 	}
 	       
 	

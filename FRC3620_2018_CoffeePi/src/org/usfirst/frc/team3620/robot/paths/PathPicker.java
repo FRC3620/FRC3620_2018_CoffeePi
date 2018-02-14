@@ -3,7 +3,15 @@ package org.usfirst.frc.team3620.robot.paths;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.usfirst.frc.team3620.robot.Robot;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
+
+
 public class PathPicker {
+	static Logger logger = EventLogging.getLogger(PathPicker.class, Level.INFO);
 	static SortedMap<String,Class> firstPathMap = new TreeMap<>();
 	static {
 		firstPathMap.put("LLLY",Path_1_E.class);
@@ -33,8 +41,9 @@ public class PathPicker {
 				return(Path_2_C.class);
 			}
 		} else {
-		String address = ""+myPosition+switchPosition+scalePosition+(trustPartner?'Y':'N');
-		return(firstPathMap.get("RRRN"));//address));
+			String address = ""+myPosition+switchPosition+scalePosition+(trustPartner?'Y':'N');
+			logger.info("Path to pick: "+address);
+			return(firstPathMap.get(address));
 		}
 	}
 	
