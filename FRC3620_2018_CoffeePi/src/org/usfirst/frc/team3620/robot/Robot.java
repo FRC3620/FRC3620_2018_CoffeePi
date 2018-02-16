@@ -9,18 +9,14 @@ package org.usfirst.frc.team3620.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-import edu.wpi.first.wpilibj.DriverStation.MatchType;
-import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Preferences;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
