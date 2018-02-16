@@ -9,15 +9,12 @@ package org.usfirst.frc.team3620.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
-import edu.wpi.first.wpilibj.DriverStation.MatchType;
-import edu.wpi.first.wpilibj.GamepadBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Preferences;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
@@ -187,7 +184,7 @@ public class Robot extends TimedRobot {
 		
 		AutonomousDelayCommand delayCommand = new AutonomousDelayCommand(delay);
 
-		Class chosenOne = PathPicker.pickFirstPath(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
+		Class<? extends Command> chosenOne = PathPicker.pickFirstPath(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
 		logger.info("chosen path = {} ", chosenOne);
 		Command chosen = null;
 		try {

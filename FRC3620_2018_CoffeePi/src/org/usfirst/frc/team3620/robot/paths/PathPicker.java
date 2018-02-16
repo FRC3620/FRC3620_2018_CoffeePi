@@ -4,15 +4,16 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+
+import edu.wpi.first.wpilibj.command.Command;
 
 
 
 public class PathPicker {
 	static Logger logger = EventLogging.getLogger(PathPicker.class, Level.INFO);
-	static SortedMap<String,Class> firstPathMap = new TreeMap<>();
+	static SortedMap<String,Class<? extends Command>> firstPathMap = new TreeMap<>();
 	static {
 		firstPathMap.put("LLLY",Path_1_E.class);
 		firstPathMap.put("LLRY",Path_1_G.class);
@@ -33,7 +34,7 @@ public class PathPicker {
 		
 		//firstPathMap.put("",Path_#_L.class);
 	}
-	public static Class pickFirstPath(char myPosition, char switchPosition,char scalePosition,boolean trustPartner) {
+	public static Class<? extends Command> pickFirstPath(char myPosition, char switchPosition,char scalePosition,boolean trustPartner) {
 		if(myPosition == 'C') {
 			if(switchPosition == 'L') {
 				return(Path_2_B.class);
@@ -63,6 +64,7 @@ public class PathPicker {
 	}
 	
 	static void test(char myPosition, char switchPosition,char scalePosition,boolean trustPartner) {
-		Class result = pickFirstPath(myPosition, switchPosition, scalePosition, trustPartner);
+		Class<? extends Command> result = pickFirstPath(myPosition, switchPosition, scalePosition, trustPartner);
+		System.out.println("" + myPosition + " " + switchPosition + " " + scalePosition + " " + trustPartner + " -> " + result);
 	}
 }

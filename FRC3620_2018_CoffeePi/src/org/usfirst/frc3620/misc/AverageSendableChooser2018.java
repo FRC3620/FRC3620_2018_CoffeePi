@@ -9,7 +9,6 @@ package org.usfirst.frc3620.misc;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Sendable;
