@@ -7,9 +7,10 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.AverageSendableChooser2018;
+import org.usfirst.frc3620.misc.PersistentChooser;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
 
 public class ControlPanelWatcher {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -17,10 +18,17 @@ public class ControlPanelWatcher {
 	Timer timer = new Timer();
 	Joystick controlPanel = Robot.m_oi.kaiBox;
 	
-	AverageSendableChooser2018<Boolean> wtdChooser = Robot.trustChooser;
-	AverageSendableChooser2018<String> posChooser = Robot.posChooser;
+	PersistentChooser wtdPersister, posPersister, delayPersister;
 
 	public ControlPanelWatcher() {
+		wtdPersister = new PersistentChooser(Robot.trustChooser, "trustChooser");
+		posPersister = new PersistentChooser(Robot.posChooser, "posChooser");
+		delayPersister = new PersistentChooser(Robot.delayChooser, "delayChooser");
+		
+		if (controlPanel != null) {
+			logger.info("Control Panel appears to be a {}", controlPanel.getName());
+		}
+		
 		// look at the control panel every 2000 ms (2 seconds)
 		logger.info("starting control panel watcher");
 		timer.schedule(new MyTimerTask(), 0, 2000);
@@ -29,12 +37,17 @@ public class ControlPanelWatcher {
 	class MyTimerTask extends TimerTask {
 		@Override
 		public void run() {
-			boolean controlPanelPresent = controlPanel.getY() < -0.95 && controlPanel.getZ() > 0.95;
+			boolean controlPanelPresent = controlPanel != null
+					&& controlPanel.getName().equals("Arduino Leonardo") 
+					&& controlPanel.getY() < -0.95
+					&& controlPanel.getZ() > 0.95;
 			// the control panel is connected to the driver's station
 			if (controlPanelPresent) {
-				updateChooserFromControlPanel(wtdChooser, readWTDFromControlPanel(), "WTD");
-				updateChooserFromControlPanel(posChooser, readPosFromControlPanel(), "pos");
+				wtdPersister.setFromControlPanel(readWTDFromControlPanel());
+				posPersister.setFromControlPanel(readPosFromControlPanel());
 			}
+			wtdPersister.persist();
+			posPersister.persist();
 		}
 	}
 	
@@ -56,7 +69,6 @@ public class ControlPanelWatcher {
 		}
 		
 	}
-
 
 	int readPosFromControlPanel() {
 		int rv = 0;

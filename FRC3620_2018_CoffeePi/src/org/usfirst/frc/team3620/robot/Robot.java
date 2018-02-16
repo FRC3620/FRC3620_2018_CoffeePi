@@ -31,6 +31,7 @@ import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.AverageSendableChooser2018;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 import org.usfirst.frc3620.misc.RobotMode;
 
