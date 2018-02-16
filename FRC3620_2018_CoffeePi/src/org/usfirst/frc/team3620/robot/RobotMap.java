@@ -165,21 +165,22 @@ public class RobotMap {
 		}
 
 		// stuff for Lift
-		
-		liftSubsystemTalon1 = new WPI_TalonSRX(9);
-		resetControllerToKnownState(liftSubsystemTalon1);
-		
-		liftSubsystemVictor2 = new WPI_VictorSPX(10);
-		resetControllerToKnownState(liftSubsystemVictor2);
-		liftSubsystemVictor2.follow(liftSubsystemTalon1);
-		
-		liftSubsystemVictor3 = new WPI_VictorSPX(11);
-		resetControllerToKnownState(liftSubsystemVictor3);
-		liftSubsystemVictor3.follow(liftSubsystemTalon1);
-		
-		liftSubsystemVictor4 = new WPI_VictorSPX(12);
-		resetControllerToKnownState(liftSubsystemVictor4);
-		liftSubsystemVictor4.follow(liftSubsystemTalon1);
+		if (Robot.canDeviceFinder.isSRXPresent(9)) {
+			liftSubsystemTalon1 = new WPI_TalonSRX(9);
+			resetControllerToKnownState(liftSubsystemTalon1);
+
+			liftSubsystemVictor2 = new WPI_VictorSPX(10);
+			resetControllerToKnownState(liftSubsystemVictor2);
+			liftSubsystemVictor2.follow(liftSubsystemTalon1);
+
+			liftSubsystemVictor3 = new WPI_VictorSPX(11);
+			resetControllerToKnownState(liftSubsystemVictor3);
+			liftSubsystemVictor3.follow(liftSubsystemTalon1);
+
+			liftSubsystemVictor4 = new WPI_VictorSPX(12);
+			resetControllerToKnownState(liftSubsystemVictor4);
+			liftSubsystemVictor4.follow(liftSubsystemTalon1);
+		}
 		
 		liftSubsystemElevatorHomeSwitch = new DigitalInput(1);
 		LiveWindow.addSensor("LiftSubsystem", "ElevatorHomeSwitch", liftSubsystemElevatorHomeSwitch);

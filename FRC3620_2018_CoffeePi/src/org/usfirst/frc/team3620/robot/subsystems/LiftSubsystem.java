@@ -57,9 +57,11 @@ public class LiftSubsystem extends Subsystem {
 		kD = 0;
 		kF = 0;
 		
-		//Setting feedback device type
-		talon.set(ControlMode.Position, 0);
-		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
+		if (talon != null) {
+			//Setting feedback device type
+			talon.set(ControlMode.Position, 0);
+			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
+		}
     		
     }
     // Put methods for controlling this subsystem
@@ -74,65 +76,82 @@ public class LiftSubsystem extends Subsystem {
     
     //reads encoder
     public double readEncoder() {
-    	
-    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-		return encoderPos;
+    	if (talon != null) {
+    	    int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+		    return encoderPos;
+    	} else {
+    		return 0; // fake it
+    	}
     	
     }
     
     //resets encoder value
     public void resetEncoder() {
-    	
     	int sensorPos = 0;
-    	talon.setSelectedSensorPosition(sensorPos, kSlotIdx, 10);
+    	if (talon != null) {
+    	    talon.setSelectedSensorPosition(sensorPos, kSlotIdx, 10);
+    	}
     }
     
     
     //moves elevator motor vertSpeed
     public void moveElevator(double joyPos) {
     	//runs lift motor for vertSpeed    	
-    
-    	talon.set(ControlMode.Velocity, joyPos * peakSpeed);
-    	
+    	if (talon != null) {
+    		talon.set(ControlMode.Velocity, joyPos * peakSpeed);
+    	}
     }
     
     public void moveElevatorTestUp() {
-    	talon.set(ControlMode.PercentOutput, .50);
+    	if (talon != null) {
+    		talon.set(ControlMode.PercentOutput, .50);
+    	}
     }
     public void moveElevatorTestDown() {
-    	talon.set(ControlMode.PercentOutput, -.50);
+    	if (talon != null) {
+    		talon.set(ControlMode.PercentOutput, -.50);
+    	}
     }
     
     //checks to see if lift is at lowest position
     public boolean isAtHome() {
     	
-    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-    	if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
-    		return true;
+    	if (talon != null) {
+    		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    		if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
+    			return true;
+    		}
+    		else {
+    			return false;
+    		}
     	}
-    	else {
-    		return false;
-    	}
+    	return true; //we are faking it
     }
     public boolean isAtScale() {
     	
-    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-    	if  (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
-    		return true;
+    	if (talon != null) {
+    		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    		if  (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
+    			return true;
+    		}
+    		else {
+    			return false;
+    		}
     	}
-    	else {
-    		return false;
-    	}
+    	return true;
     }
     public boolean isAtSwitch() {
     	
-    	int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-    	if  (encoderPos > switchPosition - positionErrorMargin && encoderPos < switchPosition + positionErrorMargin) {
-    		return true;
+    	if (talon != null) {
+    		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    		if  (encoderPos > switchPosition - positionErrorMargin && encoderPos < switchPosition + positionErrorMargin) {
+    			return true;
+    		}
+    		else {
+    			return false;
+    		}
     	}
-    	else {
-    		return false;
-    	}
+    	return true;
     }
     public boolean getHomeSwitch() {
     	boolean home = elevatorHomeSwitch.get();

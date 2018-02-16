@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Preferences;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -64,6 +65,7 @@ public class Robot extends TimedRobot {
 	Command m_autonomousCommand;
 	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Boolean> trustChooser = new AverageSendableChooser2018<>();
+	static AverageSendableChooser2018<Integer> delayChooser = new AverageSendableChooser2018<>();
 
 	@Override
 	protected void loopFunc()
@@ -118,7 +120,15 @@ public class Robot extends TimedRobot {
 		trustChooser.addDefault("No", false);
 		trustChooser.addObject("Yes", true);
 		SmartDashboard.putData ("trust chooser", trustChooser);
-
+		
+		delayChooser.addDefault("0", 0);
+		delayChooser.addObject("1", 1);
+		delayChooser.addObject("2", 2);
+		delayChooser.addObject("3", 3);
+		delayChooser.addObject("4", 4);
+		delayChooser.addObject("5", 5);
+		SmartDashboard.putData ("delay chooser", delayChooser);
+		
 		// start the thingy that keeps the operator console and the chooser in
 		// sync
 		new ControlPanelWatcher();
@@ -169,37 +179,34 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
 		
-		/*
-		m_autonomousCommand = (Command) m_chooser.getSelected();
-		*/
 		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-		// Command autoCommand = (Command) m_chooser.getSelected();
 		
-		/*
-		 * SEND THREE DIGIT CODE TO COMMANDS. 0 FOR LEFT, 1 FOR RIGHT
-		 */
+		int delay = delayChooser.getSelected();
+		logger.info("delay = {}, Trust = {}, pos = {}", delay, trustChooser.getSelected(), posChooser.getSelected());
 		
-		int gameSwitch1;
-		int gameScale;
-		int gameSwitch2;
-		
-		if (gameMessage.substring(0) == "L") {gameSwitch1 = 0;}
-		else {gameSwitch1 = 1;}
-		if (gameMessage.substring(1) == "L") {gameScale = 0;}
-		else {gameScale = 1;}
-		if (gameMessage.substring(2) == "L") {gameSwitch2 = 0;}
-		else {gameSwitch2 = 1;}
-		
-		logger.info("WTD = {}, pos = {}", trustChooser.getSelected(), posChooser.getSelected());
+		AutonomousDelayCommand delayCommand = new AutonomousDelayCommand(delay);
+
 		Class chosenOne = PathPicker.pickFirstPath(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-		Command choosen;
+		logger.info("chosen path = {} ", chosenOne);
+		Command chosen = null;
 		try {
-			choosen = (Command) chosenOne.newInstance();
-			choosen.start();
+			chosen = (Command) chosenOne.newInstance();
+			//chosen.start();
 		} catch (InstantiationException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		CommandGroup commandGroup = new CommandGroup();
+		commandGroup.addSequential(delayCommand);
+		if (chosen != null) {
+			commandGroup.addSequential(chosen);
+		}
+	
+		commandGroup.addSequential(new AutonomousPukeCubeCommand());
+		
+		commandGroup.start();
+		
 		//autoCommand.start();
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
