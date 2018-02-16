@@ -47,18 +47,21 @@ public class LiftSubsystem extends Subsystem {
     public static double kIZone = 0;
     public static int peakSpeed = 0;
     public static int positionErrorMargin = 50;
+    public static int motionMagicCruiseVel = 0;
+    public static int motionMagicAccel = 0;
     
     
     public LiftSubsystem() {
     	super();
     	
-    	kP = 0;
-		kI = 0;
-		kD = 0;
-		kF = 0;
+    	talon.config_kF(kSlotIdx, kF, kTimeoutMs);
+    	talon.config_kP(kSlotIdx, kP, kTimeoutMs);
+    	talon.config_kI(kSlotIdx, kI, kTimeoutMs);
+    	talon.config_kD(kSlotIdx, kD, kTimeoutMs);
+    	talon.configMotionCruiseVelocity(kSlotIdx, motionMagicCruiseVel);
+    	talon.configMotionAcceleration(kSlotIdx, motionMagicAccel);
 		
 		//Setting feedback device type
-		talon.set(ControlMode.Position, 0);
 		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
     		
     }
@@ -137,6 +140,13 @@ public class LiftSubsystem extends Subsystem {
     public boolean getHomeSwitch() {
     	boolean home = elevatorHomeSwitch.get();
     	return home;
+  
+    }
+    public void moveToScale() {
+    	talon.set(ControlMode.MotionMagic, scalePosition);
+    	
     }
 }
+
+
 
