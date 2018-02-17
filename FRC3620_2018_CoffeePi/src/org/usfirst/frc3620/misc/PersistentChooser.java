@@ -24,8 +24,18 @@ public class PersistentChooser {
 
 		String nameFromPreferences = preferences.getString(nameOfPreference, null);
 		if (nameFromPreferences != null) {
-			logger.info("setting chooser {} to {} from preferences", nameOfPreference, nameFromPreferences);
+			logger.info("loading chooser {} from preferences: value is {}", nameOfPreference, nameFromPreferences);
 			chooser.select(nameFromPreferences);
+		} else {
+			StringBuilder sb = new StringBuilder();
+			for (String k : preferences.getKeys()) {
+				String v = preferences.getString(k, null);
+				sb.append(k);
+				sb.append("=");
+				sb.append(v);
+				sb.append(" ");
+			}
+			logger.info("cannot find chooser {} in preferences: {}", nameOfPreference, sb.toString());
 		}
 	}
 
@@ -54,7 +64,8 @@ public class PersistentChooser {
 	public void persist() {
 		String preferencesSelectedName = preferences.getString(nameOfPreference, chooserNames.get(0));
 		String selectedName = chooser.getSelectedName();
-		if (!selectedName.equals(preferencesSelectedName)) {
+		logger.debug("{} preference = {}, chooser = {}", nameOfPreference, preferencesSelectedName, selectedName);
+		if (selectedName != null && !selectedName.equals(preferencesSelectedName)) {
 			logger.info("changing {} in preferences from {} to {}", nameOfPreference, preferencesSelectedName,
 					selectedName);
 			preferences.putString(nameOfPreference, selectedName);

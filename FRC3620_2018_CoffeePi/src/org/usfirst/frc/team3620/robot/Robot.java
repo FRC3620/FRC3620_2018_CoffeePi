@@ -115,8 +115,8 @@ public class Robot extends TimedRobot {
 		posChooser.addObject("Right",  "R");
 		SmartDashboard.putData ("Position chooser", posChooser);
 
-		trustChooser.addDefault("No", false);
-		trustChooser.addObject("Yes", true);
+		trustChooser.addDefault("Yes", true);
+		trustChooser.addObject("No", false);
 		SmartDashboard.putData ("trust chooser", trustChooser);
 		
 		delayChooser.addDefault("0", 0);

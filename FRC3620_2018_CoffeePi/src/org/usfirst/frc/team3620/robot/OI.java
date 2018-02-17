@@ -41,6 +41,7 @@ public class OI {
 	public OI() {
 	       driverJoystick = new Joystick(0);
 	       operatorJoystick = new Joystick(1);
+	       kaiBox = new Joystick(2);
 
 
 	   	//// CREATING BUTTONS
@@ -75,7 +76,6 @@ public class OI {
 
 	       
 	       //Button A
-	       kaiBox = new Joystick(2);
 	       Button clamp = new JoystickButton(operatorJoystick,1);
 	       clamp.whenPressed(new ClampCommand());
 	       Button unclamp = new JoystickButton(operatorJoystick,2);

@@ -18,10 +18,13 @@ public class ControlPanelWatcher {
 	Timer timer = new Timer();
 	Joystick controlPanel = Robot.m_oi.kaiBox;
 	
-	PersistentChooser wtdPersister, posPersister, delayPersister;
+	PersistentChooser trustPersister, posPersister, delayPersister;
 
 	public ControlPanelWatcher() {
-		wtdPersister = new PersistentChooser(Robot.trustChooser, "trustChooser");
+		// look at the control panel every 2000 ms (2 seconds)
+		logger.info("starting control panel watcher");
+		
+		trustPersister = new PersistentChooser(Robot.trustChooser, "trustChooser");
 		posPersister = new PersistentChooser(Robot.posChooser, "posChooser");
 		delayPersister = new PersistentChooser(Robot.delayChooser, "delayChooser");
 		
@@ -29,8 +32,6 @@ public class ControlPanelWatcher {
 			logger.info("Control Panel appears to be a {}", controlPanel.getName());
 		}
 		
-		// look at the control panel every 2000 ms (2 seconds)
-		logger.info("starting control panel watcher");
 		timer.schedule(new MyTimerTask(), 0, 2000);
 	}
 
@@ -43,11 +44,13 @@ public class ControlPanelWatcher {
 					&& controlPanel.getZ() > 0.95;
 			// the control panel is connected to the driver's station
 			if (controlPanelPresent) {
-				wtdPersister.setFromControlPanel(readWTDFromControlPanel());
+				trustPersister.setFromControlPanel(readTrustFromControlPanel());
 				posPersister.setFromControlPanel(readPosFromControlPanel());
+				delayPersister.setFromControlPanel(readDelayFromControlPanel());
 			}
-			wtdPersister.persist();
+			trustPersister.persist();
 			posPersister.persist();
+			delayPersister.persist();
 		}
 	}
 	
@@ -69,31 +72,32 @@ public class ControlPanelWatcher {
 		}
 		
 	}
-
-	int readPosFromControlPanel() {
+	
+	int readXxxFromControlPanel(int arduinoStart, int arduinoEnd, String label) {
 		int rv = 0;
-		// these bits are 7, 8, 9, 10 on the Arduino end
-		for (int i = 11; i >= 8; i--) {
+		for (int i = arduinoEnd+1; i >= arduinoStart+1; i--) {
 			rv = rv << 1;
 			boolean b = controlPanel.getRawButton(i);
 			if (b)
 				rv += 1;
-			logger.debug("button {} = {}, pos is now {}", i, b, rv);
+			logger.debug("robot button {} = {}, {} is now {}", i, b, label, rv);
 		}
 		return rv;
 	}
 
-    int readWTDFromControlPanel() {
-        int rv = 0;
-        // these bits are 4, 5, 6 on the Arduino end
-        for (int i = 7; i >= 5; i--) {
-            rv = rv << 1;
-            boolean b = controlPanel.getRawButton(i);
-            if (b)
-                rv += 1;
-            logger.debug("button {} = {}, WTD is now {}", i, b, rv);
-        }
-        return rv;
+	int readPosFromControlPanel() {
+		// these bits are 1, 2 on the Arduino end
+		return readXxxFromControlPanel(4,  5, "pos");
+	}
+
+    int readTrustFromControlPanel() {
+        // these bits are 3 on the Arduino end
+		return readXxxFromControlPanel(6,  6, "trust");
+    }
+    
+    int readDelayFromControlPanel() {
+        // these bits are 4, 5 and 6 on the Arduino end
+		return readXxxFromControlPanel(7,  9, "delay");
     }
 
 }

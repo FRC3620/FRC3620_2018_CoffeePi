@@ -10,6 +10,10 @@ package org.usfirst.frc3620.misc;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.SendableBase;
@@ -33,6 +37,8 @@ import java.util.ArrayList;
  * @param <V> The type of the values to be stored
  */
 public class AverageSendableChooser2018<V> extends SendableBase implements Sendable {
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
   /**
    * The key for the default value.
    */
@@ -113,6 +119,7 @@ public class AverageSendableChooser2018<V> extends SendableBase implements Senda
   
   // added by FRC 3620
   public void select (String label) {
+	  logger.debug ("setting chooser to {}", label);
 	  m_tableSelected.setString(label);
   }
   
