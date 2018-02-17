@@ -14,6 +14,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
@@ -32,6 +34,7 @@ public class LiftSubsystem extends Subsystem {
     private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
     private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
     private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
+    private final DoubleSolenoid liftGearShifter = RobotMap.liftSubsystemGearShifter;
     
     public static final int kSlotIdxHigh = 0;
     public static final int kTimeoutMs = 0;
@@ -145,6 +148,16 @@ public class LiftSubsystem extends Subsystem {
     public void moveToScale() {
     	talon.set(ControlMode.MotionMagic, scalePosition);
     	
+    }
+    public void setHighGear() {
+    	liftGearShifter.set(Value.kForward);
+    }
+    public void setLowGear() {
+    	liftGearShifter.set(Value.kReverse); 
+    	
+    }
+    public void deadenShifter() {
+    	liftGearShifter.set(Value.kOff);
     }
 }
 
