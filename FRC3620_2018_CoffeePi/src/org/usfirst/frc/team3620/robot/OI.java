@@ -13,6 +13,8 @@ import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftHighGear;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
 import org.usfirst.frc.team3620.robot.commands.LiftToScale;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
@@ -66,6 +68,11 @@ public class OI {
 	       moveLiftUp.whileHeld(new LiftToHome());
 	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
 	       moveLiftDown.whileHeld(new LiftToScale());
+	       
+	       Button liftShiftHighGear = new JoystickButton(operatorJoystick, 7);
+	       liftShiftHighGear.whenPressed(new LiftShiftHighGear());
+	       Button liftShiftLowGear = new JoystickButton(operatorJoystick, 8);
+	       liftShiftLowGear.whenPressed(new LiftShiftLowGear());
 
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
