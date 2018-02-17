@@ -169,6 +169,10 @@ public class RobotMap {
 		
 		liftSubsystemTalon1 = new WPI_TalonSRX(9);
 		resetControllerToKnownState(liftSubsystemTalon1);
+		liftSubsystemTalon1.configPeakCurrentLimit(0, 10);
+		liftSubsystemTalon1.configPeakCurrentDuration(200, 10);
+		liftSubsystemTalon1.configContinuousCurrentLimit(25, 10);
+		liftSubsystemTalon1.enableCurrentLimit(true);
 		
 		liftSubsystemVictor2 = new WPI_VictorSPX(10);
 		resetControllerToKnownState(liftSubsystemVictor2);

@@ -72,7 +72,7 @@ public class OI {
 	       Button liftShiftHighGear = new JoystickButton(operatorJoystick, 7);
 	       liftShiftHighGear.whenPressed(new LiftShiftHighGear());
 	       Button liftShiftLowGear = new JoystickButton(operatorJoystick, 8);
-	       liftShiftLowGear.whenPressed(new LiftShiftLowGear());
+	       liftShiftLowGear.whenPressed(new LiftShiftLowGear()  );
 
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
