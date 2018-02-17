@@ -33,19 +33,19 @@ public class LiftSubsystem extends Subsystem {
     private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
     private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
     
-    public static final int kSlotIdx = 0;
+    public static final int kSlotIdxHigh = 0;
     public static final int kTimeoutMs = 0;
     public static final boolean kMotorInvert  = false;
     public static boolean isHome = false;
     public static final int homePosition = 0;
     public static final int scalePosition = 0;
     public static final int switchPosition = 0;
-    public static double kP = 0;
-    public static double kI = 0;
-    public static double kD = 0;
-    public static double kF = 0;
-    public static double kIZone = 0;
-    public static int peakSpeed = 0;
+    public static double kPHigh = 0;
+    public static double kIHigh = 0;
+    public static double kDHigh = 0;
+    public static double kFHigh = 0;
+    public static double kIZonehigh = 0;
+    public static int peakSpeedHigh = 0;
     public static int positionErrorMargin = 50;
     public static int motionMagicCruiseVel = 0;
     public static int motionMagicAccel = 0;
@@ -54,12 +54,12 @@ public class LiftSubsystem extends Subsystem {
     public LiftSubsystem() {
     	super();
     	
-    	talon.config_kF(kSlotIdx, kF, kTimeoutMs);
-    	talon.config_kP(kSlotIdx, kP, kTimeoutMs);
-    	talon.config_kI(kSlotIdx, kI, kTimeoutMs);
-    	talon.config_kD(kSlotIdx, kD, kTimeoutMs);
-    	talon.configMotionCruiseVelocity(kSlotIdx, motionMagicCruiseVel);
-    	talon.configMotionAcceleration(kSlotIdx, motionMagicAccel);
+    	talon.config_kF(kSlotIdxHigh, kFHigh, kTimeoutMs);
+    	talon.config_kP(kSlotIdxHigh, kPHigh, kTimeoutMs);
+    	talon.config_kI(kSlotIdxHigh, kIHigh, kTimeoutMs);
+    	talon.config_kD(kSlotIdxHigh, kDHigh, kTimeoutMs);
+    	talon.configMotionCruiseVelocity(kSlotIdxHigh, motionMagicCruiseVel);
+    	talon.configMotionAcceleration(kSlotIdxHigh, motionMagicAccel);
 		
 		//Setting feedback device type
 		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
@@ -87,7 +87,7 @@ public class LiftSubsystem extends Subsystem {
     public void resetEncoder() {
     	
     	int sensorPos = 0;
-    	talon.setSelectedSensorPosition(sensorPos, kSlotIdx, 10);
+    	talon.setSelectedSensorPosition(sensorPos, kSlotIdxHigh, 10);
     }
     
     
@@ -95,7 +95,7 @@ public class LiftSubsystem extends Subsystem {
     public void moveElevator(double joyPos) {
     	//runs lift motor for vertSpeed    	
     
-    	talon.set(ControlMode.Velocity, joyPos * peakSpeed);
+    	talon.set(ControlMode.Velocity, joyPos * peakSpeedHigh);
     	
     }
     
