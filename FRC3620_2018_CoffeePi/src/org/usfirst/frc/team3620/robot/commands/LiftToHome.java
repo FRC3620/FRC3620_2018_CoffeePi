@@ -22,8 +22,8 @@ public class LiftToHome extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	 if(Robot.liftSubsystem.readEncoder() > 2048) {
-    		 Robot.liftSubsystem.setElevatorVelocity(-0.07);
+    	 if(Robot.liftSubsystem.readEncoder() > -2048) {
+    		 Robot.liftSubsystem.setElevatorVelocity(-0.20);
     	 }
     	 else {
     		 Robot.liftSubsystem.fallSlowly();
@@ -34,7 +34,7 @@ public class LiftToHome extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.isHomeSwitchDepressed()) {
+    	if(Robot.liftSubsystem.isHomeSwitchDepressed() || (Robot.liftSubsystem.readEncoder() < -2048)) {
     		Robot.liftSubsystem.resetEncoder();
     		return true;
     	}
@@ -46,10 +46,12 @@ public class LiftToHome extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.liftSubsystem.brace();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.liftSubsystem.brace();
     }
 }
