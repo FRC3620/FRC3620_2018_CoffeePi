@@ -3,6 +3,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 import org.usfirst.frc.team3620.robot.OI;
 import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
+import org.usfirst.frc.team3620.robot.commands.HoldLift;
 import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
 import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
 
@@ -39,8 +40,7 @@ public class LiftSubsystem extends Subsystem {
 	public static final boolean kMotorInvert = false;
 	public static boolean isHome = false;
 	public static final int homePosition = 0;
-	public static final int scalePosition = 0;
-	public static final int switchPosition = 0;
+	public static final int scalePosition = 4949;
 	public static double kPSpeed = 0;
 	public static double kISpeed = 0;
 	public static double kDSpeed = 0;
@@ -48,8 +48,8 @@ public class LiftSubsystem extends Subsystem {
 	public static double kIZoneSpeed = 0;
 	public static int peakSpeedHigh = 0;
 	public static int positionErrorMargin = 50;
-	public static int motionMagicCruiseVel = 0;
-	public static int motionMagicAccel = 0;
+	public static int motionMagicCruiseVel;
+	public static int motionMagicAccel;
 
 	public LiftSubsystem() {
 		super();
@@ -58,11 +58,11 @@ public class LiftSubsystem extends Subsystem {
 		talon.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
 		talon.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
 		talon.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
-		// talon.configMotionCruiseVelocity(kSppeedPIDLoopIdx, motionMagicCruiseVel);
-		// talon.configMotionAcceleration(kSppeedPIDLoopIdx, motionMagicAccel);
+		
 
 		// Setting feedback device type
 		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		talon.setSensorPhase(true);
 
 	}
 	// Put methods for controlling this subsystem
@@ -71,7 +71,7 @@ public class LiftSubsystem extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default000000000 command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new ManualLiftOperatorCommand());
+		setDefaultCommand(new HoldLift());
 	}
 
 	// reads encoder
@@ -105,9 +105,13 @@ public class LiftSubsystem extends Subsystem {
 		talon.set(ControlMode.PercentOutput, -.50);
 	}
 
-	public void setElevatorVelocity(int speed) {
+	public void setElevatorVelocity(double speed) {
 		talon.set(ControlMode.Velocity, speed);
 
+	}
+	
+	public void fallSlowly() {
+		talon.set(ControlMode.PercentOutput, 0.08);
 	}
 
 	
@@ -116,16 +120,6 @@ public class LiftSubsystem extends Subsystem {
 
 		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
 		if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isAtSwitch() {
-
-		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-		if (encoderPos > switchPosition - positionErrorMargin && encoderPos < switchPosition + positionErrorMargin) {
 			return true;
 		} else {
 			return false;
@@ -159,7 +153,7 @@ public class LiftSubsystem extends Subsystem {
 	double lastSetPoint = 0;
 	boolean weAreCalibrated = false;
 
-	@Override
+	/*@Override
 	public void periodic() {
 		if (!weAreCalibrated) {
 			if (isHomeSwitchDepressed()) {
@@ -183,8 +177,8 @@ public class LiftSubsystem extends Subsystem {
 			talon.set(ControlMode.Position, lastSetPoint);
 		}
 	}
-	
-	void calculateNewPIDParameters() {
+	*/
+	public void calculateNewPIDParameters() {
 		// look at the current position and lastSetPoint,
 		if (readEncoder() > lastSetPoint) {
 			
@@ -195,4 +189,38 @@ public class LiftSubsystem extends Subsystem {
 		// should probably zero out any integrators in the PID? 
 	}
 
+	public void setPIDParameters(double P, double I, double D, double F) {
+		
+		talon.config_kP(0, P, 10);
+		talon.config_kI(0, I, 10);
+		talon.config_kD(0, D, 10);
+		talon.config_kF(0, F, 10);
+		
+		
+		
+	}
+	
+	public void configMotionMagic(int acceleration, int velocity) {
+		
+		motionMagicAccel = acceleration;
+		motionMagicCruiseVel = velocity;
+		
+		talon.configMotionCruiseVelocity(kSpeedPIDLoopIdx, motionMagicCruiseVel);
+		talon.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
+		
+	}
+	
+	public void moveToSetPoint(int position) {
+		
+		talon.set(ControlMode.MotionMagic, position);
+		
+	}
+	
+	public void brace() {
+		
+		talon.set(ControlMode.Velocity, 0);
+	}
+	
 }
+
+

@@ -17,11 +17,14 @@ public class HoldLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	
+    	Robot.liftSubsystem.setPIDParameters(0.3375, 0, 0, 1.5007);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.liftSubsystem.setElevatorVelocity(0);
+    	Robot.liftSubsystem.brace();
+  
     }
 
     // Make this return true when this Command no longer needs to run execute()

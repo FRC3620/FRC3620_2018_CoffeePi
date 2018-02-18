@@ -62,12 +62,12 @@ public class OI {
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
 
-	       Button fullspeed = new JoystickButton(driverJoystick, 1);
+	       Button fullspeed = new JoystickButton(driverJoystick, 2);
 	       fullspeed.whileHeld(new FullSpeedDriveCommand());
-	       Button moveLiftUp = new JoystickButton(driverJoystick, 2);
-	       moveLiftUp.whileHeld(new LiftToHome());
-	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
-	       moveLiftDown.whileHeld(new LiftToScale());
+	       Button moveLiftToHome = new JoystickButton(driverJoystick, 1);
+	       moveLiftToHome.whileHeld(new LiftToHome());
+	       Button moveLiftToScale = new JoystickButton(driverJoystick, 4);
+	       moveLiftToScale.whileHeld(new LiftToScale());
 	       
 	       Button liftShiftHighGear = new JoystickButton(operatorJoystick, 7);
 	       liftShiftHighGear.whenPressed(new LiftShiftHighGear());

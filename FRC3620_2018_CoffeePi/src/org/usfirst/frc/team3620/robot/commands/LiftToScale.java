@@ -12,15 +12,19 @@ public class LiftToScale extends Command {
     public LiftToScale() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.liftSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.liftSubsystem.setPIDParameters(0, 0, 0, 5.002);
+    	Robot.liftSubsystem.configMotionMagic(102, 51);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.liftSubsystem.moveElevatorTestDown();
+    	
+    	Robot.liftSubsystem.moveToSetPoint(4949);
     
     }
 
