@@ -22,7 +22,7 @@ public class LiftToHome extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	 if(Robot.liftSubsystem.readEncoder() > 1024) {
+    	 if(Robot.liftSubsystem.readEncoder() > 2048) {
     		 Robot.liftSubsystem.setElevatorVelocity(-0.07);
     	 }
     	 else {
