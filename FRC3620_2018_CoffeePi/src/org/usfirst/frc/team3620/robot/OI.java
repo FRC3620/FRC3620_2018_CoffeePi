@@ -12,12 +12,18 @@ import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
 import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
+import org.usfirst.frc.team3620.robot.commands.HoldLift;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.LiftDown;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftHighGear;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
 import org.usfirst.frc.team3620.robot.commands.LiftToScale;
+import org.usfirst.frc.team3620.robot.commands.LiftUp;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
+import org.usfirst.frc.team3620.robot.commands.ResetEncoder;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
@@ -94,13 +100,20 @@ public class OI {
 	       Button rBumper = new JoystickButton(driverJoystick, 6);
 	       rBumper.whileHeld(new SetDriveGearHighCommand());
 
-	       Button fullspeed = new JoystickButton(driverJoystick, 1);
+	       Button fullspeed = new JoystickButton(driverJoystick, 2);
 	       fullspeed.whileHeld(new FullSpeedDriveCommand());
-	       Button moveLiftUp = new JoystickButton(driverJoystick, 2);
-	       moveLiftUp.whileHeld(new LiftToHome());
-	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
-	       moveLiftDown.whileHeld(new LiftToScale());
-
+	       Button brace = new JoystickButton(driverJoystick, 1);
+	       brace.whileHeld(new LiftDown());
+	       Button moveLiftUp = new JoystickButton(driverJoystick, 4);
+	       moveLiftUp.whileHeld(new LiftUp());
+	       
+	       Button liftShiftHighGear = new JoystickButton(operatorJoystick, 7);
+	       liftShiftHighGear.whenPressed(new LiftShiftHighGear());
+	       Button liftShiftLowGear = new JoystickButton(operatorJoystick, 8);
+	       liftShiftLowGear.whenPressed(new LiftShiftLowGear()  );
+	       
+	       Button resetEncoder = new JoystickButton(driverJoystick, 5);
+	       resetEncoder.whenPressed(new ResetEncoder());
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
