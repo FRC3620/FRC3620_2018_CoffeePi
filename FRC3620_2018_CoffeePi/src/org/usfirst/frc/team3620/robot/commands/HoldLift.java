@@ -23,7 +23,7 @@ public class HoldLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.liftSubsystem.brace();
+    	Robot.liftSubsystem.brace(0.12);
   
     }
 

@@ -97,12 +97,12 @@ public class LiftSubsystem extends Subsystem {
 
 	}
 
-	public void moveElevatorTestUp() {
-		talon.set(ControlMode.PercentOutput, -0.30);
+	public void moveElevatorTestUp(double voltage) {
+		talon.set(ControlMode.PercentOutput, voltage);
 	}
 
-	public void moveElevatorTestDown() {
-		talon.set(ControlMode.PercentOutput, .50);
+	public void moveElevatorTestDown(double voltage) {
+		talon.set(ControlMode.PercentOutput, voltage);
 	}
 
 	public void setElevatorVelocity(double speed) {
@@ -216,9 +216,9 @@ public class LiftSubsystem extends Subsystem {
 		
 	}
 	
-	public void brace() {
+	public void brace(double speed) {
 		
-		talon.set(ControlMode.Velocity, 0);
+		talon.set(ControlMode.PercentOutput, -speed);
 	}
 	
 }

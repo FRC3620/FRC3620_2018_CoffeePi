@@ -14,6 +14,7 @@ import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
 import org.usfirst.frc.team3620.robot.commands.HoldLift;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.LiftDown;
 import org.usfirst.frc.team3620.robot.commands.LiftShiftHighGear;
 import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
@@ -68,7 +69,7 @@ public class OI {
 	       Button fullspeed = new JoystickButton(driverJoystick, 2);
 	       fullspeed.whileHeld(new FullSpeedDriveCommand());
 	       Button brace = new JoystickButton(driverJoystick, 1);
-	       brace.whileHeld(new HoldLift());
+	       brace.whileHeld(new LiftDown());
 	       Button moveLiftUp = new JoystickButton(driverJoystick, 4);
 	       moveLiftUp.whileHeld(new LiftUp());
 	       
