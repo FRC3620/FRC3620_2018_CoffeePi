@@ -88,6 +88,9 @@ public class OI {
 	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
 	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
+	       SmartDashboard.putData("Clamp", new ClampCommand
+	    		   
+	    		   ());
 	       
 	       
 	       

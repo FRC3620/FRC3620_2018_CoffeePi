@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LiftUp extends Command {
 	
-	public double percentVoltageApplied = .25;
+	public double percentVoltageApplied = .40;
 
     public LiftUp() {
         // Use requires() here to declare subsystem dependencies
