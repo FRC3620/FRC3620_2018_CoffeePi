@@ -7,21 +7,21 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PivotDownCommand extends Command {
+public class ResetEncoder extends Command {
 
-    public PivotDownCommand() {
+    public ResetEncoder() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intakeSubsystem);
+    	requires(Robot.liftSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.liftSubsystem.resetEncoder();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intakeSubsystem.pivotDown(0.20);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -31,12 +31,10 @@ public class PivotDownCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intakeSubsystem.pivotDown(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.intakeSubsystem.pivotDown(0);
     }
 }

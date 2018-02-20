@@ -12,12 +12,18 @@ import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
 import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
 import org.usfirst.frc.team3620.robot.commands.FullSpeedDriveCommand;
+import org.usfirst.frc.team3620.robot.commands.HoldLift;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.LiftDown;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftHighGear;
+import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
 import org.usfirst.frc.team3620.robot.commands.LiftToScale;
+import org.usfirst.frc.team3620.robot.commands.LiftUp;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
+import org.usfirst.frc.team3620.robot.commands.ResetEncoder;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
@@ -86,17 +92,18 @@ public class OI {
 	       spinOut.whileHeld(new OutakeCubeCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whileHeld(new PivotUpCommand());
-	       Button pivotDown = new JoystickButton(operatorJoystick, 4);
+	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whileHeld(new PivotDownCommand());
-	       Button moveLiftUp = new JoystickButton(operatorJoystick, 3);
-	       moveLiftUp.whileHeld(new LiftToHome());
+
+	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
+	       moveLiftUp.whileHeld(new LiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
-	       moveLiftDown.whileHeld(new LiftToScale());
+	       moveLiftDown.whileHeld(new LiftDown());
 	       
 
 	       
 
-	       
+
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
@@ -104,7 +111,7 @@ public class OI {
 	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
 	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
-	       
+	       SmartDashboard.putData("ResetEncoder", new ResetEncoder());
 	}
 	       
 	

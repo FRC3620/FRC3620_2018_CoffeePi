@@ -21,7 +21,7 @@ public class OutakeCubeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intakeSubsystem.pushCubeOut(0.8);
+    	Robot.intakeSubsystem.pushCubeOut(1.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
