@@ -18,10 +18,20 @@ import org.usfirst.frc.team3620.robot.commands.LiftToScale;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
+import org.usfirst.frc.team3620.robot.commands.ResetEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.Path_1_E;
+import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_LeftSwitch;
+import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_RightSwitch;
+import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_LeftScale;
+import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_LeftSwitch;
+import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_RightScale;
+import org.usfirst.frc.team3620.robot.paths.Path_RightStart_LeftScale;
+import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightScale;
+import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightSwitch;
+import org.usfirst.frc.team3620.robot.paths.TestPoints;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -105,10 +115,20 @@ public class OI {
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
-	       
-	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
-	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
-	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
+	       // SmartDashboard Buttons:
+//	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
+//	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
+//	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
+	       SmartDashboard.putData("TestPoints Auto", new TestPoints());
+           SmartDashboard.putData("Center start, left switch", new Path_CenterStart_LeftSwitch());
+//           SmartDashboard.putData("Center start, right switch", new Path_CenterStart_RightSwitch());
+//           SmartDashboard.putData("Left start, left scale", new Path_LeftStart_LeftScale());
+//           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
+//           SmartDashboard.putData("Left start, right scale", new Path_LeftStart_RightScale());
+//           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
+//           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
+//           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
+           SmartDashboard.putData("Reset encoders", new ResetEncodersCommand());
 	       
 	}
 	       

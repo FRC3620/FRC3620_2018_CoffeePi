@@ -34,6 +34,9 @@ public class RobotDataLoggingSetup {
 			robotDataLogger.addDataProvider("drive.r4.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(1)));
 			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0)));
 		}
+		
+		// do not log extra stuff
+		if (false) {
 
 		//
 		if (RobotMap.driveSubsystemTalonLeft1 != null) {
@@ -74,6 +77,7 @@ public class RobotDataLoggingSetup {
 		if (RobotMap.driveSubsystemVictorRight4 != null) {
 			robotDataLogger.addDataProvider("drive.r4.voltage",
 					() -> f2(RobotMap.driveSubsystemVictorRight4.getMotorOutputVoltage()));
+		}
 		}
 
 	}

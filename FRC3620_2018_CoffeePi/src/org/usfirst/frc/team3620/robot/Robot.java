@@ -295,6 +295,9 @@ public class Robot extends TimedRobot {
 	void beginPeriodic() {
 		// if some subsystems need to get called in all modes at the beginning
 		// of periodic, do it here
+		SmartDashboard.putNumber("NavX", driveSubsystem.getAngle());
+    	SmartDashboard.putNumber("Left Encoder", Robot.driveSubsystem.readLeftEncRaw() );
+    	SmartDashboard.putNumber("Right Encoder", Robot.driveSubsystem.readRightEncRaw() );
 
 		// don't need to do anything
 	}
