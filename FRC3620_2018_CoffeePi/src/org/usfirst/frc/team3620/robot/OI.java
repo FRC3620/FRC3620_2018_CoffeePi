@@ -76,30 +76,25 @@ public class OI {
 
 	       
 	       //Button A
-	       Button clamp = new JoystickButton(operatorJoystick,1);
+	       Button clamp = new JoystickButton(operatorJoystick, 9);
 	       clamp.whenPressed(new ClampCommand());
-	       Button unclamp = new JoystickButton(operatorJoystick,2);
+	       Button unclamp = new JoystickButton(operatorJoystick, 10);
 	       unclamp.whenPressed(new UnClampCommand());
-	       Button spinIn = new JoystickButton(operatorJoystick, 3);
+	       Button spinIn = new JoystickButton(operatorJoystick, 6);
 	       spinIn.whileHeld(new IntakeCubeCommand());
-	       Button spinOut = new JoystickButton(operatorJoystick, 4);
+	       Button spinOut = new JoystickButton(operatorJoystick, 5);
 	       spinOut.whileHeld(new OutakeCubeCommand());
-	       Button pivotUp = new JoystickButton(operatorJoystick, 5);
+	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whileHeld(new PivotUpCommand());
-	       Button pivotDown = new JoystickButton(operatorJoystick, 6);
+	       Button pivotDown = new JoystickButton(operatorJoystick, 4);
 	       pivotDown.whileHeld(new PivotDownCommand());
-	       
-	       Button lBumper = new JoystickButton(driverJoystick, 5);
-	       lBumper.whileHeld(new SetDriveGearLowCommand());
-	       Button rBumper = new JoystickButton(driverJoystick, 6);
-	       rBumper.whileHeld(new SetDriveGearHighCommand());
-
-	       Button fullspeed = new JoystickButton(driverJoystick, 1);
-	       fullspeed.whileHeld(new FullSpeedDriveCommand());
-	       Button moveLiftUp = new JoystickButton(driverJoystick, 2);
+	       Button moveLiftUp = new JoystickButton(operatorJoystick, 3);
 	       moveLiftUp.whileHeld(new LiftToHome());
-	       Button moveLiftDown = new JoystickButton(driverJoystick, 3);
+	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	       moveLiftDown.whileHeld(new LiftToScale());
+	       
+
+	       
 
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
