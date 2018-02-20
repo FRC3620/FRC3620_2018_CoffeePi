@@ -18,6 +18,8 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import com.ctre.phoenix.ErrorCode;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 
@@ -184,6 +186,8 @@ public class RobotMap {
 			liftSubsystemTalon1.configPeakCurrentDuration(0, 10);
 			liftSubsystemTalon1.configContinuousCurrentLimit(25, 10);
 			liftSubsystemTalon1.enableCurrentLimit(true);
+			liftSubsystemTalon1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
+			liftSubsystemTalon1.overrideLimitSwitchesEnable(true);
 			
 			liftSubsystemVictor2 = new WPI_VictorSPX(10);
 			resetControllerToKnownState(liftSubsystemVictor2);

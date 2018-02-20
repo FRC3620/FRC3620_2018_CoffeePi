@@ -34,7 +34,7 @@ public class LiftToHome extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.isHomeSwitchDepressed() || (Robot.liftSubsystem.readEncoder() < -2048)) {
+    	if(Robot.liftSubsystem.isBottomLimitDepressed() || (Robot.liftSubsystem.readEncoder() < -2048)) {
     		Robot.liftSubsystem.resetEncoder();
     		return true;
     	}

@@ -9,6 +9,8 @@ import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -46,7 +49,7 @@ public class LiftSubsystem extends Subsystem {
 	public static double kDSpeed = 0;
 	public static double kFSpeed = .65;
 	public static double kIZoneSpeed = 0;
-	public static int peakSpeedHigh = 0;
+	public static double peakSpeedHigh = 0.60;
 	public static int positionErrorMargin = 50;
 	public static int motionMagicCruiseVel;
 	public static int motionMagicAccel;
@@ -66,6 +69,7 @@ public class LiftSubsystem extends Subsystem {
 			// Setting feedback device type
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			talon.setSensorPhase(true);
+			
 	}
 		// Put methods for controlling this subsystem
 		// here. Call these from Commands.
@@ -95,13 +99,35 @@ public class LiftSubsystem extends Subsystem {
     	}
     	return true; //we are faking it
     }
+    
+    public boolean isBottomLimitDepressed(){
+    	
+    	if (talon != null) {
+    		
+    		return talon.getSensorCollection().isFwdLimitSwitchClosed();
+    		
+    	}
+    	return false; 
+    	
+    }
+    
+    public boolean isTopLimitDepressed(){
+    	
+    	if (talon != null) {
+    		
+    		return talon.getSensorCollection().isRevLimitSwitchClosed();
+    		
+    	}
+    	return false; 
+    	
+    }
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
 	public void initDefaultCommand() {
 		// Set the default000000000 command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		setDefaultCommand(new HoldLift());
+		setDefaultCommand(new ManualLiftOperatorCommand());
 	}
 
 	// reads encoder
@@ -123,7 +149,7 @@ public class LiftSubsystem extends Subsystem {
 	public void moveElevator(double joyPos) {
 		// runs lift motor for vertSpeed
 
-		talon.set(ControlMode.Velocity, joyPos * peakSpeedHigh);
+		talon.set(ControlMode.PercentOutput, -joyPos * peakSpeedHigh);
 
 	}
 
@@ -156,11 +182,13 @@ public class LiftSubsystem extends Subsystem {
 		}
 	}
 
+	/*
 	public boolean isHomeSwitchDepressed() {
 		boolean home = elevatorHomeSwitch.get();
 		return home;
 
 	}
+	*/
 
 	public void moveToScale() {
 		talon.set(ControlMode.MotionMagic, scalePosition);
@@ -183,8 +211,9 @@ public class LiftSubsystem extends Subsystem {
 	double lastSetPoint = 0;
 	boolean weAreCalibrated = false;
 
-	/*@Override
+	@Override
 	public void periodic() {
+		/*
 		if (!weAreCalibrated) {
 			if (isHomeSwitchDepressed()) {
 				resetEncoder();
@@ -195,7 +224,9 @@ public class LiftSubsystem extends Subsystem {
 				// not home yet, creep down
 				talon.set(ControlMode.PercentOutput, 0.1);
 			}
-		}
+		}*/
+		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
+		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
 	}
 
 	public void setSetpoint(double positionInInches) {
@@ -207,7 +238,7 @@ public class LiftSubsystem extends Subsystem {
 			talon.set(ControlMode.Position, lastSetPoint);
 		}
 	}
-	*/
+	
 	public void calculateNewPIDParameters() {
 		// look at the current position and lastSetPoint,
 		if (readEncoder() > lastSetPoint) {
@@ -244,6 +275,11 @@ public class LiftSubsystem extends Subsystem {
 		
 		talon.set(ControlMode.MotionMagic, position);
 		
+	}
+	
+	public void moveAtManualSpeedGiven(double speed) {
+		
+		talon.set(ControlMode.PercentOutput, -speed);
 	}
 	
 	public void brace(double speed) {
