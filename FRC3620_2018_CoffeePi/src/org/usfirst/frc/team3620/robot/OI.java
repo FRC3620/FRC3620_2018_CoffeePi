@@ -38,6 +38,8 @@ import org.usfirst.frc.team3620.robot.paths.Path_RightStart_LeftScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.TestPoints;
+import org.usfirst.frc3620.misc.DPad;
+
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -110,10 +112,10 @@ public class OI {
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	       moveLiftDown.whileHeld(new LiftDown());
 	       
-
+	       DPad dpad = new DPad(operatorJoystick, 0);
+	       dpad.up().whenActive(new PivotUpCommand());
+	       dpad.down().whenActive(new PivotDownCommand());
 	       
-
-
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
