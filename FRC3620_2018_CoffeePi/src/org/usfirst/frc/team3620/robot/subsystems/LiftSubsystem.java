@@ -196,11 +196,11 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	public void setHighGear() {
-		liftGearShifter.set(Value.kForward);
+		liftGearShifter.set(Value.kReverse);
 	}
 
 	public void setLowGear() {
-		liftGearShifter.set(Value.kReverse);
+		liftGearShifter.set(Value.kForward);
 
 	}
 

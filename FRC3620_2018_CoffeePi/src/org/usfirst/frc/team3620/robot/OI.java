@@ -116,9 +116,8 @@ public class OI {
 
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
-	      
-	       SmartDashboard.putData("ResetEncoder", new ResetLiftEncoderCommand());
-
+	       
+	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
@@ -132,7 +131,7 @@ public class OI {
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
 //           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
-           SmartDashboard.putData("Reset encoders", new ResetDriveEncodersCommand());
+           SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
 	}
 	       
 	
