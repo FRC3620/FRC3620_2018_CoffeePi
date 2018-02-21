@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ResetEncoder extends Command {
+public class ResetLiftEncoderCommand extends Command {
 
-    public ResetEncoder() {
+    public ResetLiftEncoderCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
