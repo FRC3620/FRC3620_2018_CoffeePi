@@ -104,7 +104,7 @@ public class LiftSubsystem extends Subsystem {
     	
     	if (talon != null) {
     		
-    		return talon.getSensorCollection().isFwdLimitSwitchClosed();
+    		return talon.getSensorCollection().isRevLimitSwitchClosed();
     		
     	}
     	return false; 
@@ -115,7 +115,7 @@ public class LiftSubsystem extends Subsystem {
     	
     	if (talon != null) {
     		
-    		return talon.getSensorCollection().isRevLimitSwitchClosed();
+    		return talon.getSensorCollection().isFwdLimitSwitchClosed();
     		
     	}
     	return false; 

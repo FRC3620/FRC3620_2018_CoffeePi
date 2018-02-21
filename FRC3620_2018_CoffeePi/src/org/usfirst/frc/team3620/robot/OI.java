@@ -142,7 +142,7 @@ public class OI {
 		return driverJoystick.getRawAxis(4);
 	}
 	public double getLiftJoystick() {
-		return operatorJoystick.getRawAxis(3);
+		return operatorJoystick.getRawAxis(5);
 	}
 
 }
