@@ -44,7 +44,7 @@ public abstract class AbstractPath extends Command {
 		// **Now in feet**
 		// Check on the 0.75 vmax multiplier and tune as needed
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_LOW, 0.05, (0.75 * getPathfinderV_MAX()), 1.5, 5.0);
+				Trajectory.Config.SAMPLES_LOW, 0.05, (0.75 * getPathfinderV_MAX()), 4.5, 10.0);
 		Waypoint[] points = getMyWaypoints();
 		Trajectory trajectory = Pathfinder.generate(points, config);
 
@@ -67,7 +67,7 @@ public abstract class AbstractPath extends Command {
 	 */
 	double getPathfinderP() {
 		// This is the proportional gain. Usually this will be quite high
-		return 0.0001;
+		return 0.01;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public abstract class AbstractPath extends Command {
 	double getPathfinderD() {
 		// This is the derivative gain. Tweak this if you are unhappy with the tracking
 		// of the trajectory
-		return 1.0;
+		return 0.0;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public abstract class AbstractPath extends Command {
 		// trajectory configuration (it translates m/s to a -1 to 1 scale that your
 		// motors can read)
 		// (In feet)
-		return 2.0;
+		return 3.5;
 	}
 
 	/**
@@ -149,8 +149,10 @@ public abstract class AbstractPath extends Command {
 
 		System.out.println("PIDVAs configured.");
 
-	lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
+		lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
+		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
+		//lastRightEncoder = encoderPosRight = RobotMap.driveSubsystemRightEncoder.getRaw();
 		
 		System.out.println("Encoders L,R initial = " + encoderPosLeft + " " + encoderPosRight);
 
@@ -159,7 +161,10 @@ public abstract class AbstractPath extends Command {
 															// diameter in feet)
 		right.configureEncoder(encoderPosRight, 512, (0.33));
 
+		t0 = System.currentTimeMillis();
 	}
+	
+	double t0;
 
 	/*
 	 * (non-Javadoc)
@@ -207,6 +212,8 @@ public abstract class AbstractPath extends Command {
 		} else {
 			turn = 0;
 		}
+		
+//		turn = 0;  //for testing
 
 		// Factor in the turn value and run the motors.
 		double leftMotorSet = outputLeft + turn;
@@ -224,6 +231,9 @@ public abstract class AbstractPath extends Command {
 		if (rightMotorSet > maxOutput) {
 			maxOutput = rightMotorSet;
 		}
+		
+		double t1 = System.currentTimeMillis();
+		
 
 		// Console prints for debugging. Comment and uncomment as needed.
 		System.out.println("\noutputLeft = " + outputLeft);
@@ -235,6 +245,7 @@ public abstract class AbstractPath extends Command {
 		System.out.println("desired_heading = " + desired_heading);
 		System.out.println("navx_heading = " + navx_heading);
 		System.out.println("angleDifference = " + angleDifference);
+		System.out.println("tdelta = " + (t1 - t0));
 		System.out.println("turn = " + turn);
 		System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
 		System.out.println("Max motor output: " + maxOutput);
@@ -247,6 +258,8 @@ public abstract class AbstractPath extends Command {
 //			}
 			finishedFlag = true;
 		}
+		
+		t0 = t1;
 		
 //		if (maxOutput > 0.1) {
 //			if (Math.abs(leftMotorSet) < 0.1 && Math.abs(rightMotorSet) < 0.1) {

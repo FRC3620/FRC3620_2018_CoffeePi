@@ -106,6 +106,7 @@ public class DriveSubsystem extends Subsystem {
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(-speed, r2, true);
 		} else {
+			pWMDifferentialDrive.stopMotor();
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
@@ -114,6 +115,7 @@ public class DriveSubsystem extends Subsystem {
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(speed, turn);
 		} else {
+			pWMDifferentialDrive.stopMotor();
 			cANDifferentialDrive.arcadeDrive(speed, turn);
 		}
 	}
@@ -125,6 +127,7 @@ public class DriveSubsystem extends Subsystem {
 			pWMDifferentialDrive.tankDrive(left, right, false);
 		}
 		else {
+			pWMDifferentialDrive.stopMotor();
 			cANDifferentialDrive.tankDrive(left, right, false);
 		}
 	}
@@ -133,6 +136,7 @@ public class DriveSubsystem extends Subsystem {
 		if(practice) {
 			pWMDifferentialDrive.arcadeDrive(speed, turn, false);
 		} else {
+			pWMDifferentialDrive.stopMotor();
 			cANDifferentialDrive.arcadeDrive(speed, turn, false);
 		}
 	}
@@ -153,17 +157,21 @@ public class DriveSubsystem extends Subsystem {
 	public void resetEncoders() {
 		if (driveSubsystemTalonLeft1 != null) {
 		   ErrorCode ec = driveSubsystemTalonLeft1.getSensorCollection().setQuadraturePosition(0, 100);  //10ms timeout for confirmation. reduce this?
+		   //ErrorCode ec = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		    logger.info("Left encoder reset status = {}", ec);
 		}
 		if (driveSubsystemTalonRight1 != null) {
 			ErrorCode ec = driveSubsystemTalonRight1.getSensorCollection().setQuadraturePosition(0, 100);  //10ms timeout for confirmation. reduce this?
 		    logger.info("Right encoder reset status = {}", ec);
 		}
+		RobotMap.driveSubsystemLeftEncoder.reset();
+		RobotMap.driveSubsystemRightEncoder.reset();
 	}
 	
 	public int readLeftEncRaw() {
 		if (driveSubsystemTalonLeft1 != null) {
-		    return -1 * driveSubsystemTalonLeft1.getSensorCollection().getQuadraturePosition();
+		    //return -1 * driveSubsystemTalonLeft1.getSensorCollection().getQuadraturePosition();
+		    return RobotMap.driveSubsystemLeftEncoder.getRaw();
 		}
 		else {
 			return 0;
@@ -172,7 +180,8 @@ public class DriveSubsystem extends Subsystem {
     
 	public int readRightEncRaw() {
 		if (driveSubsystemTalonRight1 != null) {
-		    return driveSubsystemTalonRight1.getSensorCollection().getQuadraturePosition();
+		    //return driveSubsystemTalonRight1.getSensorCollection().getQuadraturePosition();
+		    return RobotMap.driveSubsystemRightEncoder.getRaw();
 		}
 		else {
 			return 0;

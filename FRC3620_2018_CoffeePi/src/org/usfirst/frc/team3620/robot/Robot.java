@@ -241,15 +241,26 @@ public class Robot extends TimedRobot {
 		
 		processRobotModeChange(RobotMode.TELEOP);
 	}
+	
+	double lastt0 = 0;
 
 	/**
 	 * This function is called periodically during operator control.
 	 */
 	@Override
 	public void teleopPeriodic() {
+		double tdelta;
+		double t0 = System.currentTimeMillis();
 		beginPeriodic();
+		tdelta = System.currentTimeMillis() - t0;
+		System.out.println("begin Periodic took " + tdelta + " cycle: " + (t0 - lastt0));
 		Scheduler.getInstance().run();
+		tdelta = System.currentTimeMillis() - t0;
+		System.out.println("run() took " + tdelta);
 		endPeriodic();
+		tdelta = System.currentTimeMillis() - t0;
+		System.out.println("end() took " + tdelta);
+		lastt0 = t0;
 	}
 	
 	public void testInit() {

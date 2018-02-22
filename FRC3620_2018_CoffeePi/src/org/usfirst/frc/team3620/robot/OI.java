@@ -96,8 +96,7 @@ public class OI {
 	       //Button A
 	       Button clamp = new JoystickButton(operatorJoystick, 9);
 	       clamp.whenPressed(new ClampCommand());
-	       Button unclamp = new JoystickButton(operatorJoystick, 10);
-	       unclamp.whenPressed(new UnClampCommand());
+	       
 	       Button spinIn = new JoystickButton(operatorJoystick, 6);
 	       spinIn.whileHeld(new IntakeCubeCommand());
 	       Button spinOut = new JoystickButton(operatorJoystick, 5);
@@ -106,7 +105,6 @@ public class OI {
 	       pivotUp.whileHeld(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whileHeld(new PivotDownCommand());
-
 	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	       moveLiftUp.whileHeld(new LiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
