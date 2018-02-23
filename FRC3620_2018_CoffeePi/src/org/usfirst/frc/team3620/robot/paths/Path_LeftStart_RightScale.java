@@ -8,7 +8,25 @@ public class Path_LeftStart_RightScale extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
+				new Waypoint(1.587, 21.5, 0.0001),
+				new Waypoint(14.0, 24.0, 0.0001),
+				new Waypoint(19.5, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(19.5, 7.5, Pathfinder.d2r(-90)),
+				new Waypoint(24.5, 2.0, 0.0001),
+				new Waypoint(27.0, 4.5, Pathfinder.d2r(90)),
 				
 		};
+	}
+	
+	@Override
+	double getPathfinderP() {
+		// TODO Auto-generated method stub
+		return 0.001;
+	}
+	
+	@Override
+	double getPathfinderSpeedMultiplier() {
+		// TODO Auto-generated method stub
+		return 0.5;
 	}
 }
