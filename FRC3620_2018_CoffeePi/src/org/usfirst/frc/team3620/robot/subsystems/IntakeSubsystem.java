@@ -162,9 +162,11 @@ public class IntakeSubsystem extends Subsystem {
    
    @Override
    public void periodic() {
-	   SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
+	   if (intakePivot != null) {
+	   //SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
+	   
+	   }
    }
-   
    
 }
 

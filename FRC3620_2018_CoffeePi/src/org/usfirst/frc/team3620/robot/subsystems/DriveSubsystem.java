@@ -307,16 +307,30 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-    	
-        SmartDashboard.putNumber("Current Draw on Left Talon 1: ", driveSubsystemTalonLeft1.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 2: ", driveSubsystemVictorLeft2.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 3: ", driveSubsystemVictorLeft3.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 4: ", driveSubsystemVictorLeft4.getOutputCurrent());
-        
-        SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 2: ", driveSubsystemVictorRight2.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 3: ", driveSubsystemVictorRight3.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 4: ", driveSubsystemVictorRight4.getOutputCurrent());
+    	if (driveSubsystemTalonLeft1 != null) {
+    		SmartDashboard.putNumber("Current Draw on Left Talon 1: ", driveSubsystemTalonLeft1.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorLeft2 != null) {
+    		SmartDashboard.putNumber("Current Draw on Left Victor 2: ", driveSubsystemVictorLeft2.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorLeft3 != null) {
+    		SmartDashboard.putNumber("Current Draw on Left Victor 3: ", driveSubsystemVictorLeft3.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorLeft4 != null) {
+    		SmartDashboard.putNumber("Current Draw on Left Victor 4: ", driveSubsystemVictorLeft4.getOutputCurrent());
+    	}
+    	if (driveSubsystemTalonRight1 != null) {
+    		SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorRight2 != null) {
+    		SmartDashboard.putNumber("Current Draw on Right Victor 2: ", driveSubsystemVictorRight2.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorRight3 != null) {
+    		SmartDashboard.putNumber("Current Draw on Right Victor 3: ", driveSubsystemVictorRight3.getOutputCurrent());
+    	}
+    	if (driveSubsystemVictorRight4 != null) {
+    		SmartDashboard.putNumber("Current Draw on Right Victor 4: ", driveSubsystemVictorRight4.getOutputCurrent());
+    	}
     }
     
 
