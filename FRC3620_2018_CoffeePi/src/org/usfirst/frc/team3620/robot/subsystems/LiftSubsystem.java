@@ -56,11 +56,13 @@ public class LiftSubsystem extends Subsystem {
 
 	public LiftSubsystem() {
 		super();
+		
+    	if (talon != null) {
 
-		talon.config_kF(kSpeedPIDLoopIdx, kFSpeed, kTimeoutMs);
-		talon.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
-		talon.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
-		talon.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
+    		talon.config_kF(kSpeedPIDLoopIdx, kFSpeed, kTimeoutMs);
+    		talon.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
+    		talon.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
+    		talon.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
 		
 			//Setting feedback device type
 			talon.set(ControlMode.Position, 0);
@@ -69,6 +71,7 @@ public class LiftSubsystem extends Subsystem {
 			// Setting feedback device type
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			talon.setSensorPhase(true);
+    	}
 			
 	}
 		// Put methods for controlling this subsystem
@@ -132,54 +135,68 @@ public class LiftSubsystem extends Subsystem {
 
 	// reads encoder
 	public double readEncoder() {
-
-		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-		return encoderPos;
-
+		if (talon != null) {
+			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+			return encoderPos;
+		}
+		return 0;
 	}
 
 	// resets encoder value
 	public void resetEncoder() {
-
-		int sensorPos = 0;
-		talon.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+		if (talon != null) {
+			int sensorPos = 0;
+			talon.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+		}
 	}
 
 	// moves elevator motor vertSpeed
 	public void moveElevator(double joyPos) {
 		// runs lift motor for vertSpeed
+		if (talon != null) {
 
-		talon.set(ControlMode.PercentOutput, -joyPos * peakSpeedHigh);
-
+			talon.set(ControlMode.PercentOutput, -joyPos * peakSpeedHigh);
+		}
 	}
 
 	public void moveElevatorTestUp(double voltage) {
-		talon.set(ControlMode.PercentOutput, voltage);
+		if (talon != null) {
+			talon.set(ControlMode.PercentOutput, voltage);
+		}
 	}
 
 	public void moveElevatorTestDown(double voltage) {
-		talon.set(ControlMode.PercentOutput, voltage);
+		if (talon != null) {
+			talon.set(ControlMode.PercentOutput, voltage);
+		}
 	}
 
 	public void setElevatorVelocity(double speed) {
-		talon.set(ControlMode.Velocity, speed);
+		if (talon != null) {
+			talon.set(ControlMode.Velocity, speed);
+		}
 
 	}
 	
 	public void fallSlowly() {
-		talon.set(ControlMode.PercentOutput, 0.08);
+		if (talon != null) {
+			talon.set(ControlMode.PercentOutput, 0.08);
+		}
 	}
 
 	
 
 	public boolean isAtScale() {
+		if (talon != null) {
 
-		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-		if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
+			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+			if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
 			return true;
-		} else {
+			} else {
 			return false;
+			}
 		}
+		return false;
 	}
 
 	/*
@@ -227,15 +244,22 @@ public class LiftSubsystem extends Subsystem {
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
 		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		
+		SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 2 Current Output: ", victor1.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 3 Current Output: ", victor2.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 4 Current Output: ", victor3.getOutputCurrent());
 	}
 
 	public void setSetpoint(double positionInInches) {
-		// TODO do this calculation correctly
-		double ticks = 85.33 * positionInInches;
-		lastSetPoint = ticks;
-		if (weAreCalibrated) {
-			calculateNewPIDParameters();
-			talon.set(ControlMode.Position, lastSetPoint);
+		if (talon != null) {
+			// TODO do this calculation correctly
+			double ticks = 85.33 * positionInInches;
+			lastSetPoint = ticks;
+			if (weAreCalibrated) {
+				calculateNewPIDParameters();
+				talon.set(ControlMode.Position, lastSetPoint);
+			}
 		}
 	}
 	
@@ -251,40 +275,40 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	public void setPIDParameters(double P, double I, double D, double F) {
-		
-		talon.config_kP(0, P, 10);
-		talon.config_kI(0, I, 10);
-		talon.config_kD(0, D, 10);
-		talon.config_kF(0, F, 10);
-		
-		
-		
+		if (talon != null) {
+			talon.config_kP(0, P, 10);
+			talon.config_kI(0, I, 10);
+			talon.config_kD(0, D, 10);
+			talon.config_kF(0, F, 10);
+		}
 	}
 	
 	public void configMotionMagic(int acceleration, int velocity) {
+		if (talon != null) {
+			motionMagicAccel = acceleration;
+			motionMagicCruiseVel = velocity;
 		
-		motionMagicAccel = acceleration;
-		motionMagicCruiseVel = velocity;
-		
-		talon.configMotionCruiseVelocity(kSpeedPIDLoopIdx, motionMagicCruiseVel);
-		talon.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
-		
+			talon.configMotionCruiseVelocity(kSpeedPIDLoopIdx, motionMagicCruiseVel);
+			talon.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
+		}
 	}
 	
 	public void moveToSetPoint(int position) {
-		
-		talon.set(ControlMode.MotionMagic, position);
-		
+		if (talon != null) {
+			talon.set(ControlMode.MotionMagic, position);
+		}
 	}
 	
 	public void moveAtManualSpeedGiven(double speed) {
-		
-		talon.set(ControlMode.PercentOutput, -speed);
+		if (talon != null) {
+			talon.set(ControlMode.PercentOutput, -speed);
+		}
 	}
 	
 	public void brace(double speed) {
-		
-		talon.set(ControlMode.PercentOutput, -speed);
+		if (talon != null) {
+			talon.set(ControlMode.PercentOutput, -speed);
+		}
 	}
 
 }

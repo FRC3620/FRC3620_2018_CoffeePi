@@ -55,12 +55,10 @@ public class OI {
 	public Joystick operatorJoystick;
 	public Joystick kaiBox;
 	
-
 	public OI() {
 	       driverJoystick = new Joystick(0);
 	       operatorJoystick = new Joystick(1);
 	       kaiBox = new Joystick(2);
-
 
 	   	//// CREATING BUTTONS
 	   	// One type of button is a joystick button which is any button on a
@@ -90,17 +88,11 @@ public class OI {
 	   	// until it is finished as determined by it's isFinished method.
 	   	// button.whenReleased(new ExampleCommand());
 
-	   	
-
-	       
 	       //Button A
-	       Button clamp = new JoystickButton(operatorJoystick, 9);
+	       Button clamp = new JoystickButton(operatorJoystick, 5);
 	       clamp.whenPressed(new ClampCommand());
-	       
-	       Button spinIn = new JoystickButton(operatorJoystick, 6);
-	       spinIn.whileHeld(new IntakeCubeCommand());
-	       Button spinOut = new JoystickButton(operatorJoystick, 5);
-	       spinOut.whileHeld(new OutakeCubeCommand());
+	       Button unclamp = new JoystickButton(operatorJoystick, 6);
+	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whileHeld(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
@@ -134,7 +126,6 @@ public class OI {
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
 	}
 	       
-	
 	public double getDriveVerticalJoystick() {
 		return driverJoystick.getRawAxis(1);
 	}
@@ -147,5 +138,7 @@ public class OI {
 	public double getLiftJoystick() {
 		return operatorJoystick.getRawAxis(5);
 	}
-
+	public double getCubeJoystick() {
+		return operatorJoystick.getRawAxis(1);
+	}
 }

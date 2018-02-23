@@ -43,7 +43,8 @@ public class ManualLiftOperatorCommand extends Command {
     			Robot.liftSubsystem.brace(0.13);
 //    			System.out.println("Bracing High");
     			
-    		} else if(Robot.liftSubsystem.readEncoder() >= -512) {
+    	} 
+    	else if(Robot.liftSubsystem.readEncoder() >= -512) {
     			Robot.liftSubsystem.brace(0.06);
 //    			System.out.println("Bracing Low");
     		}
