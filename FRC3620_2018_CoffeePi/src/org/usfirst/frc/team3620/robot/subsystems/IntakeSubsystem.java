@@ -5,6 +5,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+import org.usfirst.frc.team3620.robot.commands.ManualCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -98,6 +99,7 @@ public class IntakeSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	setDefaultCommand(new ManualCubeCommand());
     	
     }
     
@@ -111,6 +113,16 @@ public class IntakeSubsystem extends Subsystem {
 	   }
     }
    
+   	//push cube out by spinning motor out
+   public void pushCubeOut(double intakeSpeed) {
+	   if(intakeRoller1 != null) {
+			intakeRoller1.set(intakeSpeed);
+		   	intakeRoller2.set(-intakeSpeed);
+	   } else {
+		  logger.info("Tried to push cube out - no CANTalons!");
+	   }
+	   
+   }
    public void pivotUp(double speed){
 	   if(intakePivot != null) {
 		   intakePivot.set(ControlMode.PercentOutput, speed);
@@ -125,17 +137,6 @@ public class IntakeSubsystem extends Subsystem {
 	   } else {
 		  logger.info("Tried to pivot down - no CANTalons!");
 	   }
-   }
-   
-   //push cube out by spinning motor out
-   public void pushCubeOut(double intakeSpeed) {
-	   if(intakeRoller1 != null) {
-			intakeRoller1.set(intakeSpeed);
-		   	intakeRoller2.set(-intakeSpeed);
-	   } else {
-		  logger.info("Tried to push cube out - no CANTalons!");
-	   }
-	   
    }
    
    //clamps cube
