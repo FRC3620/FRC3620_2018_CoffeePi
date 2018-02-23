@@ -36,66 +36,66 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-	public static final int kSpeedPIDLoopIdx = 0;
-	public static final int kTimeoutMs = 0;
-	public static final boolean kMotorInvert = false;
-	public static double kPSpeed = 0;
-	public static double kISpeed = 0;
-	public static double kDSpeed = 0;
-	public static double kFSpeed = 0;
-	public static double kIZoneSpeed = 0;
-	public static int peakSpeedHigh = 0;
-	public static int positionErrorMargin = 50;
-	public static int motionMagicCruiseVel;
-	public static int motionMagicAccel;
+	public final int kSpeedPIDLoopIdx = 0;
+	public final int kTimeoutMs = 0;
+	public final boolean kMotorInvert = false;
+	public double kPSpeed = 0;
+	public double kISpeed = 0;
+	public double kDSpeed = 0;
+	public double kFSpeed = 0;
+	public double kIZoneSpeed = 0;
+	public int peakSpeedHigh = 0;
+	public int positionErrorMargin = 50;
+	public int motionMagicCruiseVel;
+	public int motionMagicAccel;
 
 	public IntakeSubsystem() {
 		super();
+		if(intakePivot != null) {
+			intakePivot.config_kF(kSpeedPIDLoopIdx, kFSpeed, kTimeoutMs);
+			intakePivot.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
+			intakePivot.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
+			intakePivot.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
 
-		intakePivot.config_kF(kSpeedPIDLoopIdx, kFSpeed, kTimeoutMs);
-		intakePivot.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
-		intakePivot.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
-		intakePivot.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
-		
 
-		// Setting feedback device type
-		intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		intakePivot.setSensorPhase(true);
-
+			// Setting feedback device type
+			intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+			intakePivot.setSensorPhase(true);
+		}
 	}
 	
 	public double readEncoder() {
-
-		int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
-		return encoderPos;
-
+		if(intakePivot != null) {
+			int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
+			return encoderPos;
+		}
+		return 0;
 	}
 	
 	public void resetEncoder() {
-
-		int sensorPos = 0;
-		intakePivot.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+		if(intakePivot != null) {
+			int sensorPos = 0;
+			intakePivot.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+		}
 	}
 
 	public void setPIDParameters(double P, double I, double D, double F) {
-		
-		intakePivot.config_kP(0, P, 10);
-		intakePivot.config_kI(0, I, 10);
-		intakePivot.config_kD(0, D, 10);
-		intakePivot.config_kF(0, F, 10);
-		
-		
-		
+		 if(intakePivot != null) {
+			 intakePivot.config_kP(0, P, 10);
+			 intakePivot.config_kI(0, I, 10);
+			 intakePivot.config_kD(0, D, 10);
+			 intakePivot.config_kF(0, F, 10);
+		 }
 	}
 
 	public void configMotionMagic(int acceleration, int velocity) {
-		
-		motionMagicAccel = acceleration;
-		motionMagicCruiseVel = velocity;
-		
-		intakePivot.configMotionCruiseVelocity(kSpeedPIDLoopIdx, motionMagicCruiseVel);
-		intakePivot.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
-		
+		 if(intakePivot != null) {
+			 motionMagicAccel = acceleration;
+			 motionMagicCruiseVel = velocity;
+
+			 intakePivot.configMotionCruiseVelocity(kSpeedPIDLoopIdx, motionMagicCruiseVel);
+			 intakePivot.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
+		 }
 	}
 
     public void initDefaultCommand() {
@@ -105,13 +105,20 @@ public class IntakeSubsystem extends Subsystem {
     	
     }
     
+    boolean haveICrabbedAtThemAboutMissingTalons = false;
+    
     //bring the cube in by spinning the motors backwards
-   public void bringCubeIn(double intakeSpeed){
+    public void bringCubeIn(double intakeSpeed){
 	   if(intakeRoller1 != null) {
 	    	intakeRoller1.set(-intakeSpeed);
 	    	intakeRoller2.set(intakeSpeed); 
 	   } else {
-		  logger.info("Tried to bring in cube - no CANTalons!");
+		   if (intakeSpeed != 0) {
+			   if (!haveICrabbedAtThemAboutMissingTalons) {
+				   logger.warn("Tried to bring in cube - no CANTalons!");
+				   haveICrabbedAtThemAboutMissingTalons = true;
+			   }
+		   }
 	   }
     }
    
@@ -121,7 +128,12 @@ public class IntakeSubsystem extends Subsystem {
 			intakeRoller1.set(intakeSpeed);
 		   	intakeRoller2.set(-intakeSpeed);
 	   } else {
-		  logger.info("Tried to push cube out - no CANTalons!");
+		   if (intakeSpeed !=0) {
+			   if(!haveICrabbedAtThemAboutMissingTalons) {
+				   logger.warn("Tried to push cube out - no CANTalons!");
+				   haveICrabbedAtThemAboutMissingTalons = true;
+			   }
+		   }
 	   }
 	   
    }
@@ -163,8 +175,7 @@ public class IntakeSubsystem extends Subsystem {
    @Override
    public void periodic() {
 	   if (intakePivot != null) {
-	   //SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
-	   
+		   SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
 	   }
    }
    

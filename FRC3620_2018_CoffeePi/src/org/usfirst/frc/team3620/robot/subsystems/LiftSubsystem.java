@@ -149,7 +149,7 @@ public class LiftSubsystem extends Subsystem {
 	public void moveElevator(double joyPos) {
 		// runs lift motor for vertSpeed
 
-		talon.set(ControlMode.PercentOutput, -joyPos * peakSpeedHigh);
+		talon.set(ControlMode.PercentOutput, joyPos * peakSpeedHigh);
 
 	}
 
@@ -232,15 +232,6 @@ public class LiftSubsystem extends Subsystem {
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
 		}
-		if (victor1 != null) {
-			SmartDashboard.putNumber("Lift Victor 2 Current Output: ", victor1.getOutputCurrent());
-		}
-		if (victor2 != null) {
-			SmartDashboard.putNumber("Lift Victor 3 Current Output: ", victor2.getOutputCurrent());
-		}
-		if (victor3 != null) {	
-			SmartDashboard.putNumber("Lift Victor 4 Current Output: ", victor3.getOutputCurrent());
-		}
 
 	}
 
@@ -299,7 +290,7 @@ public class LiftSubsystem extends Subsystem {
 	
 	public void brace(double speed) {
 		
-		talon.set(ControlMode.PercentOutput, -speed);
+		talon.set(ControlMode.PercentOutput, speed);
 	}
 
 }

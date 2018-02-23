@@ -262,18 +262,21 @@ public class RobotMap {
 		LiveWindow.addSensor("LiftSubsystem", "IntakeFacingBack", liftSubsystemIntakeFacingBack);
 		
 		// stuff for Intake
-		
-		intakeSubsystemIntakeRoller1 = new WPI_TalonSRX(13);
-		resetControllerToKnownState(intakeSubsystemIntakeRoller1);
-		LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller1", (WPI_TalonSRX) intakeSubsystemIntakeRoller1);
-		
-		intakeSubsystemIntakeRoller2 = new WPI_TalonSRX(14);
-		resetControllerToKnownState(intakeSubsystemIntakeRoller2);
-		LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (WPI_TalonSRX) intakeSubsystemIntakeRoller2);
-		
-		intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
-		resetControllerToKnownState(intakeSubsystemIntakePivot);
-		LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
+
+		if (Robot.canDeviceFinder.isSRXPresent(13)) {
+
+			intakeSubsystemIntakeRoller1 = new WPI_TalonSRX(13);
+			resetControllerToKnownState(intakeSubsystemIntakeRoller1);
+			LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller1", (WPI_TalonSRX) intakeSubsystemIntakeRoller1);
+
+			intakeSubsystemIntakeRoller2 = new WPI_TalonSRX(14);
+			resetControllerToKnownState(intakeSubsystemIntakeRoller2);
+			LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (WPI_TalonSRX) intakeSubsystemIntakeRoller2);
+
+			intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
+			resetControllerToKnownState(intakeSubsystemIntakePivot);
+			LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
+		}
 		
 		intakeSubsystemCubeIntook = new DigitalInput(4);
 		LiveWindow.addSensor("IntakeSubsystem", "CubeIntook", intakeSubsystemCubeIntook);

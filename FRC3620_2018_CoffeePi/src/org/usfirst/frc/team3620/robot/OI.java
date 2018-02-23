@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
 import org.usfirst.frc.team3620.robot.commands.AutonomousCenter;
 import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
 import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
@@ -100,16 +102,16 @@ public class OI {
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whileHeld(new PivotDownCommand());
 	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	       moveLiftUp.whileHeld(new LiftUp());
+	       moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
-	       moveLiftDown.whileHeld(new LiftDown());
+	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       
 	       DPad dpad = new DPad(operatorJoystick, 0);
 	       dpad.up().whenActive(new PivotUpCommand());
 	       dpad.down().whenActive(new PivotDownCommand());
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
-	       liftOnManualControl.whenActive(new ManualLiftOperatorCommand());
+	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
