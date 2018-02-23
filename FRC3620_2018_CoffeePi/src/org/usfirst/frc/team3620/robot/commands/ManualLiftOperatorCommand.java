@@ -38,18 +38,7 @@ public class ManualLiftOperatorCommand extends Command {
     		Robot.liftSubsystem.moveElevator(-0.04 - (joyPos *0.03));
 //    		System.out.println("Moving Lift Down");
     	}
-    	else if((joyPos > -0.2 && joyPos < 0.2) || Robot.liftSubsystem.isTopLimitDepressed() == true) {
-    		if(Robot.liftSubsystem.readEncoder() < -512) {
-    			Robot.liftSubsystem.brace(0.13);
-//    			System.out.println("Bracing High");
-    			
-    	} 
-    	else if(Robot.liftSubsystem.readEncoder() >= -512) {
-    			Robot.liftSubsystem.brace(0.06);
-//    			System.out.println("Bracing Low");
-    		}
-    			
-    	}
+    	
     
     }
 
@@ -57,6 +46,10 @@ public class ManualLiftOperatorCommand extends Command {
     protected boolean isFinished() {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
+    		return true;
+    	}
+    	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
+    		System.out.println("Top Switch just got pushed.");
     		return true;
     	}
     	else {

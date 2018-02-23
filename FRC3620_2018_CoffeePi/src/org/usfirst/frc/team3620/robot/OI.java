@@ -20,6 +20,7 @@ import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
 import org.usfirst.frc.team3620.robot.commands.LiftToScale;
 import org.usfirst.frc.team3620.robot.commands.LiftUp;
+import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
@@ -38,6 +39,7 @@ import org.usfirst.frc.team3620.robot.paths.Path_RightStart_LeftScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.TestPoints;
+import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 
 
@@ -105,6 +107,9 @@ public class OI {
 	       DPad dpad = new DPad(operatorJoystick, 0);
 	       dpad.up().whenActive(new PivotUpCommand());
 	       dpad.down().whenActive(new PivotDownCommand());
+	       
+	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
+	       liftOnManualControl.whenActive(new ManualLiftOperatorCommand());
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
