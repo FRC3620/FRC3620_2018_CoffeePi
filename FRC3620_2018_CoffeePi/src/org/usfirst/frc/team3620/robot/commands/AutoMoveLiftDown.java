@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoMoveLiftDown extends Command {
 	double encoderPos;
+	double slowDownPoint;
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -16,17 +17,19 @@ public class AutoMoveLiftDown extends Command {
     }
 
     // Called just before this Command runs the first time
+	//1440 ticks = 16.875 inches
     protected void initialize() {
+    	slowDownPoint = 1024;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	encoderPos = Robot.liftSubsystem.readEncoder();
-    	if(encoderPos >= 1024) {
+    	if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.moveElevator(0.04);
     	}
-    	else if(encoderPos < 1024) {
-    		Robot.liftSubsystem.moveElevator(0.04 + ((1024 - encoderPos)/20480));
+    	else if(encoderPos < slowDownPoint) {
+    		Robot.liftSubsystem.moveElevator(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
     	}
     }
 

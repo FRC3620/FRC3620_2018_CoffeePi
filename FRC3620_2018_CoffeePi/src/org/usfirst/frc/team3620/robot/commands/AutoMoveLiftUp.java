@@ -11,6 +11,8 @@ public class AutoMoveLiftUp extends Command {
 	double encoderPos;
 	double requestedEncoderPos;
 	double slowDownPoint = requestedEncoderPos - 768;
+	double desiredStartingPower;
+	double desiredEndingPower;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -21,6 +23,8 @@ public class AutoMoveLiftUp extends Command {
     //1440 ticks of encoder = 16.875 inches
     protected void initialize() {
     	requestedEncoderPos = 4949;
+    	desiredStartingPower = 0.1;
+    	desiredEndingPower = 0.13;
     }
 
     // Called repeatedly when this Command is scheduled to run
