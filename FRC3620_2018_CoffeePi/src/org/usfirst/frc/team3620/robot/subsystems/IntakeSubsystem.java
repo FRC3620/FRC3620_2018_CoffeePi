@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.slf4j.Logger;
 /**
  *
@@ -156,6 +158,11 @@ public class IntakeSubsystem extends Subsystem {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
 	   
+   }
+   
+   @Override
+   public void periodic() {
+	   SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
    }
    
    

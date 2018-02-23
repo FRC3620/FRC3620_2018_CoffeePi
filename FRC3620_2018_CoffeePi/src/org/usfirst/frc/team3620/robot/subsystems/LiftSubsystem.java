@@ -244,6 +244,11 @@ public class LiftSubsystem extends Subsystem {
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
 		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		
+		SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 2 Current Output: ", victor1.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 3 Current Output: ", victor2.getOutputCurrent());
+		SmartDashboard.putNumber("Lift Victor 4 Current Output: ", victor3.getOutputCurrent());
 	}
 
 	public void setSetpoint(double positionInInches) {
