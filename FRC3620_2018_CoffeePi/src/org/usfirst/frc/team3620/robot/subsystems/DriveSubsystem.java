@@ -110,6 +110,17 @@ public class DriveSubsystem extends Subsystem {
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
+	
+	public void teleOpDriveTransmitter(double speed,double turn) {
+		speed=lowerLimit(speed, 0.2)*getSpeedModifier();
+		turn=lowerLimit(turn, 0.1)*getSpeedModifier();
+		if(practice) {
+			pWMDifferentialDrive.arcadeDrive(-speed, turn, false);
+		} else {
+			pWMDifferentialDrive.stopMotor();
+			cANDifferentialDrive.arcadeDrive(-speed, turn, false);
+		}
+	}
 
 	public void autoDrive(double speed,double turn) {
 		if(practice) {

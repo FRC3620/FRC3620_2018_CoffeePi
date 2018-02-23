@@ -27,6 +27,7 @@ public class TeleOpDriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getDriveHorizontalJoystick());
+    	//Robot.driveSubsystem.teleOpDriveTransmitter(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getTransmitterHorizontalJoystick());
     }
 
     // Make this return true when this Command no longer needs to run execute()

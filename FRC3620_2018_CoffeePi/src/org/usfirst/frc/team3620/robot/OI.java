@@ -141,6 +141,9 @@ public class OI {
 	public double getDriveHorizontalJoystick() {
 		return driverJoystick.getRawAxis(4);
 	}
+	public double getTransmitterHorizontalJoystick() {
+		return -1 * driverJoystick.getRawAxis(5);
+	}
 	public double getLiftJoystick() {
 		return operatorJoystick.getRawAxis(5);
 	}
