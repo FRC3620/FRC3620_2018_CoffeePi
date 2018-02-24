@@ -194,7 +194,10 @@ public class Robot extends TimedRobot {
 		logger.info("autonomous descriptor = {} ", autonomousDescriptor);
 		
 		CommandGroup commandGroup = new CommandGroup();
-		commandGroup.addParallel(new FakeCommand(1, 3, new LiftToSwitch()));
+		CommandGroup unfoldandlift = new CommandGroup();
+		unfoldandlift.addSequential(new FakeCommand(1, 2, new PivotDownCommand()));
+		unfoldandlift.addSequential(new FakeCommand(1, 3, new LiftToSwitch()));
+		commandGroup.addParallel(unfoldandlift);
 		commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
 		if (whereToPutCube == WhereToPutCube.SCALE) {
 			commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
