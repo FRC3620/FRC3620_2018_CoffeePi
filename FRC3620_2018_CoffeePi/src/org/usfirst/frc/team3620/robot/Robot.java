@@ -10,6 +10,7 @@ package org.usfirst.frc.team3620.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Preferences;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -18,7 +19,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.autonomous.AllDoneCommand;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
 	// OI
 	public static OI m_oi;
 
-	Command m_autonomousCommand;
+	Command autonomousCommand;
 	
 	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Boolean> trustChooser = new AverageSendableChooser2018<>();
@@ -160,56 +160,26 @@ public class Robot extends TimedRobot {
 		beginPeriodic();
 		Scheduler.getInstance().run();
 		endPeriodic();
-		
-		/*
-		 * Runs to check Kai box for robot position
-		 */
-
 	}
+	
+	boolean autonomousCommandIsStarted = false;
+	Timer autonomousTimer = new Timer();
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * 
 	 */
 	@Override
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
 		
-		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-		
-		int delay = delayChooser.getSelected();
-		logger.info("delay = {}, Trust = {}, pos = {}", delay, trustChooser.getSelected(), posChooser.getSelected());
-		
-		AutonomousDelayCommand delayCommand = new AutonomousDelayCommand(delay);
-
-		AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-		WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
-		logger.info("autonomous descriptor = {} ", autonomousDescriptor);
-		
-		CommandGroup commandGroup = new CommandGroup();
-		CommandGroup unfoldandlift = new CommandGroup();
-		unfoldandlift.addSequential(new FakeCommand(1, 2, new PivotDownCommand()));
-		unfoldandlift.addSequential(new FakeCommand(1, 3, new LiftToSwitch()));
-		commandGroup.addParallel(unfoldandlift);
-		commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
-		if (whereToPutCube == WhereToPutCube.SCALE) {
-			commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
-			commandGroup.addSequential(new FakeCommand(1, 3, new AutoMoveALittleCommand()));
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
-		if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-			commandGroup.addSequential(new FakeCommand(0.5, 1, new AutonomousPukeCubeCommand()));
-		}
-		commandGroup.addSequential(new AllDoneCommand());
-		commandGroup.start();
+		autonomousCommand = null;
 		
-		m_autonomousCommand = commandGroup;
+		autonomousCommandIsStarted = false;
+		autonomousTimer.reset();
+		autonomousTimer.start();
 	}
 
 	/**
@@ -218,6 +188,62 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
+		
+		double elapsedTime = autonomousTimer.get();
+		
+		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
+		
+		// do we have game data yet?
+		if (gameMessage != null && gameMessage.length() >= 3) {
+			// yes, we do. have we calculated our autonomous?
+			if(autonomousCommand == null) {
+				// no, we don't. calculate autonomous.
+				logger.info("Game Message = {}, Delay = {}, Trust = {}, pos = {}", gameMessage,
+						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
+				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
+				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
+				
+				CommandGroup commandGroup = new CommandGroup();
+				CommandGroup unfoldandlift = new CommandGroup();
+				unfoldandlift.addSequential(new FakeCommand(1, 2, new PivotDownCommand()));
+				unfoldandlift.addSequential(new FakeCommand(1, 3, new LiftToSwitch()));
+				commandGroup.addParallel(unfoldandlift);
+				commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
+				if (whereToPutCube == WhereToPutCube.SCALE) {
+					commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
+					commandGroup.addSequential(new FakeCommand(1, 3, new AutoMoveALittleCommand()));
+				}
+				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+					commandGroup.addSequential(new FakeCommand(0.5, 1, new AutonomousPukeCubeCommand()));
+				}
+				commandGroup.addSequential(new AllDoneCommand());
+				autonomousCommand = commandGroup;
+			}
+		}
+		
+		// do we have a calculated autonomous, but we have not started it yet?
+		if(autonomousCommand != null && !autonomousCommandIsStarted) {
+			// yes. is it time to start yet?
+			int delay = delayChooser.getSelected();
+			if(elapsedTime > delay) {
+				// yes. start it.
+				logger.info("Starting {}", autonomousCommand);
+				autonomousCommand.start();
+				autonomousCommandIsStarted = true;
+			}
+		}
+		 
+		// has a long time gone without any game data?
+		if(autonomousCommand == null && elapsedTime > 10) {
+			// yes. just advance to line
+			autonomousCommand = new AutonomousBailCommand();
+			logger.info("Starting {}", autonomousCommand);
+			autonomousCommand.start();
+			autonomousCommandIsStarted = true;
+		}
+		
+		// now do autonomous stuff
 		Scheduler.getInstance().run();
 		endPeriodic();
 	}
@@ -228,8 +254,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
 		
 		processRobotModeChange(RobotMode.TELEOP);
@@ -247,8 +273,8 @@ public class Robot extends TimedRobot {
 	public void testInit() {
 		// This makes sure that the autonomous stops running when
 		// test starts running.
-		if (m_autonomousCommand != null)
-			((Command) m_autonomousCommand).cancel();
+		if (autonomousCommand != null)
+			((Command) autonomousCommand).cancel();
 		processRobotModeChange(RobotMode.TEST);
 	}
 

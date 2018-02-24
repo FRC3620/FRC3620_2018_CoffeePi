@@ -1,8 +1,7 @@
 package org.usfirst.frc.team3620.robot.commands;
 
-import java.util.Random;
-
 import org.slf4j.Logger;
+import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -15,10 +14,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutoMoveALittleCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+	Timer timer = new Timer();
+	
+	public AutoMoveALittleCommand() {
+		requires(Robot.driveSubsystem);
+	}
 	
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
+    	timer.reset();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,7 +33,7 @@ public class AutoMoveALittleCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return timer.get() > 1;
     }
 
     // Called once after isFinished returns true
