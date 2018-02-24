@@ -25,7 +25,9 @@ import org.usfirst.frc.team3620.robot.commands.LiftUp;
 import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
+import org.usfirst.frc.team3620.robot.commands.PivotDownCommandWithTrig;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
+import org.usfirst.frc.team3620.robot.commands.PivotUpCommandWithTrig;
 import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
 import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
@@ -105,6 +107,10 @@ public class OI {
 	       moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
+	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
+	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
+	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
+	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
 	       DPad dpad = new DPad(operatorJoystick, 0);
 	       dpad.up().whenActive(new PivotUpCommand());

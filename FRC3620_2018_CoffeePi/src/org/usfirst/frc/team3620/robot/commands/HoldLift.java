@@ -23,12 +23,7 @@ public class HoldLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.liftSubsystem.readEncoder() < -512) {
-    		Robot.liftSubsystem.brace(0.13);
-    	}
-    	else{
-    		Robot.liftSubsystem.brace(0.06);
-    	}
+    	Robot.liftSubsystem.brace();
   
     }
 

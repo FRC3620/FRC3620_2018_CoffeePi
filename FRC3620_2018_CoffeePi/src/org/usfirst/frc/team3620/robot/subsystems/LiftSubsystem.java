@@ -50,9 +50,14 @@ public class LiftSubsystem extends Subsystem {
 	public static double kFSpeed = .65;
 	public static double kIZoneSpeed = 0;
 	public static double peakSpeedHigh = 0.60;
+	public static double lowestSpeed = 0.03;
 	public static int positionErrorMargin = 50;
 	public static int motionMagicCruiseVel;
 	public static int motionMagicAccel;
+	public static double bracingVoltage = 0.08;
+	public static double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
+	public static double minVoltageHigh = bracingVoltage - lowestSpeed;
+	
 
 	public LiftSubsystem() {
 		super();
@@ -146,11 +151,14 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	// moves elevator motor vertSpeed
-	public void moveElevator(double joyPos) {
+	public void moveElevatorUp(double joyPos) {
 		// runs lift motor for vertSpeed
 
-		talon.set(ControlMode.PercentOutput, joyPos * peakSpeedHigh);
+		talon.set(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
 
+	}
+	public void moveElevatorDown(double joyPos) {
+		talon.set(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
 
 	public void moveElevatorTestUp(double voltage) {
@@ -232,7 +240,10 @@ public class LiftSubsystem extends Subsystem {
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
 		}
-
+		if (talon != null) {
+			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
+		}
+		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
 	}
 
 	public void setSetpoint(double positionInInches) {
@@ -288,9 +299,9 @@ public class LiftSubsystem extends Subsystem {
 		talon.set(ControlMode.PercentOutput, -speed);
 	}
 	
-	public void brace(double speed) {
+	public void brace() {
 		
-		talon.set(ControlMode.PercentOutput, speed);
+		talon.set(ControlMode.PercentOutput, bracingVoltage);
 	}
 
 }

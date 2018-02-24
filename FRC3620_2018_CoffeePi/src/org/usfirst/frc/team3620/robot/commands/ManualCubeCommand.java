@@ -29,11 +29,13 @@ public class ManualCubeCommand extends Command {
     protected void execute() {
     	double joyPos;
     	joyPos = Robot.m_oi.getCubeJoystick();
-    	if(joyPos < 0 ) {
+    	if(joyPos < -0.2 ) {
     		Robot.intakeSubsystem.pushCubeOut(-joyPos);
     	}
-    	else {
+    	else if(joyPos > 0.2) {
     		Robot.intakeSubsystem.bringCubeIn(joyPos);
+    	} else if(joyPos < 0.2 && joyPos > -0.2) {
+    		Robot.intakeSubsystem.pushCubeOut(0);
     	}
     	
     }

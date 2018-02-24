@@ -26,13 +26,13 @@ public class AutoMoveLiftDown extends Command {
     protected void execute() {
     	encoderPos = Robot.liftSubsystem.readEncoder();
     	if(encoderPos >= slowDownPoint) {
-    		Robot.liftSubsystem.moveElevator(0.04);
+    		Robot.liftSubsystem.moveElevatorDown(0.04);
     		System.out.println("Coming down at speed");
     	}
-    	else if(encoderPos < slowDownPoint && encoderPos > 512) {
-    		Robot.liftSubsystem.moveElevator(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
-    	} else if(encoderPos < 512) {
-    		Robot.liftSubsystem.brace(0);
+    	else if(encoderPos < slowDownPoint && encoderPos > -171) {
+    		Robot.liftSubsystem.moveElevatorDown(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
+    	} else if(encoderPos < -512) {
+    		Robot.liftSubsystem.brace();
     	}
     }
 
@@ -47,12 +47,12 @@ public class AutoMoveLiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.liftSubsystem.brace(0.06);
+    	Robot.liftSubsystem.brace();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.liftSubsystem.brace(0.06);
+    	Robot.liftSubsystem.brace();
     }
 }
