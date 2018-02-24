@@ -278,6 +278,11 @@ public class Robot extends TimedRobot {
 	 */
 	void processRobotModeChange(RobotMode newMode) {
 		logger.info("Switching from {} to {}", currentRobotMode, newMode);
+		
+		if (currentRobotMode == RobotMode.INIT) {
+			RobotMap.checkTheCANBus();
+		}
+		
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 
@@ -315,4 +320,5 @@ public class Robot extends TimedRobot {
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
 	}
+	
 }

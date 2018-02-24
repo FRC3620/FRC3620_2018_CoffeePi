@@ -43,31 +43,19 @@ public class DriveSubsystem extends Subsystem {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	public AHRS ahrs = null /* will set in the constructor */;
 
-    private final DifferentialDrive pWMDifferentialDrive = RobotMap.driveSubsystemPWMDifferentialDrive;
-    
     private final WPI_TalonSRX driveSubsystemTalonLeft1 = RobotMap.driveSubsystemTalonLeft1;
-    private final WPI_VictorSPX driveSubsystemVictorLeft2 = RobotMap.driveSubsystemVictorLeft2;
-    private final WPI_VictorSPX driveSubsystemVictorLeft3 = RobotMap.driveSubsystemVictorLeft3;
-    private final WPI_VictorSPX driveSubsystemVictorLeft4 = RobotMap.driveSubsystemVictorLeft4;
    
     private final WPI_TalonSRX driveSubsystemTalonRight1 = RobotMap.driveSubsystemTalonRight1;
-    private final WPI_VictorSPX driveSubsystemVictorRight2 = RobotMap.driveSubsystemVictorRight2;
-    private final WPI_VictorSPX driveSubsystemVictorRight3 = RobotMap.driveSubsystemVictorRight3;
-    private final WPI_VictorSPX driveSubsystemVictorRight4 = RobotMap.driveSubsystemVictorRight4;
     
     private final DifferentialDrive cANDifferentialDrive = RobotMap.driveSubsystemCANDifferentialDrive;
     
     private boolean reverse;
 	private boolean highGear;//for the motors
-	private boolean practice = false;//Use PWM channels on mule board(true) OR use canTalons on comp. bot.(false)
 	
 	private double turnReducer = 0.9;
     
 	public DriveSubsystem() {
 		super();               
-		if(driveSubsystemTalonLeft1 == null) {
-			practice = true;
-		}
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		ahrs.enableLogging(false);
 	}
@@ -84,14 +72,6 @@ public class DriveSubsystem extends Subsystem {
     	setDefaultCommand(new TeleOpDriveCommand());
     }
 
-	public void useWPMdrive() {
-		practice = true;
-	}
-	
-	public void useCANdrive() {
-		practice = false;
-	}
-	
 	private double lowerLimit(double value, double lowerLimit) {//This function removes low input values to insure low voltage don't fidget the motors
 		if(Math.abs(value)<=lowerLimit) {
 			return(0.0);
@@ -105,57 +85,41 @@ public class DriveSubsystem extends Subsystem {
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
-		speed=lowerLimit(speed, 0.2)*getSpeedModifier();
-		turn=lowerLimit(turn, 0.1)*getSpeedModifier();
-		double r2 = turn * turn * turnReducer;
-		if (turn < 0) {
-			r2 = -r2;
-		}
-		if(practice) {
-			pWMDifferentialDrive.arcadeDrive(-speed, r2, true);
-		} else {
-			pWMDifferentialDrive.stopMotor();
+		if (cANDifferentialDrive != null) {
+			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
+			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
+			double r2 = turn * turn * turnReducer;
+			if (turn < 0) {
+				r2 = -r2;
+			}
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
 	
 	public void teleOpDriveTransmitter(double speed,double turn) {
-		speed=lowerLimit(speed, 0.2)*getSpeedModifier();
-		turn=lowerLimit(turn, 0.1)*getSpeedModifier();
-		if(practice) {
-			pWMDifferentialDrive.arcadeDrive(-speed, turn, false);
-		} else {
-			pWMDifferentialDrive.stopMotor();
+		if (cANDifferentialDrive != null) {
+			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
+			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
 			cANDifferentialDrive.arcadeDrive(-speed, turn, false);
 		}
 	}
 
 	public void autoDrive(double speed,double turn) {
-		if(practice) {
-			pWMDifferentialDrive.arcadeDrive(speed, turn);
-		} else {
-			pWMDifferentialDrive.stopMotor();
+		if (cANDifferentialDrive != null) {
 			cANDifferentialDrive.arcadeDrive(speed, turn);
 		}
 	}
 	
 	public void autoDriveTank(double left, double right) {
-		left *= getSpeedModifier();
-		right *= getSpeedModifier();
-		if(practice) {
-			pWMDifferentialDrive.tankDrive(left, right, false);
-		}
-		else {
-			pWMDifferentialDrive.stopMotor();
+		if (cANDifferentialDrive != null) {
+			left *= getSpeedModifier();
+			right *= getSpeedModifier();
 			cANDifferentialDrive.tankDrive(left, right, false);
 		}
 	}
 	
 	public void autoDriveNoSquared(double speed,double turn) {
-		if(practice) {
-			pWMDifferentialDrive.arcadeDrive(speed, turn, false);
-		} else {
-			pWMDifferentialDrive.stopMotor();
+		if (cANDifferentialDrive != null) {
 			cANDifferentialDrive.arcadeDrive(speed, turn, false);
 		}
 	}
@@ -188,23 +152,12 @@ public class DriveSubsystem extends Subsystem {
 	}
 	
 	public int readLeftEncRaw() {
-		if (driveSubsystemTalonLeft1 != null) {
-		    //return -1 * driveSubsystemTalonLeft1.getSensorCollection().getQuadraturePosition();
-		    return RobotMap.driveSubsystemLeftEncoder.getRaw();
-		}
-		else {
-			return 0;
-		}
+	    //return -1 * driveSubsystemTalonLeft1.getSensorCollection().getQuadraturePosition();
+	    return RobotMap.driveSubsystemLeftEncoder.getRaw();
 	}
     
 	public int readRightEncRaw() {
-		if (driveSubsystemTalonRight1 != null) {
-		    //return driveSubsystemTalonRight1.getSensorCollection().getQuadraturePosition();
-		    return RobotMap.driveSubsystemRightEncoder.getRaw();
-		}
-		else {
-			return 0;
-		}
+	    return RobotMap.driveSubsystemRightEncoder.getRaw();
 	}
 	
     public void resetNavX() {
@@ -307,16 +260,12 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-    	
-        SmartDashboard.putNumber("Current Draw on Left Talon 1: ", driveSubsystemTalonLeft1.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 2: ", driveSubsystemVictorLeft2.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 3: ", driveSubsystemVictorLeft3.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Left Victor 4: ", driveSubsystemVictorLeft4.getOutputCurrent());
-        
-        SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 2: ", driveSubsystemVictorRight2.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 3: ", driveSubsystemVictorRight3.getOutputCurrent());
-        SmartDashboard.putNumber("Current Draw on Right Victor 4: ", driveSubsystemVictorRight4.getOutputCurrent());
+    	if (driveSubsystemTalonLeft1 != null) {
+    		SmartDashboard.putNumber("Current Draw on Left Talon 1: ", driveSubsystemTalonLeft1.getOutputCurrent());
+    	}
+    	if (driveSubsystemTalonRight1 != null) {
+    		SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
+    	}
     }
     
 

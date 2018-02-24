@@ -94,18 +94,6 @@ public class EventLogging {
     }
 
     /**
-     * Write an error message to the DriverStation.
-     * 
-     * @param message
-     *            Message to log.
-     */
-    public static final void writeErrorToDS(String message) {
-        if (DriverStation.getInstance().isDSAttached()) {
-        	DriverStation.reportError(message, false);
-        }
-    }
-
-    /**
      * Create a String representation of an Exception.
      * 
      * @param t

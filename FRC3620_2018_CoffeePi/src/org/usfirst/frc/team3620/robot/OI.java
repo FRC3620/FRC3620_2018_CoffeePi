@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team3620.robot;
 
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
 import org.usfirst.frc.team3620.robot.commands.AutonomousCenter;
 import org.usfirst.frc.team3620.robot.commands.AutonomousLeft;
 import org.usfirst.frc.team3620.robot.commands.AutonomousRight;
@@ -20,6 +22,7 @@ import org.usfirst.frc.team3620.robot.commands.LiftShiftLowGear;
 import org.usfirst.frc.team3620.robot.commands.LiftToHome;
 import org.usfirst.frc.team3620.robot.commands.LiftToScale;
 import org.usfirst.frc.team3620.robot.commands.LiftUp;
+import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
 import org.usfirst.frc.team3620.robot.commands.OutakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
 import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
@@ -38,6 +41,7 @@ import org.usfirst.frc.team3620.robot.paths.Path_RightStart_LeftScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.TestPoints;
+import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 
 
@@ -98,13 +102,16 @@ public class OI {
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whileHeld(new PivotDownCommand());
 	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	       moveLiftUp.whileHeld(new LiftUp());
+	       moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
-	       moveLiftDown.whileHeld(new LiftDown());
+	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       
 	       DPad dpad = new DPad(operatorJoystick, 0);
 	       dpad.up().whenActive(new PivotUpCommand());
 	       dpad.down().whenActive(new PivotDownCommand());
+	       
+	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
+	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
 	       
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
