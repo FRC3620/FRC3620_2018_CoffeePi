@@ -27,9 +27,12 @@ public class AutoMoveLiftDown extends Command {
     	encoderPos = Robot.liftSubsystem.readEncoder();
     	if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.moveElevator(0.04);
+    		System.out.println("Coming down at speed");
     	}
-    	else if(encoderPos < slowDownPoint) {
+    	else if(encoderPos < slowDownPoint && encoderPos > 512) {
     		Robot.liftSubsystem.moveElevator(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
+    	} else if(encoderPos < 512) {
+    		Robot.liftSubsystem.brace(0);
     	}
     }
 

@@ -32,19 +32,24 @@ public class AutoMoveLiftUp extends Command {
     	encoderPos = Robot.liftSubsystem.readEncoder();
     	if(encoderPos <= 512) {
     		Robot.liftSubsystem.moveElevator(1/Math.cosh(((encoderPos - 512)/-233.38)));
+    		System.out.println("We're accelerating to Speed");
     	} else if(encoderPos > 512 && encoderPos < slowDownPoint) {
     		Robot.liftSubsystem.moveElevator(1);
+    		System.out.println("At Cruise Altitude and Speed");
     	} else if(encoderPos >= slowDownPoint && encoderPos < requestedEncoderPos) {
     		Robot.liftSubsystem.moveElevator(1/Math.cosh(((encoderPos - requestedEncoderPos)/281.32)));
+    		System.out.println("Nearing Destination");
     	} else if(encoderPos >= requestedEncoderPos) {
     		Robot.liftSubsystem.brace(0.13);
+    		System.out.println("We overshot.");
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.readEncoder() > 4949 || Robot.liftSubsystem.isTopLimitDepressed()) {
+    	if(Robot.liftSubsystem.readEncoder() > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed()) {
     		Robot.liftSubsystem.brace(0.13);
+    		System.out.println("Exiting Moving UP");
     		return true;
     	}
     	else{
