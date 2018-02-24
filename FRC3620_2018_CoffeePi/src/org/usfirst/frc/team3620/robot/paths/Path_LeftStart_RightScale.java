@@ -19,14 +19,19 @@ public class Path_LeftStart_RightScale extends AbstractPath {
 	}
 	
 	@Override
-	double getPathfinderP() {
+	double getPathfinderGenVelocityMultiplier() {
 		// TODO Auto-generated method stub
-		return 0.001;
+		return 0.6;
 	}
-	
-	@Override
-	double getPathfinderSpeedMultiplier() {
-		// TODO Auto-generated method stub
-		return 0.5;
-	}
+//	@Override
+//	double getPathfinderP() {
+//		// TODO Auto-generated method stub
+//		return 0.001;
+//	}
+//	
+//	@Override
+//	double getPathfinderOutputMultiplier() {
+//		// TODO Auto-generated method stub
+//		return 0.5;
+//	}
 }

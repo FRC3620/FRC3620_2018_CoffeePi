@@ -116,8 +116,9 @@ public class OI {
 //	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
 	       SmartDashboard.putData("TestPoints Auto", new TestPoints());
            SmartDashboard.putData("Center start, left switch", new Path_CenterStart_LeftSwitch());
-//           SmartDashboard.putData("Center start, right switch", new Path_CenterStart_RightSwitch());
+           SmartDashboard.putData("Center start, right switch", new Path_CenterStart_RightSwitch());
            SmartDashboard.putData("Left start, left scale", new Path_LeftStart_LeftScale());
+           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
            SmartDashboard.putData("Left start, right scale", new Path_LeftStart_RightScale());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());

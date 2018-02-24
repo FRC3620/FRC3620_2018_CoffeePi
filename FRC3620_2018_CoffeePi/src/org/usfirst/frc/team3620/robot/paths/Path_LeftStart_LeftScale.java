@@ -22,7 +22,7 @@ public class Path_LeftStart_LeftScale extends AbstractPath {
 	}
 	
 	@Override
-	double getPathfinderSpeedMultiplier() {
+	double getPathfinderOutputMultiplier() {
 		// TODO Auto-generated method stub
 		return 0.5;
 	}

@@ -23,7 +23,7 @@ public class Path_CenterStart_LeftSwitch extends AbstractPath {
 	}
 	
 	@Override
-	double getPathfinderSpeedMultiplier() {
+	double getPathfinderOutputMultiplier() {
 		// TODO Auto-generated method stub
 		return 0.5;
 	}
