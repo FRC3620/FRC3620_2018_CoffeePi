@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3620.robot.autonomous;
+package org.usfirst.frc.team3620.robot.commands;
 
 import java.util.Random;
 
@@ -12,24 +12,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class FakeCommand extends Command {
+public class AutoMoveALittleCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-	Timer timer = new Timer();
-	double delay; 
-	String name;
-
-    public FakeCommand(double ll, double ul, Command realCommand) {
-    	name = realCommand.getClass().getName();
-    	delay = ll + ( (new Random()).nextDouble()*(ul-ll));
-    }
-
     // Called just before this Command runs the first time
     protected void initialize() {
-    	logger.info("fake command {} initialize", name);
-    	timer.reset();
-    	timer.start();
+    	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,17 +27,17 @@ public class FakeCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > delay;
+        return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("fake command {} end", name);
+    	EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("fake command {} interrupted", name);
+    	EventLogging.commandMessage(logger);
     }
 }

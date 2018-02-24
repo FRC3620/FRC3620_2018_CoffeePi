@@ -18,8 +18,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
+import org.usfirst.frc.team3620.robot.autonomous.AllDoneCommand;
+import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
-import org.usfirst.frc.team3620.robot.autonomous.PathPicker;
+import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
+import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -62,6 +65,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
+	
 	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Boolean> trustChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Integer> delayChooser = new AverageSendableChooser2018<>();
@@ -185,39 +189,24 @@ public class Robot extends TimedRobot {
 		
 		AutonomousDelayCommand delayCommand = new AutonomousDelayCommand(delay);
 
-		Class<? extends Command> chosenOne = AutonomousDescriptorMaker.pickFirstPath(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-		logger.info("chosen path = {} ", chosenOne);
-		Command chosen = null;
-		try {
-			chosen = (Command) chosenOne.newInstance();
-			//chosen.start();
-		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
+		WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+		logger.info("autonomous descriptor = {} ", autonomousDescriptor);
 		
 		CommandGroup commandGroup = new CommandGroup();
-		commandGroup.addSequential(delayCommand);
-		if (chosen != null) {
-			commandGroup.addSequential(chosen);
+		commandGroup.addParallel(new FakeCommand(1, 3, new LiftToSwitch()));
+		commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
+		if (whereToPutCube == WhereToPutCube.SCALE) {
+			commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
+			commandGroup.addSequential(new FakeCommand(1, 3, new AutoMoveALittleCommand()));
 		}
-	
-		commandGroup.addSequential(new AutonomousPukeCubeCommand());
-		
+		if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+			commandGroup.addSequential(new FakeCommand(0.5, 1, new AutonomousPukeCubeCommand()));
+		}
+		commandGroup.addSequential(new AllDoneCommand());
 		commandGroup.start();
 		
-		//autoCommand.start();
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
+		m_autonomousCommand = commandGroup;
 	}
 
 	/**
