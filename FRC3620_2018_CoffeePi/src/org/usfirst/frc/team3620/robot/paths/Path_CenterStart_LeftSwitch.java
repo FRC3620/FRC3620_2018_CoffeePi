@@ -5,6 +5,7 @@ import jaci.pathfinder.Waypoint;
 
 public class Path_CenterStart_LeftSwitch extends AbstractPath {
 
+	//Status: tested
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
