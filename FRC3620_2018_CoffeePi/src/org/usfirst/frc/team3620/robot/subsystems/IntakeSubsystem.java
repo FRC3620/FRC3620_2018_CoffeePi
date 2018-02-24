@@ -11,6 +11,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -46,9 +47,14 @@ public class IntakeSubsystem extends Subsystem {
 	public static double kIZoneSpeed = 0;
 	public static int peakSpeedHigh = 0;
 	public static int positionErrorMargin = 50;
-	public static int motionMagicCruiseVel;
-	public static int motionMagicAccel;
-
+	public int motionMagicCruiseVel;
+	public int motionMagicAccel;
+	public int topSetPoint = 0;
+	public int bottomSetPoint = 0;
+	public int ZeroDegPoint = 0;
+	public int ninetyDegPoint = 0;
+	
+	
 	public IntakeSubsystem() {
 		super();
 
@@ -61,7 +67,22 @@ public class IntakeSubsystem extends Subsystem {
 		// Setting feedback device type
 		intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 		intakePivot.setSensorPhase(true);
+		intakePivot.setNeutralMode(NeutralMode.Brake);
+		
+		//TODO come up with a method to check if encoder is valid and calibrate it
+		if (true) {		//change this condition for something to check if the the arm is calibrated
+			
+			isEncoderValid = true;
+			resetEncoder();
+			
+		}
 
+	}
+	
+	public boolean isEncoderValid;
+	
+	public boolean getEncoderIsValid(){
+		return isEncoderValid;
 	}
 	
 	public double readEncoder() {
@@ -97,6 +118,16 @@ public class IntakeSubsystem extends Subsystem {
 		intakePivot.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
 		
 	}
+	
+	public void moveToSetpoint(int position) {
+		
+		if (isEncoderValid) {
+			if (intakePivot != null) {
+				intakePivot.set(ControlMode.Position, position);
+			}
+		}
+		
+	}
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -128,7 +159,8 @@ public class IntakeSubsystem extends Subsystem {
    public void pivotUp(double speed){
 	   if(intakePivot != null) {
 		   intakePivot.set(ControlMode.PercentOutput, speed);
-	   } else {
+	   } else { 
+		   
 		  logger.info("Tried to pivot up - no CANTalons!");
 	   }
    }
