@@ -117,6 +117,7 @@ public class OI {
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
+	       SmartDashboard.putData("ResetPivotEncoder", new ResetLiftEncoderCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
