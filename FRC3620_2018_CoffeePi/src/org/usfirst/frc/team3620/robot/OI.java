@@ -31,7 +31,6 @@ import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearHighCommand;
 import org.usfirst.frc.team3620.robot.commands.SetDriveGearLowCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
-import org.usfirst.frc.team3620.robot.paths.Path_1_E;
 import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_LeftSwitch;
 import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_LeftScaleEnd;

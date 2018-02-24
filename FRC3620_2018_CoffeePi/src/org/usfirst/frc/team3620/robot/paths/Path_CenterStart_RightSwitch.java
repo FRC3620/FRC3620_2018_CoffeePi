@@ -5,13 +5,13 @@ import jaci.pathfinder.Waypoint;
 
 public class Path_CenterStart_RightSwitch extends AbstractPath {
 
-	//Status: not tested
+	//Status: WORKS
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
 				new Waypoint(1.58, 13.083, Pathfinder.d2r(0)),
-				new Waypoint(5.75, 10.83, Pathfinder.d2r(-70)),
-				new Waypoint(9.92, 8.58, Pathfinder.d2r(0)),
+				new Waypoint(6.52, 11.08, Pathfinder.d2r(-70)),
+				new Waypoint(11.46, 8.58, Pathfinder.d2r(0)),
 		};
 	}
 	@Override
