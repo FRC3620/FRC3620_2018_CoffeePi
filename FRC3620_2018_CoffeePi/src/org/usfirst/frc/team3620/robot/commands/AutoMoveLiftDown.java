@@ -3,11 +3,14 @@ package org.usfirst.frc.team3620.robot.commands;
 import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.slf4j.Logger;
 /**
  *
  */
 public class AutoMoveLiftDown extends Command {
+	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double slowDownPoint;
     public AutoMoveLiftDown() {
@@ -19,6 +22,7 @@ public class AutoMoveLiftDown extends Command {
     // Called just before this Command runs the first time
 	//1440 ticks = 16.875 inches
     protected void initialize() {
+    	logger.info("Starting AutoMoveLiftDown Command");
     	slowDownPoint = 1024;
     }
 
@@ -47,12 +51,14 @@ public class AutoMoveLiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	logger.info("Ending AutoMoveLiftDown Command");
     	Robot.liftSubsystem.brace();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	logger.info("Interrupting AutoMoveLiftDown Command");
     	Robot.liftSubsystem.brace();
     }
 }
