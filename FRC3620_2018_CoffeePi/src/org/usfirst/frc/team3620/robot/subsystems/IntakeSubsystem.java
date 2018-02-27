@@ -69,12 +69,8 @@ public class IntakeSubsystem extends Subsystem {
 			// Setting feedback device type
 			intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			intakePivot.setSensorPhase(true);
+			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
-		
-		// Setting feedback device type
-		intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		intakePivot.setSensorPhase(true);
-		intakePivot.setNeutralMode(NeutralMode.Brake);
 		
 		//set starting angle position
 		startingPivotAngle = 90-(encoderAt90*(180/encoderAt180));

@@ -7,6 +7,8 @@ import java.util.logging.LogRecord;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class DriverStationLoggingHandler extends Handler {
+	int sequence = 1;
+	
 	DriverStationFormatter formatter = new DriverStationFormatter();
     public DriverStationLoggingHandler() {
 		super();
@@ -21,7 +23,8 @@ public class DriverStationLoggingHandler extends Handler {
 		} else if (level >= Level.WARNING.intValue()) {
 			DriverStation.reportWarning(s, false);
 		} else {
-			System.out.print(s);
+			System.out.print("" + sequence + " " + s);
+			sequence++;
 		}
     }
 
