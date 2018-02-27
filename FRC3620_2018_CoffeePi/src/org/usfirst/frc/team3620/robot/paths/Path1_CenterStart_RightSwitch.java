@@ -3,9 +3,9 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class Path_CenterStart_RightSwitch extends AbstractPath {
+public class Path1_CenterStart_RightSwitch extends AbstractPath {
 
-	//Status: WORKS
+	//Status: tested
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {

@@ -3,8 +3,9 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class Path_LeftStart_RightScaleSide extends AbstractPath {
+public class Path1_LeftStart_RightScaleEnd extends AbstractPath {
 
+	//Status: not tested, unfinished (start point)
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
