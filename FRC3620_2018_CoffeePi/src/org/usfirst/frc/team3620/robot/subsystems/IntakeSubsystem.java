@@ -60,6 +60,7 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public IntakeSubsystem() {
 		super();
+		logger.info("Initializing intake subsystem");
 		if(intakePivot != null) {
 			intakePivot.config_kF(kSpeedPIDLoopIdx, kFSpeed, kTimeoutMs);
 			intakePivot.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
@@ -68,22 +69,19 @@ public class IntakeSubsystem extends Subsystem {
 
 			// Setting feedback device type
 			intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-			intakePivot.setSensorPhase(true);
+			intakePivot.setSensorPhase(false);
+			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
-		
-		// Setting feedback device type
-		intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		intakePivot.setSensorPhase(true);
-		intakePivot.setNeutralMode(NeutralMode.Brake);
 		
 		//set starting angle position
 		startingPivotAngle = 90-(encoderAt90*(180/encoderAt180));
 		logger.info("Starting pivot angle = " + startingPivotAngle);
 		
 		//TODO come up with a method to check if encoder is valid and calibrate it
-		if (true) {		//change this condition for something to check if the the arm is calibrated
+		if (homeButtonIsPressed()) {		//change this condition for something to check if the the arm is calibrated
 			
 			isEncoderValid = true;
+			logger.info("Pivot home, reseting encoder");
 			resetEncoder();
 			
 			
@@ -117,7 +115,7 @@ public class IntakeSubsystem extends Subsystem {
 	public void resetEncoder() {
 		if(intakePivot != null) {
 			int sensorPos = 0;
-			intakePivot.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+			intakePivot.setSelectedSensorPosition(sensorPos, 0, 10);
 			logger.info("Resetting Encoder!");
 		}
 	}
