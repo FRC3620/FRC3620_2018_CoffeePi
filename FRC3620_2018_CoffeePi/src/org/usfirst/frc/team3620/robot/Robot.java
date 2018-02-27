@@ -321,6 +321,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("NavX", driveSubsystem.getAngle());
     	SmartDashboard.putNumber("Left Encoder", Robot.driveSubsystem.readLeftEncRaw() );
     	SmartDashboard.putNumber("Right Encoder", Robot.driveSubsystem.readRightEncRaw() );
+    	
+    	liftSubsystem.beginPeriodic();
 
 		// don't need to do anything
 	}
@@ -329,6 +331,7 @@ public class Robot extends TimedRobot {
 		// if some subsystems need to get called in all modes at the end
 		// of periodic, do it here
 		//gearSubsystem.updateDashboard();
+    	liftSubsystem.endPeriodic();
 
 		// and log data!
 		updateDashboard();
