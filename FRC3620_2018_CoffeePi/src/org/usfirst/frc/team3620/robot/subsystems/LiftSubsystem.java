@@ -98,7 +98,7 @@ public class LiftSubsystem extends Subsystem {
 	// reads encoder
 	public int readEncoder() {
 		if (talon != null) {
-			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+			int encoderPos = talon.getSelectedSensorPosition(kSpeedPIDLoopIdx);
 			return encoderPos;
 		}
 		return 0;
@@ -163,7 +163,7 @@ public class LiftSubsystem extends Subsystem {
 
 	public boolean isAtScale() {
 		if (talon != null) {
-			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+			int encoderPos = readEncoder();
 			if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
 				return true;
 			} else {
@@ -285,18 +285,26 @@ public class LiftSubsystem extends Subsystem {
 	void setLiftTalon(ControlMode controlMode, double value) {
 		if (talon != null) {
 			talon.set(controlMode, value);
-			CommandRecord commandRecord = new CommandRecord(controlMode, value);
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			StackTraceElement command = stackTrace[2];
+			CommandRecord commandRecord = new CommandRecord(controlMode, value, command);
 			recording.add(commandRecord);
 		}
 	}
 	
 	public class CommandRecord {
-		public CommandRecord(ControlMode controlMode, double value) {
+		public CommandRecord(ControlMode controlMode, double value, StackTraceElement where) {
 			this.controlMode = controlMode;
 			this.value = value;
+			this.where = where;
 		}
 		ControlMode controlMode;
 		double value;
+		StackTraceElement where;
+		@Override
+		public String toString() {
+			return "CommandRecord [controlMode=" + controlMode + ", value=" + value + ", where = " + where.getClassName() + "." + where.getMethodName() + "()]";
+		}
 	}
 	
 	List<CommandRecord> recording = new ArrayList<>();
