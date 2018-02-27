@@ -98,7 +98,7 @@ public class LiftSubsystem extends Subsystem {
 	// reads encoder
 	public int readEncoder() {
 		if (talon != null) {
-			int encoderPos = talon.getSelectedSensorPosition(kSpeedPIDLoopIdx);
+			int encoderPos = -(talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
 		}
 		return 0;
@@ -143,13 +143,8 @@ public class LiftSubsystem extends Subsystem {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
 
-	public void moveElevatorTestUp(double voltage) {
-		setLiftTalon(ControlMode.PercentOutput, voltage);
-	}
-
-	public void moveElevatorTestDown(double voltage) {
-		setLiftTalon(ControlMode.PercentOutput, voltage);
-	}
+	
+	
 
 	public void setElevatorVelocity(double speed) {
 		setLiftTalon(ControlMode.Velocity, speed);
@@ -278,7 +273,7 @@ public class LiftSubsystem extends Subsystem {
 			setLiftTalon(ControlMode.PercentOutput, -speed);
 	}
 	
-	public void brace() {
+	public void brace(double addedBangBangPower) {
 			setLiftTalon(ControlMode.PercentOutput, bracingVoltage);
 	}
 	
@@ -286,9 +281,10 @@ public class LiftSubsystem extends Subsystem {
 		if (talon != null) {
 			talon.set(controlMode, value);
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			StackTraceElement command = stackTrace[2];
+			StackTraceElement command = stackTrace[3];
 			CommandRecord commandRecord = new CommandRecord(controlMode, value, command);
 			recording.add(commandRecord);
+			lastPower = value;
 		}
 	}
 	
@@ -308,6 +304,7 @@ public class LiftSubsystem extends Subsystem {
 	}
 	
 	List<CommandRecord> recording = new ArrayList<>();
+	double lastPower = 0;
 	
 	public void beginPeriodic() {
 	    recording.clear();	
@@ -317,6 +314,14 @@ public class LiftSubsystem extends Subsystem {
 		if (recording.size() > 1) {
 			logger.warn ("lift got set too much: {}", recording);
 		}
+		//System.out.println (recording + " " /* + getCurrentPower() */);
 		
 	}
+	
+/*	double getCurrentPower() {
+		if (talon != null) {
+			return talon.get();
+		}
+		return 0;
+	} */
 }

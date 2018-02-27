@@ -36,7 +36,7 @@ public class AutoMoveLiftDown extends Command {
     	else if(encoderPos < slowDownPoint && encoderPos > -171) {
     		Robot.liftSubsystem.moveElevatorDown(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
     	} else if(encoderPos < -512) {
-    		Robot.liftSubsystem.brace();
+    		
     	}
     }
 
@@ -52,13 +52,12 @@ public class AutoMoveLiftDown extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	logger.info("Ending AutoMoveLiftDown Command");
-    	Robot.liftSubsystem.brace();
-    }
+    	    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	logger.info("Interrupting AutoMoveLiftDown Command");
-    	Robot.liftSubsystem.brace();
+    	
     }
 }

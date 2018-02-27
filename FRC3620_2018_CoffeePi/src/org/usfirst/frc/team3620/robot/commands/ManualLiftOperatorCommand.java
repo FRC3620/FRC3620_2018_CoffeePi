@@ -46,12 +46,12 @@ public class ManualLiftOperatorCommand extends Command {
     protected boolean isFinished() {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
-    		Robot.liftSubsystem.brace();
+    		
     		return true;
     	}
     	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
     		System.out.println("Top Switch just got pushed.");
-    		Robot.liftSubsystem.brace();
+    		
     		return true;
     	}
     	else {
