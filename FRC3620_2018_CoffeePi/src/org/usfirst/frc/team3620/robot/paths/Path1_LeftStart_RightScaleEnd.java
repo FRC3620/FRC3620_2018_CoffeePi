@@ -3,6 +3,9 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
+//TODO Finish me!
+//TODO Test me!
+
 public class Path1_LeftStart_RightScaleEnd extends AbstractPath {
 
 	//Status: not tested, unfinished (start point)
@@ -21,18 +24,15 @@ public class Path1_LeftStart_RightScaleEnd extends AbstractPath {
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		// TODO Auto-generated method stub
 		return 0.6;
 	}
 //	@Override
 //	double getPathfinderP() {
-//		// TODO Auto-generated method stub
 //		return 0.001;
 //	}
 //	
 //	@Override
 //	double getPathfinderOutputMultiplier() {
-//		// TODO Auto-generated method stub
 //		return 0.5;
 //	}
 }

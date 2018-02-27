@@ -3,9 +3,12 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
+//TODO Finish me!
+//TODO Test me!
+
 public class Path1_RightStart_RightScaleEnd extends AbstractPath {
 
-	//Status: untested
+	//Status: Not tested
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
