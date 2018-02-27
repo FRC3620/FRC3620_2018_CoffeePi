@@ -113,8 +113,8 @@ public class OI {
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
 	       DPad dpad = new DPad(operatorJoystick, 0);
-	       dpad.up().whenActive(new PivotUpCommand());
-	       dpad.down().whenActive(new PivotDownCommand());
+	       dpad.up().whenActive(new PivotUpCommandWithTrig());
+	       dpad.down().whenActive(new PivotDownCommandWithTrig());
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());

@@ -50,13 +50,16 @@ public class IntakeSubsystem extends Subsystem {
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
 	public int homeSetPoint = 0;
-	public int bottomSetPoint = 0;
-	public double encoderAt180 = 0;
-	public double encoderAt90 = 0;
+	public int bottomSetPoint = 1330;
+	public double encoderAt180 = 1050;
+	public double encoderAt90 = 350;
 	public double startingPivotAngle;
 	public double pivotAngle;
-	public double maxPivotSpeed = 0;
-	public double encoderErrorMargin = 0;
+	public double maxPivotSpeed = 0.2;
+	public double encoderErrorMargin = 50;
+	public double pivotAngleDeg;
+	public double cosMultiplier;
+	public double finalSpeed;
 	
 	public IntakeSubsystem() {
 		super();
@@ -106,7 +109,8 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public double readEncoder() {
 		if(intakePivot != null) {
-			int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
+			//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
+			int encoderPos = intakePivot.getSelectedSensorPosition(kSpeedPIDLoopIdx);
 			return encoderPos;
 		}
 		return 0;
@@ -114,8 +118,8 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public void resetEncoder() {
 		if(intakePivot != null) {
-			int sensorPos = 0;
-			intakePivot.setSelectedSensorPosition(sensorPos, 0, 10);
+
+			intakePivot.setSelectedSensorPosition(kSpeedPIDLoopIdx, 0, 10);
 			logger.info("Resetting Encoder!");
 		}
 	}
@@ -228,10 +232,14 @@ public class IntakeSubsystem extends Subsystem {
    
    public void findPivotAngle() {
 	   double encoderPositon = readEncoder();
-	   double pivotAngleDeg = (encoderPositon * (180/encoderAt180)) + startingPivotAngle;
+	   pivotAngleDeg = (encoderPositon * (180/encoderAt180)) + startingPivotAngle;
 	   pivotAngle = pivotAngleDeg * (Math.PI/180); //in radians
-	   logger.info("Pivot Angle is = " + pivotAngle + " radians, or " + pivotAngleDeg + " degrees.");
+	   SmartDashboard.putNumber("Pivot Angle in radians", pivotAngle);
 	   	   
+   }
+   public void findFinalSpeed() {
+	   cosMultiplier = Math.cos(pivotAngle);
+	   finalSpeed = maxPivotSpeed * cosMultiplier;
    }
    
    public void trigonPivotDown() {
@@ -239,8 +247,7 @@ public class IntakeSubsystem extends Subsystem {
 		   if (homeButtonIsPressed() == false) {
 			   if (readEncoder() < bottomSetPoint) {
 				   findPivotAngle();
-				   double cosMultiplier = Math.cos(pivotAngle);
-				   double finalSpeed = maxPivotSpeed * cosMultiplier;
+				   findFinalSpeed();
 				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
 				   isEncoderValid = false;
 			   }
@@ -262,8 +269,7 @@ public class IntakeSubsystem extends Subsystem {
 		   if (isEncoderValid) {
 			   if (readEncoder() > homeSetPoint + encoderErrorMargin) {
 				   findPivotAngle();
-				   double cosMultiplier = Math.cos(pivotAngle);
-				   double finalSpeed = maxPivotSpeed * cosMultiplier;
+				   findFinalSpeed();
 				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
 			   }
 			   else {
@@ -284,6 +290,12 @@ public class IntakeSubsystem extends Subsystem {
 	   if (intakePivot != null) {
 		   SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
 		   SmartDashboard.putNumber("Pivot Encoder Position: ", readEncoder());
+		   findPivotAngle();
+		   findFinalSpeed();
+		   SmartDashboard.putNumber("Pivot Angle in radians", pivotAngle);
+		   SmartDashboard.putNumber("Pivot Angle in degrees", pivotAngleDeg);
+		   SmartDashboard.putNumber("Cosine multipliers", cosMultiplier);
+		   SmartDashboard.putNumber("Final Speed", finalSpeed);
 	   }
    }
    
