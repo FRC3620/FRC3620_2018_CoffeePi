@@ -65,13 +65,8 @@ public class IntakeSubsystem extends Subsystem {
 			// Setting feedback device type
 			intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			intakePivot.setSensorPhase(true);
+			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
-		
-		// Setting feedback device type
-		intakePivot.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		intakePivot.setSensorPhase(true);
-		intakePivot.setNeutralMode(NeutralMode.Brake);
-		
 		//TODO come up with a method to check if encoder is valid and calibrate it
 		if (true) {		//change this condition for something to check if the the arm is calibrated
 			
