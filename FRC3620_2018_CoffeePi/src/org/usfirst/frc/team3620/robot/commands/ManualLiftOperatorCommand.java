@@ -30,6 +30,7 @@ public class ManualLiftOperatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	joyPos = Robot.m_oi.getLiftJoystick();
+    	logger.info("" + joyPos);
     	if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
     		Robot.liftSubsystem.moveElevatorUp(-joyPos);
 //    		System.out.println("Moving Lift Up");
@@ -46,12 +47,12 @@ public class ManualLiftOperatorCommand extends Command {
     protected boolean isFinished() {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
-    		Robot.liftSubsystem.brace();
+    		
     		return true;
     	}
     	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
     		System.out.println("Top Switch just got pushed.");
-    		Robot.liftSubsystem.brace();
+    		
     		return true;
     	}
     	else {

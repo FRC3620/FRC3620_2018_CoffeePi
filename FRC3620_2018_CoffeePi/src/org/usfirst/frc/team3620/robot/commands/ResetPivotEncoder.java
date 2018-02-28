@@ -17,11 +17,15 @@ public class ResetPivotEncoder extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	System.out.println("We're running y'all.");
+    	Robot.intakeSubsystem.resetEncoder();
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intakeSubsystem.resetEncoder();
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
