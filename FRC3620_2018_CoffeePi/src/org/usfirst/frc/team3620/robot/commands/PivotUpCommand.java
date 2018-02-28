@@ -31,7 +31,7 @@ public class PivotUpCommand extends Command {
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
     //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotUp(0.3);
+    		Robot.intakeSubsystem.pivotUp(0.4);
     	//}
     /*	else {
     		Robot.intakeSubsystem.pivotUp(0);

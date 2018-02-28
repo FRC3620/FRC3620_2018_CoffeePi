@@ -51,8 +51,8 @@ public class IntakeSubsystem extends Subsystem {
 	public int motionMagicAccel;
 	public int homeSetPoint = 0;
 	public int bottomSetPoint = 1330;
-	public double encoderAt180 = 1050;
-	public double encoderAt90 = 350;
+	public double encoderAt180 = 1250;
+	public double encoderAt90 = 730;
 	public double startingPivotAngle;
 	public double pivotAngle;
 	public double maxPivotSpeed = 0.2;
@@ -119,7 +119,7 @@ public class IntakeSubsystem extends Subsystem {
 	public void resetEncoder() {
 		if(intakePivot != null) {
 
-			intakePivot.setSelectedSensorPosition(kSpeedPIDLoopIdx, 0, 10);
+			intakePivot.setSelectedSensorPosition(0, kSpeedPIDLoopIdx, 10);
 			logger.info("Resetting Encoder!");
 		}
 	}
@@ -147,7 +147,7 @@ public class IntakeSubsystem extends Subsystem {
 		
 		if (isEncoderValid) {
 			if (intakePivot != null) {
-				if(readEncoder()< position) { 
+				if(readEncoder()< position) {
 					intakePivot.set(ControlMode.Position, position);
 				}
 			}

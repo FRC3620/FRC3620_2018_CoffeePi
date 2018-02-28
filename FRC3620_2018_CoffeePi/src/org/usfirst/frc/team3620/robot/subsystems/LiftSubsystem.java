@@ -50,7 +50,7 @@ public class LiftSubsystem extends Subsystem {
 	public static double kFSpeed = .65;
 	public static double kIZoneSpeed = 0;
 	public static double peakSpeedHigh = 0.60;
-	public static double lowestSpeed = 0.03;
+	public static double lowestSpeed = 0.038123;
 	public static int positionErrorMargin = 50;
 	public static int motionMagicCruiseVel;
 	public static int motionMagicAccel;
@@ -244,6 +244,7 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
 		}
 		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
+	//	SmartDashboard.putNumber("Lift Percent Output",)
 	}
 
 	public void setSetpoint(double positionInInches) {

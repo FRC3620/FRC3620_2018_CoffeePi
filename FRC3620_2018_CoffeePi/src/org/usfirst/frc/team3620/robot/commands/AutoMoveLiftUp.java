@@ -44,7 +44,7 @@ public class AutoMoveLiftUp extends Command {
     		Robot.liftSubsystem.moveElevatorUp(0.8*(1/Math.cosh(((encoderPos - requestedEncoderPos)/281.32))));
     		System.out.println("Nearing Destination");
     	} else if(encoderPos >= requestedEncoderPos) {
-    		Robot.liftSubsystem.brace();
+    		
     		System.out.println("We overshot.");
     	}
     }
@@ -64,13 +64,13 @@ public class AutoMoveLiftUp extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	logger.info("Ending AutoMoveLiftUp Command");
-    	Robot.liftSubsystem.brace();
+    	
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	logger.info("Interrupting AutoMoveLiftUp Command");
-    	Robot.liftSubsystem.brace();
+    	
     }
 }
