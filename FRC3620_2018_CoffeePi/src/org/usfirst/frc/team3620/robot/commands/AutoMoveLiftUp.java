@@ -51,7 +51,7 @@ public class AutoMoveLiftUp extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.readEncoder() > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed()) {
+    	if(Robot.liftSubsystem.readEncoder() > requestedEncoderPos /* || Robot.liftSubsystem.isTopLimitDepressed() */) {
     		
     		System.out.println("Exiting Moving UP");
     		return true;

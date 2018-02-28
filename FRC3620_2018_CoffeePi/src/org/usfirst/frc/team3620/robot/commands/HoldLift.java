@@ -21,7 +21,7 @@ public class HoldLift extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
-    	addedBangBangPower = 0.25;
+    	addedBangBangPower = 0.1;
     }
 
     // Called just before this Command runs the first time

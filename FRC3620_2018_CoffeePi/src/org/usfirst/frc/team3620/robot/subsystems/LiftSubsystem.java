@@ -110,13 +110,14 @@ public class LiftSubsystem extends Subsystem {
     	}
     	return false;
     }
-    
+ /*   
     public boolean isTopLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isFwdLimitSwitchClosed();
     	}
     	return false; 
     }
+    */
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -211,7 +212,7 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
-		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		SmartDashboard.putBoolean("Lift Top limit", false);
 		SmartDashboard.putNumber("Lift encoder position: ", readEncoder());
 
 		if (talon != null) {

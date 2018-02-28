@@ -30,7 +30,7 @@ public class ManualLiftOperatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	joyPos = Robot.m_oi.getLiftJoystick();
-    	if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
+    	if(joyPos <  -0.2 /* &&  Robot.liftSubsystem.isTopLimitDepressed() == false */) {
     		Robot.liftSubsystem.moveElevatorUp(-joyPos);
 //    		System.out.println("Moving Lift Up");
     	}
@@ -49,12 +49,12 @@ public class ManualLiftOperatorCommand extends Command {
     		
     		return true;
     	}
-    	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
+    /*	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
     		System.out.println("Top Switch just got pushed.");
     		
     		return true;
     	}
-    	else {
+    */	else {
     		return false;
     	}
     }
