@@ -119,11 +119,6 @@ public class RobotMap {
 			if (ctreErrorCode != ErrorCode.OK)
 				logger.warn("trouble setting voltageComp on SRX Left: %s", ctreErrorCode);
 			
-			driveSubsystemTalonLeft1.configPeakCurrentLimit(0, 0);
-			driveSubsystemTalonLeft1.configPeakCurrentDuration(0, 0);
-			driveSubsystemTalonLeft1.configContinuousCurrentLimit(30, 100);
-			driveSubsystemTalonLeft1.enableCurrentLimit(true);
-			
 			driveSubsystemTalonLeft1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 10, 10);
 			
 			/* change period to 5 ms */
@@ -156,11 +151,6 @@ public class RobotMap {
 			ctreErrorCode = driveSubsystemTalonRight1.configVoltageCompSaturation(PEAK_DRIVE_VOLTAGE, 0);
 			if (ctreErrorCode != ErrorCode.OK)
 				logger.warn("trouble setting voltageComp on SRX Right: %s", ctreErrorCode);
-			
-			driveSubsystemTalonRight1.configPeakCurrentLimit(0, 0);
-			driveSubsystemTalonRight1.configPeakCurrentDuration(0, 0);
-			driveSubsystemTalonRight1.configContinuousCurrentLimit(30, 100);
-			driveSubsystemTalonRight1.enableCurrentLimit(true);
 			
 			driveSubsystemTalonRight1.setStatusFramePeriod(StatusFrameEnhanced.Status_3_Quadrature, 10, 10);
 			
@@ -223,6 +213,11 @@ public class RobotMap {
 			liftSubsystemTalon1.enableCurrentLimit(true);
 			liftSubsystemTalon1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 10);
 			liftSubsystemTalon1.overrideLimitSwitchesEnable(true);
+			ctreErrorCode = liftSubsystemTalon1.configVoltageCompSaturation(12, 0);
+			if (ctreErrorCode != ErrorCode.OK)
+				logger.warn("trouble setting voltageComp on SRX Left: %s", ctreErrorCode);
+			liftSubsystemTalon1.enableVoltageCompensation(true);
+			liftSubsystemTalon1.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
 
 			// one of the mule board can have the Lift SRX, but not the SPXes, so check for those separately
 			if (competitionRobot || Robot.canDeviceFinder.isSPXPresent(10)) {

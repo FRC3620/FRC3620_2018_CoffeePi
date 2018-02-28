@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PivotUpCommand extends Command {
+public class PivotUpCommandWithTrig extends Command {
 	int lowerLiftWindowLimit;
 	int upperLiftWindowLimit;
 	double liftEncoderPos;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    public PivotUpCommand() {
+    public PivotUpCommandWithTrig() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.intakeSubsystem);
@@ -30,21 +30,21 @@ public class PivotUpCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
-    //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotUp(0.3);
-    	//}
-    /*	else {
+    	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+    		Robot.intakeSubsystem.trigonPivotUp();
+    	}
+    	else {
     		Robot.intakeSubsystem.pivotUp(0);
-    	} */
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
+    	if(liftEncoderPos > upperLiftWindowLimit) {
     		return true;
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
-    	} */
+    	}
         return false;
     }
 

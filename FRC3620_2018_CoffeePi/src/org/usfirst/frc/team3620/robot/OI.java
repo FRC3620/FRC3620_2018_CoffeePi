@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team3620.robot;
 
+
 import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
 import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
 import org.usfirst.frc.team3620.robot.commands.ClampCommand;
@@ -28,7 +29,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import org.usfirst.frc.team3620.robot.commands.*;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -84,6 +85,10 @@ public class OI {
 	       moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
+	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
+	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
+	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
+	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
 	       DPad dpad = new DPad(operatorJoystick, 0);
 	       dpad.up().whenActive(new PivotUpCommand());
@@ -96,6 +101,7 @@ public class OI {
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
+	       SmartDashboard.putData("ResetPivotEncoder", new ResetLiftEncoderCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());

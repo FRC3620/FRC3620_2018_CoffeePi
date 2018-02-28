@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PivotUpCommand extends Command {
+public class PivotDownCommandWithTrig extends Command {
 	int lowerLiftWindowLimit;
 	int upperLiftWindowLimit;
 	double liftEncoderPos;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-
-    public PivotUpCommand() {
+	
+    public PivotDownCommandWithTrig() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.intakeSubsystem);
@@ -25,37 +25,38 @@ public class PivotUpCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
-    //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotUp(0.3);
-    	//}
-    /*	else {
-    		Robot.intakeSubsystem.pivotUp(0);
-    	} */
+    	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+    		Robot.intakeSubsystem.trigonPivotDown();;
+    	}
+    	else {
+    		Robot.intakeSubsystem.pivotDown(0);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
+    	if(liftEncoderPos > upperLiftWindowLimit) {
     		return true;
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
-    	} */
+    	}
         return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.intakeSubsystem.pivotUp(0);
+    	Robot.intakeSubsystem.pivotDown(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.intakeSubsystem.pivotUp(0);
+    	Robot.intakeSubsystem.pivotDown(0);
     }
 }

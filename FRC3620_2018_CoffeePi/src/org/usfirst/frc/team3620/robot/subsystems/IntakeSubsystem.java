@@ -49,10 +49,14 @@ public class IntakeSubsystem extends Subsystem {
 	public static int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
-	public int topSetPoint = 0;
+	public int homeSetPoint = 0;
 	public int bottomSetPoint = 0;
-	public int ZeroDegPoint = 0;
-	public int ninetyDegPoint = 0;
+	public double encoderAt180 = 0;
+	public double encoderAt90 = 0;
+	public double startingPivotAngle;
+	public double pivotAngle;
+	public double maxPivotSpeed = 0;
+	public double encoderErrorMargin = 0;
 	
 	public IntakeSubsystem() {
 		super();
@@ -67,11 +71,17 @@ public class IntakeSubsystem extends Subsystem {
 			intakePivot.setSensorPhase(true);
 			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
+		
+		//set starting angle position
+		startingPivotAngle = 90-(encoderAt90*(180/encoderAt180));
+		logger.info("Starting pivot angle = " + startingPivotAngle);
+		
 		//TODO come up with a method to check if encoder is valid and calibrate it
 		if (true) {		//change this condition for something to check if the the arm is calibrated
 			
 			isEncoderValid = true;
 			resetEncoder();
+			
 			
 		}
 
@@ -81,6 +91,15 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public boolean getEncoderIsValid(){
 		return isEncoderValid;
+	}
+	
+	public boolean homeButtonIsPressed() {
+		if (intakePivot != null) {
+    		
+    		return intakePivot.getSensorCollection().isRevLimitSwitchClosed();
+    		
+    	}
+    	return false; 
 	}
 	
 	public double readEncoder() {
@@ -95,6 +114,7 @@ public class IntakeSubsystem extends Subsystem {
 		if(intakePivot != null) {
 			int sensorPos = 0;
 			intakePivot.setSelectedSensorPosition(sensorPos, kSpeedPIDLoopIdx, 10);
+			logger.info("Resetting Encoder!");
 		}
 	}
 
@@ -117,11 +137,13 @@ public class IntakeSubsystem extends Subsystem {
 		 }
 	}
 	
-	public void moveToSetpoint(int position) {
+	public void movePivotDown(int position) {
 		
 		if (isEncoderValid) {
 			if (intakePivot != null) {
-				intakePivot.set(ControlMode.Position, position);
+				if(readEncoder()< position) { 
+					intakePivot.set(ControlMode.Position, position);
+				}
 			}
 		}
 		
@@ -202,10 +224,64 @@ public class IntakeSubsystem extends Subsystem {
 	   
    }
    
+   public void findPivotAngle() {
+	   double encoderPositon = readEncoder();
+	   double pivotAngleDeg = (encoderPositon * (180/encoderAt180)) + startingPivotAngle;
+	   pivotAngle = pivotAngleDeg * (Math.PI/180); //in radians
+	   logger.info("Pivot Angle is = " + pivotAngle + " radians, or " + pivotAngleDeg + " degrees.");
+	   	   
+   }
+   
+   public void trigonPivotDown() {
+	   if (intakePivot != null) {
+		   if (homeButtonIsPressed() == false) {
+			   if (readEncoder() < bottomSetPoint) {
+				   findPivotAngle();
+				   double cosMultiplier = Math.cos(pivotAngle);
+				   double finalSpeed = maxPivotSpeed * cosMultiplier;
+				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
+				   isEncoderValid = false;
+			   }
+			   else {
+				   logger.info("We are at setpoint!");
+			   }
+		   }
+		   else {
+			   logger.info("Tried to pivot up, but we reached home button!");
+		   }
+	   }
+	   else {
+		   logger.info("Tried to pivot down, no CANTalons!");
+	   }
+   }
+   
+   public void trigonPivotUp() {
+	   if (intakePivot != null) {
+		   if (isEncoderValid) {
+			   if (readEncoder() > homeSetPoint + encoderErrorMargin) {
+				   findPivotAngle();
+				   double cosMultiplier = Math.cos(pivotAngle);
+				   double finalSpeed = maxPivotSpeed * cosMultiplier;
+				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
+			   }
+			   else {
+				   logger.info("We are at setpoint!");
+			   }
+		   }
+		   else {
+			   logger.info("Tried to pivot down, encoder is not valid!");
+		   }
+	   }
+	   else {
+		   logger.info("Tried to pivot down, no CANTalons!");
+	   }
+   }
+   
    @Override
    public void periodic() {
 	   if (intakePivot != null) {
 		   SmartDashboard.putNumber("Pivot current output: ", intakePivot.getOutputCurrent());
+		   SmartDashboard.putNumber("Pivot Encoder Position: ", readEncoder());
 	   }
    }
    

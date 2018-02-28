@@ -1,26 +1,22 @@
 package org.usfirst.frc.team3620.robot.subsystems;
 
-import org.usfirst.frc.team3620.robot.OI;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.HoldLift;
-import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
-import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,10 +24,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class LiftSubsystem extends Subsystem {
+	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
 	private final WPI_TalonSRX talon = RobotMap.liftSubsystemTalon1;
-	private final WPI_VictorSPX victor1 = RobotMap.liftSubsystemVictor2;
-	private final WPI_VictorSPX victor2 = RobotMap.liftSubsystemVictor3;
-	private final WPI_VictorSPX victor3 = RobotMap.liftSubsystemVictor4;
 
 	private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
 	private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
@@ -50,9 +45,14 @@ public class LiftSubsystem extends Subsystem {
 	public static double kFSpeed = .65;
 	public static double kIZoneSpeed = 0;
 	public static double peakSpeedHigh = 0.60;
+	public static double lowestSpeed = 0.03;
 	public static int positionErrorMargin = 50;
 	public static int motionMagicCruiseVel;
 	public static int motionMagicAccel;
+	public static double bracingVoltage = 0.08;
+	public static double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
+	public static double minVoltageHigh = bracingVoltage - lowestSpeed;
+	
 
 	public LiftSubsystem() {
 		super();
@@ -63,7 +63,7 @@ public class LiftSubsystem extends Subsystem {
 			talon.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
 		
 			//Setting feedback device type
-			talon.set(ControlMode.Position, 0);
+			setLiftTalon(ControlMode.Position, 0);
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
 			
 			// Setting feedback device type
@@ -75,20 +75,16 @@ public class LiftSubsystem extends Subsystem {
 		// here. Call these from Commands.
     
     public void moveElevatorTestUp() {
-    	if (talon != null) {
-    		talon.set(ControlMode.PercentOutput, .50);
-    	}
+    	setLiftTalon(ControlMode.PercentOutput, .50);
     }
     public void moveElevatorTestDown() {
-    	if (talon != null) {
-    		talon.set(ControlMode.PercentOutput, -.50);
-    	}
+   		setLiftTalon(ControlMode.PercentOutput, -.50);
     }
     
     //checks to see if lift is at lowest position
     public boolean isAtHome() {
     	if (talon != null) {
-    		int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+    		int encoderPos = readEncoder();
     		if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
     			return true;
     		}
@@ -99,19 +95,29 @@ public class LiftSubsystem extends Subsystem {
     	return true; //we are faking it
     }
     
+	// reads encoder
+	public int readEncoder() {
+		if (talon != null) {
+			int encoderPos = -(talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
+			return encoderPos;
+		}
+		return 0;
+	}
+
     public boolean isBottomLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isRevLimitSwitchClosed();
     	}
     	return false;
     }
-    
+ /*   
     public boolean isTopLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isFwdLimitSwitchClosed();
     	}
     	return false; 
     }
+    */
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -119,15 +125,6 @@ public class LiftSubsystem extends Subsystem {
 		// Set the default000000000 command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
 		setDefaultCommand(new HoldLift());
-	}
-
-	// reads encoder
-	public double readEncoder() {
-		if (talon != null) {
-			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
-			return encoderPos;
-		}
-		return 0;
 	}
 
 	// resets encoder value
@@ -139,42 +136,30 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	// moves elevator motor vertSpeed
-	public void moveElevator(double joyPos) {
+	public void moveElevatorUp(double joyPos) {
 		// runs lift motor for vertSpeed
-		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, joyPos * peakSpeedHigh);
-		}
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
+	}
+	public void moveElevatorDown(double joyPos) {
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
 
-	public void moveElevatorTestUp(double voltage) {
-		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, voltage);
-		}
-	}
-
-	public void moveElevatorTestDown(double voltage) {
-		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, voltage);
-		}
-	}
+	
+	
 
 	public void setElevatorVelocity(double speed) {
-		if (talon != null) {
-			talon.set(ControlMode.Velocity, speed);
-		}
+		setLiftTalon(ControlMode.Velocity, speed);
 	}
 	
 	public void fallSlowly() {
-		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, 0.08);
-		}
+		setLiftTalon(ControlMode.PercentOutput, 0.08);
 	}
 
 	
 
 	public boolean isAtScale() {
 		if (talon != null) {
-			int encoderPos = talon.getSensorCollection().getQuadraturePosition();
+			int encoderPos = readEncoder();
 			if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
 				return true;
 			} else {
@@ -193,9 +178,7 @@ public class LiftSubsystem extends Subsystem {
 	*/
 
 	public void moveToScale() {
-		if (talon != null) {
-			talon.set(ControlMode.MotionMagic, scalePosition);
-		}
+		setLiftTalon(ControlMode.MotionMagic, scalePosition);
 	}
 
 	public void setHighGear() {
@@ -229,13 +212,16 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
-		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		SmartDashboard.putBoolean("Lift Top limit", false);
 		SmartDashboard.putNumber("Lift encoder position: ", readEncoder());
 
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
 		}
-
+		if (talon != null) {
+			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
+		}
+		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
 	}
 
 	public void setSetpoint(double positionInInches) {
@@ -245,7 +231,7 @@ public class LiftSubsystem extends Subsystem {
 		if (weAreCalibrated) {
 			if (talon != null) {
 				calculateNewPIDParameters();
-				talon.set(ControlMode.Position, lastSetPoint);
+				setLiftTalon(ControlMode.Position, lastSetPoint);
 			}
 		}
 	}
@@ -281,21 +267,62 @@ public class LiftSubsystem extends Subsystem {
 	}
 	
 	public void moveToSetPoint(int position) {
-		if (talon != null) {
-			talon.set(ControlMode.MotionMagic, position);
-		}
+			setLiftTalon(ControlMode.MotionMagic, position);
 	}
 	
 	public void moveAtManualSpeedGiven(double speed) {
+			setLiftTalon(ControlMode.PercentOutput, -speed);
+	}
+	
+	public void brace(double addedBangBangPower) {
+			setLiftTalon(ControlMode.PercentOutput, bracingVoltage);
+	}
+	
+	void setLiftTalon(ControlMode controlMode, double value) {
 		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, -speed);
+			talon.set(controlMode, value);
+			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+			StackTraceElement command = stackTrace[3];
+			CommandRecord commandRecord = new CommandRecord(controlMode, value, command);
+			recording.add(commandRecord);
+			lastPower = value;
 		}
 	}
 	
-	public void brace(double speed) {
-		if (talon != null) {
-			talon.set(ControlMode.PercentOutput, speed);
+	public class CommandRecord {
+		public CommandRecord(ControlMode controlMode, double value, StackTraceElement where) {
+			this.controlMode = controlMode;
+			this.value = value;
+			this.where = where;
+		}
+		ControlMode controlMode;
+		double value;
+		StackTraceElement where;
+		@Override
+		public String toString() {
+			return "CommandRecord [controlMode=" + controlMode + ", value=" + value + ", where = " + where.getClassName() + "." + where.getMethodName() + "()]";
 		}
 	}
+	
+	List<CommandRecord> recording = new ArrayList<>();
+	double lastPower = 0;
+	
+	public void beginPeriodic() {
+	    recording.clear();	
+	}
 
+	public void endPeriodic() {
+		if (recording.size() > 1) {
+			logger.warn ("lift got set too much: {}", recording);
+		}
+		//System.out.println (recording + " " /* + getCurrentPower() */);
+		
+	}
+	
+/*	double getCurrentPower() {
+		if (talon != null) {
+			return talon.get();
+		}
+		return 0;
+	} */
 }

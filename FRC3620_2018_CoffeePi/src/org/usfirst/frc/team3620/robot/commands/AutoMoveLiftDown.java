@@ -3,11 +3,14 @@ package org.usfirst.frc.team3620.robot.commands;
 import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.slf4j.Logger;
 /**
  *
  */
 public class AutoMoveLiftDown extends Command {
+	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double slowDownPoint;
     public AutoMoveLiftDown() {
@@ -19,6 +22,7 @@ public class AutoMoveLiftDown extends Command {
     // Called just before this Command runs the first time
 	//1440 ticks = 16.875 inches
     protected void initialize() {
+    	logger.info("Starting AutoMoveLiftDown Command");
     	slowDownPoint = 1024;
     }
 
@@ -26,10 +30,13 @@ public class AutoMoveLiftDown extends Command {
     protected void execute() {
     	encoderPos = Robot.liftSubsystem.readEncoder();
     	if(encoderPos >= slowDownPoint) {
-    		Robot.liftSubsystem.moveElevator(0.04);
+    		Robot.liftSubsystem.moveElevatorDown(0.04);
+    		System.out.println("Coming down at speed");
     	}
-    	else if(encoderPos < slowDownPoint) {
-    		Robot.liftSubsystem.moveElevator(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
+    	else if(encoderPos < slowDownPoint && encoderPos > -171) {
+    		Robot.liftSubsystem.moveElevatorDown(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
+    	} else if(encoderPos < -512) {
+    		
     	}
     }
 
@@ -44,12 +51,13 @@ public class AutoMoveLiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.liftSubsystem.brace(0.06);
-    }
+    	logger.info("Ending AutoMoveLiftDown Command");
+    	    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.liftSubsystem.brace(0.06);
+    	logger.info("Interrupting AutoMoveLiftDown Command");
+    	
     }
 }

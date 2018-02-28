@@ -7,26 +7,26 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LiftShiftLowGear extends Command {
+public class ResetPivotEncoder extends Command {
 
-    public LiftShiftLowGear() {
+    public ResetPivotEncoder() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.liftSubsystem.setLowGear();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	Robot.intakeSubsystem.resetEncoder();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
