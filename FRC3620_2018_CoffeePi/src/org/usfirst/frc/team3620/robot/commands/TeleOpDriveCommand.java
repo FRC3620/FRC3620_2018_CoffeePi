@@ -21,12 +21,13 @@ public class TeleOpDriveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	logger.info("Starting TeleOpDriveCommand");
+    	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getDriveHorizontalJoystick());
+    	//Robot.driveSubsystem.teleOpDriveTransmitter(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getTransmitterHorizontalJoystick());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -36,12 +37,12 @@ public class TeleOpDriveCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending TeleOpDriveCommand");
+    	EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run5
     protected void interrupted() {
-    	logger.info("Interrupting TeleOpDriveCommand");
+    	EventLogging.commandMessage(logger);
     }
 }

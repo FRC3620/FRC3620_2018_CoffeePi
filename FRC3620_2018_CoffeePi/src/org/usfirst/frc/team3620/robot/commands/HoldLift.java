@@ -18,13 +18,13 @@ public class HoldLift extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-    	Robot.liftSubsystem.setPIDParameters(0.3375, 0, 0, 1.5007);
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(Robot.liftSubsystem.readEncoder() < -512) {
-    		Robot.liftSubsystem.brace(0.12);
+    		Robot.liftSubsystem.brace(0.13);
     	}
     	else{
     		Robot.liftSubsystem.brace(0.06);

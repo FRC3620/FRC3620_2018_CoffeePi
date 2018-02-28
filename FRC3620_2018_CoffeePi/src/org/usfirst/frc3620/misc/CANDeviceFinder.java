@@ -34,6 +34,10 @@ public class CANDeviceFinder {
     public boolean isPCMPresent(int i) {
         return pcms.contains(i);
     }
+    
+    public boolean isDevicePresent(String s) {
+    	return deviceList.contains(s);
+    }
 
     /**
      * 

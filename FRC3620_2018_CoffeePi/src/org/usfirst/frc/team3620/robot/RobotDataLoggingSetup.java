@@ -18,6 +18,7 @@ public class RobotDataLoggingSetup {
 		robotDataLogger.addDataProvider("robotModeInt", () -> Robot.currentRobotMode.ordinal());
 		robotDataLogger.addDataProvider("batteryVoltage", () -> f2(RobotController.getBatteryVoltage()));
 
+		// do not log extra stuff
 		if (Robot.canDeviceFinder.isPDPPresent()) {
 			powerDistributionPanel = new PowerDistributionPanel();
 			robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
@@ -35,8 +36,6 @@ public class RobotDataLoggingSetup {
 			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0)));
 		}
 		
-		// do not log extra stuff
-		if (false) {
 
 		//
 		if (RobotMap.driveSubsystemTalonLeft1 != null) {
@@ -78,8 +77,6 @@ public class RobotDataLoggingSetup {
 			robotDataLogger.addDataProvider("drive.r4.voltage",
 					() -> f2(RobotMap.driveSubsystemVictorRight4.getMotorOutputVoltage()));
 		}
-		}
-
 	}
 
 	private DecimalFormat f2Formatter = new DecimalFormat("#.##");

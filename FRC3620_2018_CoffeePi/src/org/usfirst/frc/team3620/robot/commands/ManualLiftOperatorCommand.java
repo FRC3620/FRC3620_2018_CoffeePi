@@ -30,26 +30,26 @@ public class ManualLiftOperatorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	joyPos = Robot.m_oi.getLiftJoystick();
-    	if(joyPos >  0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
-    		Robot.liftSubsystem.moveElevator(joyPos);
-    	}
-    	else if(joyPos < -0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
+    	if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
     		Robot.liftSubsystem.moveElevator(-joyPos);
+//    		System.out.println("Moving Lift Up");
     	}
-    	else if((joyPos > -0.2 && joyPos < 0.2) || Robot.liftSubsystem.isTopLimitDepressed() == true) {
-    		if(Robot.liftSubsystem.readEncoder() < -512) {
-    			Robot.liftSubsystem.brace(0.12);
-    		} else if(Robot.liftSubsystem.readEncoder() >= -512) {
-    			Robot.liftSubsystem.brace(0.06);
-    		}
-    			
+    	else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
+    		Robot.liftSubsystem.moveElevator(0.04 + (joyPos *0.03));
+//    		System.out.println("Moving Lift Down");
     	}
+    	
     
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
+    		System.out.println("Bottom Switch just got pushed.");
+    		return true;
+    	}
+    	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
+    		System.out.println("Top Switch just got pushed.");
     		return true;
     	}
     	else {
