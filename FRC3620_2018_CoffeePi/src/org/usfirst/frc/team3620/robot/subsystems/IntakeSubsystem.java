@@ -110,7 +110,7 @@ public class IntakeSubsystem extends Subsystem {
 	public double readEncoder() {
 		if(intakePivot != null) {
 			//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
-			int encoderPos = intakePivot.getSelectedSensorPosition(kSpeedPIDLoopIdx);
+			int encoderPos = intakePivot.getSelectedSensorPosition(0);
 			return encoderPos;
 		}
 		return 0;
@@ -244,12 +244,12 @@ public class IntakeSubsystem extends Subsystem {
    
    public void trigonPivotDown() {
 	   if (intakePivot != null) {
-		   if (homeButtonIsPressed() == false) {
-			   if (readEncoder() < bottomSetPoint) {
+		   if (isEncoderValid) {
+			   if (readEncoder() < bottomSetPoint - 200) {
 				   findPivotAngle();
 				   findFinalSpeed();
 				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
-				   isEncoderValid = false;
+				   
 			   }
 			   else {
 				   logger.info("We are at setpoint!");
@@ -266,19 +266,15 @@ public class IntakeSubsystem extends Subsystem {
    
    public void trigonPivotUp() {
 	   if (intakePivot != null) {
-		   if (isEncoderValid) {
-			   if (readEncoder() > homeSetPoint + encoderErrorMargin) {
-				   findPivotAngle();
-				   findFinalSpeed();
-				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
-			   }
-			   else {
-				   logger.info("We are at setpoint!");
-			   }
+		   if (readEncoder() > homeSetPoint + encoderErrorMargin) {
+			   findPivotAngle();
+			   findFinalSpeed();
+			   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
 		   }
 		   else {
-			   logger.info("Tried to pivot down, encoder is not valid!");
-		   }
+			   intakePivot.set(ControlMode.PercentOutput, 0);
+			   logger.info("We are at setpoint!");
+		   }   
 	   }
 	   else {
 		   logger.info("Tried to pivot down, no CANTalons!");
