@@ -47,7 +47,7 @@ public class LiftSubsystem extends Subsystem {
 	public static double kPSpeed = 0;
 	public static double kISpeed = 0;
 	public static double kDSpeed = 0;
-	public static double kFSpeed = .65;
+	public static double kFSpeed = 0;
 	public static double kIZoneSpeed = 0;
 	public static double peakSpeedHigh = 0.60;
 	public static double lowestSpeed = 0.038123;
@@ -256,6 +256,10 @@ public class LiftSubsystem extends Subsystem {
 			calculateNewPIDParameters();
 			talon.set(ControlMode.Position, lastSetPoint);
 		}
+	}
+	
+	public void setPosition(double desiredEncoderPos) {
+		talon.set(ControlMode.Position, desiredEncoderPos);
 	}
 	
 	public void calculateNewPIDParameters() {
