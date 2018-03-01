@@ -12,13 +12,16 @@ import org.slf4j.Logger;
 public class AutoMoveLiftUp extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
-	int startingEncoderPos;
+	double startingEncoderPos;
 	double requestedEncoderPos;
 	int oneFootInTics;
 	double slowDownPoint = requestedEncoderPos - oneFootInTics;
-	int speedUpPoint;
+	double speedUpPoint = startingEncoderPos + oneFootInTics;
 	double desiredStartingPower;
+	double maxPower;
 	double desiredEndingPower;
+	
+	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -29,18 +32,34 @@ public class AutoMoveLiftUp extends Command {
     //1440 ticks of encoder = 16.875 inches
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command");
-    	
+    	startingEncoderPos =  Robot.liftSubsystem.readEncoder();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	encoderPos = Math.abs(Robot.liftSubsystem.readEncoder());
+    	if(encoderPos <= (speedUpPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
+    		Robot.liftSubsystem.autoMoveElevatorUp(
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, speedUpPoint, maxPower));
+    	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
+    		Robot.liftSubsystem.setElevatorVelocity(maxPower);
+    	} else if(encoderPos >= slowDownPoint) {
+    		Robot.liftSubsystem.autoMoveElevatorUp(
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, slowDownPoint, maxPower));
+    	} else if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
+    		weAreDoneSenor = true;
+    	}
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return false;
+    	if(weAreDoneSenor == true) {
+    		return true;
+    	} else {
+    		return false;
+    	}
+    	
     }
 
     // Called once after isFinished returns true

@@ -79,16 +79,7 @@ public class LiftSubsystem extends Subsystem {
 		// Put methods for controlling this subsystem
 		// here. Call these from Commands.
     
-    public void moveElevatorTestUp() {
-    	if (talon != null) {
-    		talon.set(ControlMode.PercentOutput, .50);
-    	}
-    }
-    public void moveElevatorTestDown() {
-    	if (talon != null) {
-    		talon.set(ControlMode.PercentOutput, -.50);
-    	}
-    }
+   
     
     //checks to see if lift is at lowest position
     public boolean isAtHome() {
@@ -161,21 +152,31 @@ public class LiftSubsystem extends Subsystem {
 		talon.set(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
 
-	public void moveElevatorTestUp(double voltage) {
+	public void autoMoveElevatorUp(double voltage) {
 		talon.set(ControlMode.PercentOutput, voltage);
 	}
 
-	public void moveElevatorTestDown(double voltage) {
+	public void autoMoveElevatorDown(double voltage) {
 		talon.set(ControlMode.PercentOutput, voltage);
 	}
 
 	public void setElevatorVelocity(double speed) {
-		talon.set(ControlMode.Velocity, speed);
+		talon.set(ControlMode.PercentOutput, speed);
 
 	}
 	
 	public void fallSlowly() {
 		talon.set(ControlMode.PercentOutput, 0.08);
+	}
+	public double calculateArcCosH(double input) {
+		double output = Math.log1p((input + Math.sqrt((input*input) -1)) - 1);
+		return output;
+	}
+			
+	
+	public double calculatePowerHyperbolic(double power, double x, double point, double maxPower){
+		double k = ((x - point)/(calculateArcCosH(maxPower/power)));
+		return (maxPower/(Math.cosh((x - point)/k)));
 	}
 
 	
