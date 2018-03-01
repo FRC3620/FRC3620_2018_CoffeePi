@@ -168,14 +168,29 @@ public class LiftSubsystem extends Subsystem {
 	public void fallSlowly() {
 		talon.set(ControlMode.PercentOutput, 0.08);
 	}
+//All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
 	public double calculateArcCosH(double input) {
 		double output = Math.log1p((input + Math.sqrt((input*input) -1)) - 1);
 		return output;
 	}
 			
 	
-	public double calculatePowerHyperbolic(double power, double x, double point, double maxPower){
-		double k = ((x - point)/(calculateArcCosH(maxPower/power)));
+	/* Welcome to the mathematical magic. The hyperbolic secant function is a nice bell curve, which is why we're
+	 * using it to find percent output so we don't go anywhere TOO fast. Finding k and the equation for the return
+	 * statement can be easily verified by starting with equating the percent output with a hyperbolic secant
+	 * function that has ((x-point)/k) inside of it; this is to translate the function over to a positive domain 
+	 * and then scale it for our purposes.
+	 * 
+	 * What is returned should fall within the desiredStartingPower and 1. I apologize for the parameters.
+	 * 
+	 * The purpose of this function is to allow one to change the specific parameters of how the lift moves
+	 * (i.e. where it's supposed to go, it's max speed in going there, etc.) without having to recalculate
+	 * everything oneself and plugging everything in -- such an approach will eventually screw you over.
+	 * 
+	 * Hopefully, one shouldn't have to touch this. Now, you can go back to AutoMoveLiftUp: 59
+	 */
+	public double calculatePowerHyperbolic(double power, double x, double startingPoint, double point, double maxPower){
+		double k = ((startingPoint - point)/(calculateArcCosH(maxPower/power)));
 		return (maxPower/(Math.cosh((x - point)/k)));
 	}
 

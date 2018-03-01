@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class AutoPositionPMoveLiftDown extends Command {
 	double oneFootInTics;
+	double encoderPos;
+	double desiredPower;
     public AutoPositionPMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -21,11 +23,14 @@ public class AutoPositionPMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.liftSubsystem.setPosition(oneFootInTics);
-    }
+    	encoderPos = Robot.liftSubsystem.readEncoder();
+    	
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	if((encoderPos > (oneFootInTics - 50) && encoderPos < (oneFootInTics + 50)) || Robot.liftSubsystem.isTopLimitDepressed()){
+    		return true;
+    	}
         return false;
     }
 
