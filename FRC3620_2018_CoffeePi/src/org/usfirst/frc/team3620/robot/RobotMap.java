@@ -217,7 +217,7 @@ public class RobotMap {
 			liftSubsystemTalon1.enableVoltageCompensation(true);
 			liftSubsystemTalon1.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
 			liftSubsystemTalon1.configOpenloopRamp(1, 10); //1 second for 0 to max voltage
-			liftSubsystemTalon1.configNeutralDeadband(0.01, 0);
+			liftSubsystemTalon1.configNeutralDeadband(0.001, 0);
 
 
 			// one of the mule board can have the Lift SRX, but not the SPXes, so check for those separately

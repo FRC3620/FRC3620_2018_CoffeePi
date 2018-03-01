@@ -30,7 +30,7 @@ public class AutoMoveLiftDown extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	encoderPos = Robot.liftSubsystem.readEncoder();
-    	if(encoderPos >= slowDownPoint) {
+    	if(encoderPos <= slowDownPoint) {
     		Robot.liftSubsystem.setElevatorVelocity(fallingPower);
     		System.out.println("Coming down at speed");
     	}

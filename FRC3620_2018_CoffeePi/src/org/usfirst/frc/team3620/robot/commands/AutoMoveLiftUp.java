@@ -6,10 +6,25 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.slf4j.Logger;
-/**
+/**		WELCOME to the Auto Lift Commands Choose Your Own Debug Book. If you need to debug something or desire
+ * 	enlightenment as to what the heck something might mean, follow the helpful comments nearby. They will point
+ * 	you in the right direction.
  *
  */
 public class AutoMoveLiftUp extends Command {
+	/* These are all of the variables that we define so we can be fully configurable. All of these variables
+	 * are required so that the specific hyperbolic function used by the robot to send percent output can be
+	 * calculated in the Lift Subsystem (line 177).
+	 * 
+	 * oneFootInTics is the number of tics that is roughly equivalent to 1 foot, a good distance for slowing down
+	 * and such, which is why the speedUp point 
+	 * 
+	 * The startingEncoderPos is helpful for being able to calculate the k for the hyperbolic function as one
+	 * can see in the Lift Subsystem (line 177).
+	 * 
+	 * encoderPos is just the encoder position read every execute. The requestedEncoderPos is the final destination.
+	 * The desiredStartingPower and desiredEndingPower are useful in the calculation of the k.
+	*/
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double startingEncoderPos;
@@ -30,27 +45,48 @@ public class AutoMoveLiftUp extends Command {
 
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
+    //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command");
     	startingEncoderPos =  Robot.liftSubsystem.readEncoder();
     }
 
     // Called repeatedly when this Command is scheduled to run
+    /* So, what is this mess? That's a good question. If one carefully reads the if statements, they should get
+     * a good idea of when each block will run, so I won't go into that. However, one will notice that the first
+     * and third blocks contain "calculatePowerHyperbolic" REFER TO -- LiftSubsytem:177
+     * 
+     * Well, then. Try getting that out of your head. If the lift is in the sweet spot between speeding up and
+     * slowing down, it'll go full speed.
+     * 
+     * If it goes too far, or hits the limit switch (which better not happen), we call it quits.
+     */
     protected void execute() {
     	encoderPos = Math.abs(Robot.liftSubsystem.readEncoder());
-    	if(encoderPos <= (speedUpPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
+    	if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
-    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, speedUpPoint, maxPower));
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+    				System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
+    		System.out.println("We're set to maximum overdrive.");
     	} else if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.autoMoveElevatorUp(
-    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, slowDownPoint, maxPower));
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
+    		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
     	} else if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
     		weAreDoneSenor = true;
+    		System.out.println("We're done");
     	}
     	
     }
+    /*	As you probably now attest to, programmers should get routinely checked for insanity.
+     * 
+     * 	The Moral of the Story is if this Command does not work within A LITTLE debugging, abandon it.
+     * 	Move on to the PositionP Commands. NOTE: You actually can still use AutoMoveLiftDown instead of AutoPositionPMoveLiftDown.
+     * 
+     * 	No, really. Move on to AutoPositionPMoveLiftUp: 7
+  	*/
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {

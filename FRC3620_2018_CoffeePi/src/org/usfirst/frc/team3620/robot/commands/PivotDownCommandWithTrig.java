@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotDownCommandWithTrig extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
+	int lowerLiftWindowLimit =200;
+	int upperLiftWindowLimit = 500;
 	double liftEncoderPos;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
@@ -31,21 +31,21 @@ public class PivotDownCommandWithTrig extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
-    	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+  //  	if(liftEncoderPos > upperLiftWindowLimit || liftEncoderPos < lowerLiftWindowLimit) {
     		Robot.intakeSubsystem.trigonPivotDown();;
-    	}
-    	else {
-    		Robot.intakeSubsystem.pivotDown(0);
-    	}
+    //	}
+    //	else {
+    //		Robot.intakeSubsystem.pivotDown(0);
+    //	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(liftEncoderPos > upperLiftWindowLimit) {
-    		return true;
-    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
-    		return true;
-    	}
+    //	if(liftEncoderPos > upperLiftWindowLimit) {
+    	//	return true;
+    	//} else if(liftEncoderPos < lowerLiftWindowLimit) {
+    		//return true;
+    //	}
         return false;
     }
 
