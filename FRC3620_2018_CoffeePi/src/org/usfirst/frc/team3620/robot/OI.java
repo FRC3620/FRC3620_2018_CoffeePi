@@ -44,6 +44,8 @@ import org.usfirst.frc.team3620.robot.paths.Path_RightStart_LeftScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightScale;
 import org.usfirst.frc.team3620.robot.paths.Path_RightStart_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.TestPoints;
+import org.usfirst.frc.team3620.robot.DPadDownButton;
+import org.usfirst.frc.team3620.robot.DPadUpButton;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 
@@ -113,9 +115,15 @@ public class OI {
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
-	       DPad dpad = new DPad(operatorJoystick, 0);
-	       dpad.up().whenActive(new PivotUpCommandWithTrig());
-	       dpad.down().whenActive(new PivotDownCommandWithTrig());
+//	       DPad dpad = new DPad(operatorJoystick, 0);
+//	       dpad.up().whenActive(new PivotUpCommandWithTrig());
+//	       dpad.down().whenActive(new PivotDownCommandWithTrig());
+	       
+	       // Kai's DPad code attempt
+	       Button armUpButton = new DPadUpButton(operatorJoystick);
+	       armUpButton.whileHeld(new PivotUpCommandWithTrig());
+	       Button armDownButton = new DPadDownButton(operatorJoystick);
+	       armDownButton.whileHeld(new PivotDownCommandWithTrig());
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
