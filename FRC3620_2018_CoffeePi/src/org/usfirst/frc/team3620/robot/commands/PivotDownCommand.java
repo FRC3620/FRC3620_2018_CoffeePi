@@ -14,6 +14,7 @@ public class PivotDownCommand extends Command {
 	int lowerLiftWindowLimit;
 	int upperLiftWindowLimit;
 	double liftEncoderPos;
+	double pivotEncoder;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
     public PivotDownCommand() {
@@ -32,7 +33,15 @@ public class PivotDownCommand extends Command {
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
     	//if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotDown(0.3);
+    	if (pivotEncoder <1000) {
+    		Robot.intakeSubsystem.pivotDown(0.4);
+    	}
+    	else if (pivotEncoder > 1000 && pivotEncoder < 1100) {
+    		Robot.intakeSubsystem.pivotDown(0.1);
+    	}
+    	else {
+    		Robot.intakeSubsystem.pivotDown(0);
+    	}
    // 	}
     /*	else {
     		Robot.intakeSubsystem.pivotDown(0);

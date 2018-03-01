@@ -106,6 +106,7 @@ public class OI {
 	       pivotDown.whileHeld(new PivotDownCommand());
 	      // Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	      // moveLiftUp.whenPressed(new AutoMoveLiftUp());
+	       
 	  //     Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	    //   moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
@@ -113,9 +114,9 @@ public class OI {
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
-	       DPad dpad = new DPad(operatorJoystick, 0);
-	       dpad.up().whenActive(new PivotUpCommandWithTrig());
-	       dpad.down().whenActive(new PivotDownCommandWithTrig());
+	      // DPad dpad = new DPad(operatorJoystick, 0);
+	      //dpad.up().whenActive(new PivotUpCommand());
+	     // dpad.down().whenActive(new PivotDownCommand());
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());

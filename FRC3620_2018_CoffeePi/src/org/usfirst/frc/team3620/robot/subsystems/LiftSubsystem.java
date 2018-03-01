@@ -50,7 +50,7 @@ public class LiftSubsystem extends Subsystem {
 	public static double kFSpeed = 0;
 	public static double kIZoneSpeed = 0;
 	public static double peakSpeedHigh = 0.60;
-	public static double lowestSpeed = 0.038123;
+	public static double lowestSpeed = 0.01;
 	public static int positionErrorMargin = 50;
 	public static int motionMagicCruiseVel;
 	public static int motionMagicAccel;

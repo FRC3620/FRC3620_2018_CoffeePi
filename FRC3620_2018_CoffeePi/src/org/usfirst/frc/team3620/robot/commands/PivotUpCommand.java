@@ -14,6 +14,7 @@ public class PivotUpCommand extends Command {
 	int lowerLiftWindowLimit;
 	int upperLiftWindowLimit;
 	double liftEncoderPos;
+	double pivotEncoder;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -30,8 +31,14 @@ public class PivotUpCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoder();
+    	pivotEncoder = Robot.intakeSubsystem.readEncoder();
     //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotUp(0.4);
+    	if (pivotEncoder > 300) {
+    		Robot.intakeSubsystem.pivotUp(0.5);
+    	}
+    	else {
+    		Robot.intakeSubsystem.pivotUp(.1);
+    	}
     	//}
     /*	else {
     		Robot.intakeSubsystem.pivotUp(0);

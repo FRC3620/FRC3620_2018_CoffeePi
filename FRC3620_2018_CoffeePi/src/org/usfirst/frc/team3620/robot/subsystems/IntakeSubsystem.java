@@ -51,11 +51,11 @@ public class IntakeSubsystem extends Subsystem {
 	public int motionMagicAccel;
 	public int homeSetPoint = 0;
 	public int bottomSetPoint = 1330;
-	public double encoderAt180 = 1250;
-	public double encoderAt90 = 730;
+	public double encoderAt180 = 1000;
+	public double encoderAt90 = 330;
 	public double startingPivotAngle;
 	public double pivotAngle;
-	public double maxPivotSpeed = 0.2;
+	public double maxPivotSpeed = 0.3;
 	public double encoderErrorMargin = 50;
 	public double pivotAngleDeg;
 	public double cosMultiplier;
@@ -240,26 +240,31 @@ public class IntakeSubsystem extends Subsystem {
    public void findFinalSpeed() {
 	   cosMultiplier = Math.cos(pivotAngle);
 	   finalSpeed = maxPivotSpeed * cosMultiplier;
+	   
    }
    
    public void trigonPivotDown() {
 	   if (intakePivot != null) {
-		   if (isEncoderValid) {
+		  // if (isEncoderValid) {
 			   if (readEncoder() < bottomSetPoint - 200) {
 				   findPivotAngle();
 				   findFinalSpeed();
+				   logger.info("ready to set " + finalSpeed);
+				   
 				   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
+				   logger.info("Started robot at " + finalSpeed);
 				   
 			   }
 			   else {
 				   logger.info("We are at setpoint!");
 			   }
-		   }
-		   else {
-			   logger.info("Tried to pivot up, but we reached home button!");
-		   }
+		  // }
+		  // else {
+		//	   logger.info("Tried to pivot up, but we reached home button!");
+		 //  }
 	   }
 	   else {
+		   
 		   logger.info("Tried to pivot down, no CANTalons!");
 	   }
    }
@@ -269,7 +274,7 @@ public class IntakeSubsystem extends Subsystem {
 		   if (readEncoder() > homeSetPoint + encoderErrorMargin) {
 			   findPivotAngle();
 			   findFinalSpeed();
-			   intakePivot.set(ControlMode.PercentOutput, finalSpeed);
+			   intakePivot.set(ControlMode.PercentOutput, -(finalSpeed));
 		   }
 		   else {
 			   intakePivot.set(ControlMode.PercentOutput, 0);
