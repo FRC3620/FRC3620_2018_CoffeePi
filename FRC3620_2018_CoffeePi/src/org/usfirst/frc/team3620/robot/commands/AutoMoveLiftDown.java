@@ -13,7 +13,7 @@ public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double slowDownPoint;
-	double fallingPower;
+	double fallingPower = 0.02;
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -24,7 +24,7 @@ public class AutoMoveLiftDown extends Command {
 	//1440 ticks = 16.875 inches
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftDown Command");
-    	slowDownPoint = -1024;
+    	slowDownPoint = -892;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,7 +35,7 @@ public class AutoMoveLiftDown extends Command {
     		System.out.println("Coming down at speed");
     	}
     	else if(encoderPos > slowDownPoint) {
-    		Robot.liftSubsystem.setElevatorVelocity(fallingPower + ((slowDownPoint - encoderPos)/slowDownPoint)*0.04);
+    		Robot.liftSubsystem.setElevatorVelocity(fallingPower + ((slowDownPoint - encoderPos)/slowDownPoint)*0.03);
     	} else if(encoderPos < -171) {
     		Robot.liftSubsystem.setElevatorVelocity(0);
     	}

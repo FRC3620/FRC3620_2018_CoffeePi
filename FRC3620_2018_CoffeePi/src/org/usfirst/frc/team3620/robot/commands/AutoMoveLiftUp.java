@@ -28,13 +28,13 @@ public class AutoMoveLiftUp extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double startingEncoderPos;
-	double requestedEncoderPos;
-	int oneFootInTics;
+	double requestedEncoderPos = 1700; //  TODO was 4700, changed it for testing purposes
+	int oneFootInTics = 892;
 	double slowDownPoint = requestedEncoderPos - oneFootInTics;
 	double speedUpPoint = startingEncoderPos + oneFootInTics;
-	double desiredStartingPower;
-	double maxPower;
-	double desiredEndingPower;
+	double desiredStartingPower = 0.2;
+	double maxPower = 0.6;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
@@ -48,7 +48,8 @@ public class AutoMoveLiftUp extends Command {
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command");
-    	startingEncoderPos =  Robot.liftSubsystem.readEncoder();
+    	startingEncoderPos =  0;
+    	weAreDoneSenor = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -62,22 +63,23 @@ public class AutoMoveLiftUp extends Command {
      * If it goes too far, or hits the limit switch (which better not happen), we call it quits.
      */
     protected void execute() {
+    	// TODO check the limit switches FIRST!!!
 
     	encoderPos = Math.abs(Robot.liftSubsystem.readEncoder());
-    	if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
+	    if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
+	    	weAreDoneSenor = true;
+	    	System.out.println("We're done");
+	    } else if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
     				System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
     		System.out.println("We're set to maximum overdrive.");
-    	} else if(encoderPos >= slowDownPoint) {
+    	} else if(encoderPos <= slowDownPoint) {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
     		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
-    	} else if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
-    		weAreDoneSenor = true;
-    		System.out.println("We're done");
     	}
     	
     }

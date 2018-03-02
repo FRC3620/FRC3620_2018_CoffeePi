@@ -34,15 +34,10 @@ public class HoldLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	variedEncoderPos = Robot.liftSubsystem.readEncoder();
-    	if(variedEncoderPos < currentEncoderPos) {
-    	Robot.liftSubsystem.brace(addedBangBangPower*(currentEncoderPos - variedEncoderPos));
-    	} else if(currentEncoderPos < variedEncoderPos) {
-    		Robot.liftSubsystem.brace(-addedBangBangPower*(variedEncoderPos-currentEncoderPos));
-    	} else if(currentEncoderPos == variedEncoderPos) {
-    		Robot.liftSubsystem.brace(0);
+    	if(Robot.liftSubsystem.isBottomLimitDepressed() == true) {
+    		Robot.liftSubsystem.resetEncoder();
     	}
-  
+    	Robot.liftSubsystem.brace(0); 
     }
 
     // Make this return true when this Command no longer needs to run execute()

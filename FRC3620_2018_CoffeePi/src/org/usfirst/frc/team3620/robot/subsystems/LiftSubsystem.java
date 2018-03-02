@@ -314,6 +314,7 @@ public class LiftSubsystem extends Subsystem {
 			CommandRecord commandRecord = new CommandRecord(controlMode, value, command);
 			recording.add(commandRecord);
 			lastPower = value;
+			SmartDashboard.putNumber("liftPower", value);
 		}
 	}
 	

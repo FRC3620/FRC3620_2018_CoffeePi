@@ -19,7 +19,6 @@ public class Path_CenterStart_LeftSwitch extends AbstractPath {
 	
 	@Override
 	double getPathfinderP() {
-		// TODO Auto-generated method stub
 		return 0.001;
 	}
 	

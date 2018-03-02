@@ -47,6 +47,7 @@ public class ManualLiftOperatorCommand extends Command {
     protected boolean isFinished() {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
+    		Robot.liftSubsystem.resetEncoder();
     		
     		return true;
     	}
