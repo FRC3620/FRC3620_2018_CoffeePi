@@ -26,4 +26,14 @@ public class Path1_CenterStart_LeftSwitch extends AbstractPath {
 	double getPathfinderOutputMultiplier() {
 		return 0.5;
 	}
+	
+	@Override
+	double getPathfinderGenVelocityMultiplier() {
+		return 0.6;		//Slightly slower to keep sharp-turn motor output below 1.0
+	}
+	
+	@Override
+	boolean getPathfinderReverseMode() {
+		return true;
+	}
 }

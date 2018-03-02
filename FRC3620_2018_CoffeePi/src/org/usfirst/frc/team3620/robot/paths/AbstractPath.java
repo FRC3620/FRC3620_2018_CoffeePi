@@ -154,7 +154,7 @@ public abstract class AbstractPath extends Command {
 	}
 	
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.7;
+		return 0.6;
 	}
 	
 	double getPathfinderGenAcceleration() {
@@ -288,6 +288,7 @@ public abstract class AbstractPath extends Command {
 		System.out.println("turn = " + turn);
 		System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
 		System.out.println("Max motor output: " + maxOutput);
+		System.out.println("Max turn:" + maxTurn);
 
 		// Ends the command when forward trajectory is finished.
 
