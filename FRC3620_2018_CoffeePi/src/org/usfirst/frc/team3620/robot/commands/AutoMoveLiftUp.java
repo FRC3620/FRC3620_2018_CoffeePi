@@ -62,6 +62,7 @@ public class AutoMoveLiftUp extends Command {
      * If it goes too far, or hits the limit switch (which better not happen), we call it quits.
      */
     protected void execute() {
+
     	encoderPos = Math.abs(Robot.liftSubsystem.readEncoder());
     	if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
@@ -90,7 +91,9 @@ public class AutoMoveLiftUp extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+
     	if(weAreDoneSenor == true) {
+
     		return true;
     	} else {
     		return false;

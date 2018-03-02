@@ -13,8 +13,14 @@ public class TestPoints extends AbstractPath {
 				new Waypoint(14, 25, 0.001),
 				new Waypoint(19.5, 16, Pathfinder.d2r(-90)),
 				*/
-				new Waypoint(0, 0, 0.001),
-				new Waypoint(4, -4, Pathfinder.d2r(-90))
+				/*
+				new Waypoint(0, 23, 0.001),
+				new Waypoint(14.5, 23, 0.0001),
+				*/
+				new Waypoint(1.68, 0, 0.0001),
+				new Waypoint(22.32, 0, 0.0001),
+				
+				//new Waypoint(4, -4, Pathfinder.d2r(-90))
 				/*
 				//TODO convert to feet
 				new Waypoint(-3.33, -0.7, Pathfinder.d2r(-30)),

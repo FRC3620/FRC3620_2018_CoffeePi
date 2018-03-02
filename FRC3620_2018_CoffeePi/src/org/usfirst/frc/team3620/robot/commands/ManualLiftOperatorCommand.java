@@ -50,12 +50,12 @@ public class ManualLiftOperatorCommand extends Command {
     		
     		return true;
     	}
-    	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
+    /*	else if(Robot.liftSubsystem.isTopLimitDepressed()) {
     		System.out.println("Top Switch just got pushed.");
     		
     		return true;
     	}
-    	else {
+    */	else {
     		return false;
     	}
     }

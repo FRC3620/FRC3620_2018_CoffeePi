@@ -1,4 +1,6 @@
-package org.usfirst.frc.team3620.robot.commands;
+package org.usfirst.frc.team3620.robot.autonomous;
+
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -10,23 +12,22 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class AutonomousDelayCommand extends Command {
+public class FakeCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
 	Timer timer = new Timer();
-	int delay; 
-	
-	
-    public AutonomousDelayCommand(int _delay) {
-    	delay = _delay;
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+	double delay; 
+	String name;
+
+    public FakeCommand(double ll, double ul, Command realCommand) {
+    	name = realCommand.getClass().getName();
+    	delay = ll + ( (new Random()).nextDouble()*(ul-ll));
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+    	logger.info("fake command {} initialize", name);
     	timer.reset();
     	timer.start();
     }
@@ -37,21 +38,17 @@ public class AutonomousDelayCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	double howlong = timer.get();
-    	if (howlong > delay) {
-    		return true;
-    	}
-        return false;
+        return timer.get() > delay;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	EventLogging.commandMessage(logger);
+    	logger.info("fake command {} end", name);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	EventLogging.commandMessage(logger);
+    	logger.info("fake command {} interrupted", name);
     }
 }

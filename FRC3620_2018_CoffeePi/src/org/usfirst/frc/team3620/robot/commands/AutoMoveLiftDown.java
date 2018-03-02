@@ -53,7 +53,6 @@ public class AutoMoveLiftDown extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	logger.info("Ending AutoMoveLiftDown Command");
-    
     }
 
     // Called when another command which requires one or more of the same
