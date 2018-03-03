@@ -32,9 +32,9 @@ public abstract class AutoMoveLiftUp extends Command {
 	int oneFoot = 12;
 	double slowDownPoint = requestedEncoderPos - oneFoot;
 	double speedUpPoint = startingEncoderPos + oneFoot;
-	double desiredStartingPower = 0.2;
+	double desiredStartingPower = 0.3;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.04;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.12;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {

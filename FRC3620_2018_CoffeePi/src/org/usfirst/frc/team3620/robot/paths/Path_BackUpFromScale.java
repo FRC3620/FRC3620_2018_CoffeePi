@@ -20,6 +20,10 @@ public class Path_BackUpFromScale extends AbstractPath {
 	}
 	
 	@Override
+	boolean getPathfinderReverseMode() {
+		return true;
+	}
+	@Override
 	double getPathfinderOutputMultiplier() {
 		// TODO Auto-generated method stub
 		return 0.5;

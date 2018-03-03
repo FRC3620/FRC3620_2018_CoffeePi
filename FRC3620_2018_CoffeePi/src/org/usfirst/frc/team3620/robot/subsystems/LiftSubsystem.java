@@ -250,8 +250,8 @@ public class LiftSubsystem extends Subsystem {
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
 		SmartDashboard.putBoolean("Lift Top limit", false);
-		SmartDashboard.putNumber("Lift/encoder position: ", readEncoderInTics());
-		SmartDashboard.putNumber("Lift/Encoder in Inches", readEncoderInInches());
+		SmartDashboard.putNumber("Lift encoder position: ", readEncoderInTics());
+		SmartDashboard.putNumber("Lift Encoder in Inches", readEncoderInInches());
 
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());

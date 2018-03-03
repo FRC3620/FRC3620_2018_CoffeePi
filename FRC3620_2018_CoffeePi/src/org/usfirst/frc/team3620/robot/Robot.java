@@ -24,6 +24,7 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
@@ -206,7 +207,7 @@ public class Robot extends TimedRobot {
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
-				
+				commandGroup.addSequential(new LiftShiftHighGear());
 				if(startingPos != 'C') {
 					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
@@ -225,10 +226,14 @@ public class Robot extends TimedRobot {
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
+				if(whereToPutCube == whereToPutCube.SCALE) {
+					commandGroup.addSequential(new LiftShiftLowGear());
+					commandGroup.addSequential(new Path_BackUpFromScale());
+				}
 				
-				commandGroup.addSequential(new AutoMoveLiftDown());
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
+				
 			}
 		}
 		
