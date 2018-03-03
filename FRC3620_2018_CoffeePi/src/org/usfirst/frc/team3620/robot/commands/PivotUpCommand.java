@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotUpCommand extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
+	double lowerLiftWindowLimit = 77.0;
+	double upperLiftWindowLimit = 7.0;
 	double liftEncoderPos;
 	double pivotEncoder;
 	boolean haveCube;
@@ -34,7 +34,7 @@ public class PivotUpCommand extends Command {
     	haveCube = Robot.intakeSubsystem.haveCube;
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
     	pivotEncoder = Robot.intakeSubsystem.readEncoder();
-    //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+  
     	if (pivotEncoder > 300) {
     		Robot.intakeSubsystem.pivotUp(0.5);
     	}
@@ -49,11 +49,11 @@ public class PivotUpCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
+    	if(liftEncoderPos > upperLiftWindowLimit) {
     		return true;
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
-    	} */
+    	}
     	if(haveCube == false) {
     		return true;
     	} else if (pivotEncoder < 200) {

@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotDownCommand extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
 	double liftEncoderPos;
 	double pivotEncoder;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -26,8 +24,6 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
-    	lowerLiftWindowLimit = 7;
-    	upperLiftWindowLimit = 88;
     	
     }
 
@@ -53,10 +49,7 @@ public class PivotDownCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
- 	if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		return true;
- 		}
-    	else if (pivotEncoder > 900) {
+ 	 if (pivotEncoder > 900) {
     		return true;
     	}
         return false;
