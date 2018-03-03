@@ -15,6 +15,7 @@ public class PivotUpCommand extends Command {
 	int upperLiftWindowLimit;
 	double liftEncoderPos;
 	double pivotEncoder;
+	boolean haveCube;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -30,6 +31,7 @@ public class PivotUpCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	haveCube = Robot.intakeSubsystem.haveCube;
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
     	pivotEncoder = Robot.intakeSubsystem.readEncoder();
     //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
@@ -52,7 +54,9 @@ public class PivotUpCommand extends Command {
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
     	} */
-    	if (pivotEncoder < 200) {
+    	if(haveCube == false) {
+    		return true;
+    	} else if (pivotEncoder < 200) {
     		logger.info("pivot up is finished");
     		return true;
     		
