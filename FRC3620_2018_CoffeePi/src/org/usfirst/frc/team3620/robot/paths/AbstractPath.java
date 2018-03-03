@@ -18,7 +18,6 @@ import jaci.pathfinder.modifiers.TankModifier;
  *
  */
 
-// TODO add reverse modifier
 public abstract class AbstractPath extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
@@ -46,14 +45,16 @@ public abstract class AbstractPath extends Command {
 		// Sample Count: SAMPLES_HIGH (100 000)
 		// SAMPLES_LOW (10 000)
 		// SAMPLES_FAST (1 000)
+		
 		// Time Step: 0.05 Seconds
-		// Max Velocity: 1.7 m/s
-		// Max Acceleration: 2.0 m/s/s
-		// Max Jerk: 60.0 m/s/s/s
+		// Max Velocity Multiplier: <getPathfinderGenVelocityMultiplier()>
+		// Max Velocity: <getPathfinderV_MAX()> m/s
+		// Max Acceleration: <getPathfinderGenAcceleration()> m/s/s
+		// Max Jerk: 10.0 m/s/s/s
 		// **Now in feet**
 		// Check on the 0.75 vmax multiplier and tune as needed
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_LOW, 0.05, (getPathfinderGenVelocityMultiplier() * getPathfinderV_MAX()), 3.0, 10.0);  //TODO add method for generation acceleration
+				Trajectory.Config.SAMPLES_LOW, 0.05, (getPathfinderGenVelocityMultiplier() * getPathfinderV_MAX()), getPathfinderGenAcceleration(), 10.0); 
 		Waypoint[] points = getMyWaypoints();
 		Trajectory trajectory = Pathfinder.generate(points, config);
 
@@ -153,7 +154,11 @@ public abstract class AbstractPath extends Command {
 	}
 	
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.7;
+		return 0.6;
+	}
+	
+	double getPathfinderGenAcceleration() {
+		return 3.0;
 	}
 	
 	
@@ -283,6 +288,7 @@ public abstract class AbstractPath extends Command {
 		System.out.println("turn = " + turn);
 		System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
 		System.out.println("Max motor output: " + maxOutput);
+		System.out.println("Max turn:" + maxTurn);
 
 		// Ends the command when forward trajectory is finished.
 

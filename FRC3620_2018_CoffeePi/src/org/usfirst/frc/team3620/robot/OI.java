@@ -7,12 +7,17 @@
 
 package org.usfirst.frc.team3620.robot;
 
-import org.usfirst.frc.team3620.robot.commands.*;
-import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_LeftSwitch;
-import org.usfirst.frc.team3620.robot.paths.Path_CenterStart_RightSwitch;
-import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_LeftScaleEnd;
-import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_LeftSwitchEnd;
-import org.usfirst.frc.team3620.robot.paths.Path_LeftStart_RightScaleEnd;
+
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
+import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
+import org.usfirst.frc.team3620.robot.commands.ClampCommand;
+import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
+import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
+import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
+import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
+import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
+import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
+import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc.team3620.robot.paths.TestPoints;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
@@ -20,7 +25,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import org.usfirst.frc.team3620.robot.commands.*;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -99,12 +104,13 @@ public class OI {
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
 //	       SmartDashboard.putData("AutonomousRight", new AutonomousRight());
 	       SmartDashboard.putData("TestPoints Auto", new TestPoints());
-           SmartDashboard.putData("Center start, left switch", new Path_CenterStart_LeftSwitch());
-           SmartDashboard.putData("Center start, right switch", new Path_CenterStart_RightSwitch());
-           SmartDashboard.putData("Left start, left scale", new Path_LeftStart_LeftScaleEnd());
-           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitchEnd());
+           SmartDashboard.putData("Center start, left switch", new Path1_CenterStart_LeftSwitch());
+           SmartDashboard.putData("Center start, right switch", new Path1_CenterStart_RightSwitch());
+           SmartDashboard.putData("Left start, left scale end", new Path1_LeftStart_LeftScaleEnd());
+           SmartDashboard.putData("Left start, left scale side", new Path1_LeftStart_LeftScaleSide());
+           SmartDashboard.putData("Left start, left switch", new Path1_LeftStart_LeftSwitchEnd());
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
-           SmartDashboard.putData("Left start, right scale", new Path_LeftStart_RightScaleEnd());
+           SmartDashboard.putData("Left start, right scale", new Path1_LeftStart_RightScaleEnd());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
 //           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());

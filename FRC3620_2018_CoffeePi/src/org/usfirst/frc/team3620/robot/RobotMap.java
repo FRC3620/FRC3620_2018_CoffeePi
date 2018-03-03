@@ -75,6 +75,8 @@ public class RobotMap {
 	public static DoubleSolenoid intakeSubsystemIntakeClamperSolenoid;
 	public static AHRS driveSubsystemAHRS;	//Needs testing. -Kai
 	public static DoubleSolenoid liftSubsystemGearShifter;
+
+	public static DoubleSolenoid climbingJawEngager;
 	
 	public static Encoder driveSubsystemRightEncoder;
     public static Encoder driveSubsystemLeftEncoder;
@@ -278,9 +280,15 @@ public class RobotMap {
 			logger.info("No Solenoid detected");
 		}
 		
+
 		practiceBotJumper = new DigitalInput(1);
 		SmartDashboard.putData(practiceBotJumper);
 		
+
+		climbingJawEngager = new DoubleSolenoid(0, 4, 5);
+		LiveWindow.addActuator("LiftSubsystem", "ClimbJawEngage", climbingJawEngager);
+
+
 	}
 	
 	static void resetControllerToKnownState (BaseMotorController x) {

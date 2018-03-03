@@ -5,6 +5,10 @@ import jaci.pathfinder.Waypoint;
 
 public class TestPoints extends AbstractPath {
 
+	/*
+	 * Any path of waypoints that doesn't have its own command 
+	 * yet will be run from here.
+	 */
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {

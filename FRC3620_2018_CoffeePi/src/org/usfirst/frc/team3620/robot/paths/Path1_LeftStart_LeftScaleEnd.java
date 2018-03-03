@@ -3,9 +3,11 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class Path_LeftStart_LeftScaleEnd extends AbstractPath {
+//TODO Test me!
 
-	//Status: not tested
+public class Path1_LeftStart_LeftScaleEnd extends AbstractPath {
+
+	//Status: Not tested
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
@@ -18,13 +20,11 @@ public class Path_LeftStart_LeftScaleEnd extends AbstractPath {
 	
 	@Override
 	double getPathfinderP() {
-		// TODO Auto-generated method stub
 		return 0.001;
 	}
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		// TODO Auto-generated method stub
 		return 0.5;
 	}
 }
