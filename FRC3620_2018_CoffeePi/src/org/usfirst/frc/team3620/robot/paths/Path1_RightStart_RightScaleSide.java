@@ -11,9 +11,25 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
+			//Original
+			/*
 			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
 			new Waypoint(15.0, 2.0, Pathfinder.d2r(0)),
 			new Waypoint(23.5, 4.5, Pathfinder.d2r(40)),
+			*/
+			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
+			new Waypoint(24.4, 4.99, Pathfinder.d2r(18))
 		};
+	}
+	
+	@Override
+	double getPathfinderGenVelocityMultiplier() {
+		return 0.68;		//Slightly slower to keep sharp-turn motor output below 1.0
+	}
+	
+	@Override
+	double getPathfinderV_MAX() {
+		// TODO Auto-generated method stub
+		return 4.5;
 	}
 }

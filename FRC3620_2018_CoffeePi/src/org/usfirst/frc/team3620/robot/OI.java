@@ -113,7 +113,8 @@ public class OI {
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
            SmartDashboard.putData("Left start, right scale", new Path1_LeftStart_RightScaleEnd());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
-//           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
+           SmartDashboard.putData("Right start, right scale end", new Path1_RightStart_RightScaleEnd());
+           SmartDashboard.putData("Right start, right scale side", new Path1_RightStart_RightScaleSide());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
