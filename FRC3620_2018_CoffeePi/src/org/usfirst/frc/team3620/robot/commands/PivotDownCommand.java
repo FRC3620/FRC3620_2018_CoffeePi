@@ -26,12 +26,14 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
+    	lowerLiftWindowLimit = 7;
+    	upperLiftWindowLimit = 88;
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	pivotEncoder = Robot.intakeSubsystem.readEncoder();
     	//if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     	if (pivotEncoder <1000) {
@@ -51,12 +53,10 @@ public class PivotDownCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
+ 	if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     		return true;
-    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
-    		return true;
-    	} */
-    	if (pivotEncoder > 900) {
+ 		}
+    	else if (pivotEncoder > 900) {
     		return true;
     	}
         return false;
