@@ -30,6 +30,7 @@ public class HoldLift extends Command {
     protected void initialize() {
     	logger.info("Starting HoldLift Command");
     	currentEncoderPos = Robot.liftSubsystem.readEncoderInTics();
+    	logger.info("Holding Encoder Position: " + currentEncoderPos);
     	
     	
     }

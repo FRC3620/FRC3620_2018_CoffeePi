@@ -74,9 +74,9 @@ public class OI {
 	       Button unclamp = new JoystickButton(operatorJoystick, 6);
 	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
-	       pivotUp.whileHeld(new PivotUpCommand());
+	       pivotUp.whenActive(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whileHeld(new PivotDownCommand());
+	       pivotDown.whenActive(new PivotDownCommand());
 	 //      Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	  //    moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       
