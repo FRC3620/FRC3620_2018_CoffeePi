@@ -22,6 +22,7 @@ public abstract class AbstractPath extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
 	boolean finishedFlag = false;
+	boolean debugMode = false;
 
 	EncoderFollower left;
 	EncoderFollower right;
@@ -274,6 +275,8 @@ public abstract class AbstractPath extends Command {
 		double t1 = System.currentTimeMillis();
 		
 
+		// TODO log with logger.debug() instead.
+		if (debugMode) {
 		// Console prints for debugging. Comment and uncomment as needed.
 		System.out.println("\noutputLeft = " + outputLeft);
 		System.out.println("outputRight = " + outputRight);
@@ -289,6 +292,7 @@ public abstract class AbstractPath extends Command {
 		System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
 		System.out.println("Max motor output: " + maxOutput);
 		System.out.println("Max turn:" + maxTurn);
+		}
 
 		// Ends the command when forward trajectory is finished.
 
