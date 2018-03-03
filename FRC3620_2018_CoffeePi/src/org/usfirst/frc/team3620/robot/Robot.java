@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Preferences;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -274,6 +275,7 @@ public class Robot extends TimedRobot {
 		}
 		
 		processRobotModeChange(RobotMode.TELEOP);
+		liftSubsystem.setHighGear();
 	}
 	/**
 	 * This function is called periodically during operator control.
