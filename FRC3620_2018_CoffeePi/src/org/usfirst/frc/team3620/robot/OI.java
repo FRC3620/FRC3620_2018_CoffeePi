@@ -87,9 +87,9 @@ public class OI {
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
-	      // DPad dpad = new DPad(operatorJoystick, 0);
-	      //dpad.up().whenActive(new PivotUpCommand());
-	     // dpad.down().whenActive(new PivotDownCommand());
+	       DPad dpad = new DPad(operatorJoystick, 0);
+	       dpad.up().whenActive(new PivotUpCommand());
+	       dpad.down().whenActive(new PivotDownCommand());
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
@@ -100,6 +100,7 @@ public class OI {
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
 	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
+	       SmartDashboard.putData("Pivot Up Command", new PivotUpCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());

@@ -52,6 +52,11 @@ public class PivotUpCommand extends Command {
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
     	} */
+    	if (pivotEncoder < 200) {
+    		logger.info("pivot up is finished");
+    		return true;
+    		
+    	}
         return false;
     }
 
