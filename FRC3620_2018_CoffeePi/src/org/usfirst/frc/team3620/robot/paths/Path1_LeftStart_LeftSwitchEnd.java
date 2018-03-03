@@ -25,6 +25,7 @@ public class Path1_LeftStart_LeftSwitchEnd extends AbstractPath {
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
 		return 0.58;		//Slightly slower to keep sharp-turn motor output below 1.0
+		//output over 1.0, fixed by 0.56
 	}
 }
 
