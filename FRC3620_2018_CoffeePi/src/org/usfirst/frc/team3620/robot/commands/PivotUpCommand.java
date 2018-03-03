@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotUpCommand extends Command {
-	final int lowerLiftWindowLimit = 7;
-	final int upperLiftWindowLimit = 88;
+	double lowerLiftWindowLimit = 14.0;
+	double upperLiftWindowLimit = 75.0;
+	double liftEncoderPos;
+	double pivotEncoder;
+	boolean haveCube;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -29,6 +32,8 @@ public class PivotUpCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	haveCube = Robot.intakeSubsystem.haveCube;
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
     	if (pivotEncoder > 85) {
     		Robot.intakeSubsystem.pivotUp(0.5);
     	}
@@ -41,9 +46,16 @@ public class PivotUpCommand extends Command {
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
     	if (pivotEncoder < 45) {
-    		logger.info("pivot up is finished");
     		return true;
-    		
+    	}
+
+    	if(liftEncoderPos > upperLiftWindowLimit) {
+    		return true;
+    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
+    		return true;
+    	}
+    	if(haveCube == false) {
+    		return true;
     	}
         return false;
     }

@@ -49,6 +49,11 @@ public class IntakeSubsystem extends Subsystem {
 	//public double encoderAt90 = 330;
 	//public double startingPivotAngle;
 	public double maxPivotSpeed = 0.3;
+	public double encoderErrorMargin = 50;
+	public double pivotAngleDeg;
+	public double cosMultiplier;
+	public double finalSpeed;
+	public boolean haveCube;
 	
 	public IntakeSubsystem() {
 		super();
@@ -167,6 +172,7 @@ public class IntakeSubsystem extends Subsystem {
    public void clampCube () {
 	   if(intakeClamperSolenoid != null) {
 	   intakeClamperSolenoid.set(Value.kForward);
+	   haveCube = true;
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
@@ -176,6 +182,7 @@ public class IntakeSubsystem extends Subsystem {
    public void clampRelease() {
 	   if(intakeClamperSolenoid != null) {
 		   intakeClamperSolenoid.set(Value.kReverse);
+		   haveCube = false;
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }

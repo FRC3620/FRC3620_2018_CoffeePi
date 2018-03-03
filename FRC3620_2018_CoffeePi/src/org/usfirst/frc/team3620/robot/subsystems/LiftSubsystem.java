@@ -32,17 +32,17 @@ public class LiftSubsystem extends Subsystem {
 
 	public final int kSpeedPIDLoopIdx = 0;
 	public final int kTimeoutMs = 0;
-	public  final boolean kMotorInvert = false;
+	public final boolean kMotorInvert = false;
 	public boolean isHome = false;
 	public final int homePosition = 0;
-	public  final int scalePosition = 4949;
+	public final int scalePosition = 4949;
 	public double kPSpeed = 0;
 	public double kISpeed = 0;
 	public double kDSpeed = 0;
-	public  double kFSpeed = 0;
-	public  double kIZoneSpeed = 0;
+	public double kFSpeed = 0;
+	public double kIZoneSpeed = 0;
 	public double peakSpeedHigh = 0.60;
-	public double lowestSpeed = 0.0025;
+	public double lowestSpeed = 0.00075; // 0.0025 seems reasonable
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
@@ -50,7 +50,6 @@ public class LiftSubsystem extends Subsystem {
 	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
 	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
 	
-
 	public LiftSubsystem() {
 		super();
 		if (talon != null) {
@@ -117,7 +116,7 @@ public class LiftSubsystem extends Subsystem {
     	return false;
     }
  
-   public boolean isTopLimitDepressed(){
+    public boolean isTopLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isFwdLimitSwitchClosed();
     	}
@@ -191,8 +190,6 @@ public class LiftSubsystem extends Subsystem {
 		double k = ((startingPoint - point)/(calculateArcCosH(maxPower/power)));
 		return (maxPower/(Math.cosh((x - point)/k)));
 	}
-
-	
 
 	public boolean isAtScale() {
 		if (talon != null) {

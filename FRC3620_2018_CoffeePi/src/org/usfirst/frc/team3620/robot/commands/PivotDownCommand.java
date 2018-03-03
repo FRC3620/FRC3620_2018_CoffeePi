@@ -11,9 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotDownCommand extends Command {
-	final int lowerLiftWindowLimit = 7;
-	final int upperLiftWindowLimit = 88;
-
+	double liftEncoderPos;
+	double pivotEncoder;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
     public PivotDownCommand() {
@@ -44,14 +43,12 @@ public class PivotDownCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+
     	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if (!Robot.intakeSubsystem.isEncoderValid) {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-  	    if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		return true;
- 		}
     	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 90) {
     		return true;
     	}

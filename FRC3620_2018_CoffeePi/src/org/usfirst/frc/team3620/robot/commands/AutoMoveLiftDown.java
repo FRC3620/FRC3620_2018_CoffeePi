@@ -23,7 +23,7 @@ public class AutoMoveLiftDown extends Command {
     // Called just before this Command runs the first time
 	//1440 ticks = 16.875 inches
     protected void initialize() {
-    	logger.info("Starting AutoMoveLiftDown Command");
+    	logger.info("Starting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 
@@ -49,13 +49,13 @@ public class AutoMoveLiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending AutoMoveLiftDown Command");
+    	logger.info("Ending AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting AutoMoveLiftDown Command");
+    	logger.info("Interrupting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 }
