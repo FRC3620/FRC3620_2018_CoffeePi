@@ -57,6 +57,7 @@ public abstract class AutoMoveLiftUp extends Command {
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command");
     	startingEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	logger.info("Lift Encoder in Inches: " + startingEncoderPos);
     	weAreDoneSenor = false;
     }
 
@@ -121,6 +122,7 @@ public abstract class AutoMoveLiftUp extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	logger.info("Interrupting AutoMoveLiftUp Command");
+    	logger.info("Lift Encoder In Inches at End:" + Robot.liftSubsystem.readEncoderInInches());
     	
     }
 }

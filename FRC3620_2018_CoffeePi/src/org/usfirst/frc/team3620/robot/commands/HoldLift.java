@@ -15,13 +15,15 @@ import org.slf4j.Logger;
 public class HoldLift extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double currentEncoderPos;
-	double variedEncoderPos;
-	double addedBangBangPower;
+	double addedBangBangMultiplier;
+	double addedBangBangPower = 0.03;
+	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
+	double upperBangBangPowerLimit = 0.23;
     public HoldLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
-    	addedBangBangPower = 0.1;
+    	
     }
 
     // Called just before this Command runs the first time
@@ -34,10 +36,23 @@ public class HoldLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	double variedEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(Robot.liftSubsystem.isBottomLimitDepressed() == true) {
     		Robot.liftSubsystem.resetEncoder();
+    	} else if(variedEncoderPos < currentEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
+    	} else if(variedEncoderPos > currentEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
+    	} else {
+    		addedBangBangPower = 0;
     	}
-    	Robot.liftSubsystem.brace(0); 
+    	
+    	if(addedBangBangPower > lowerBangBangPowerLimit && addedBangBangPower < upperBangBangPowerLimit) {
+    		Robot.liftSubsystem.brace(addedBangBangPower);
+    	} else {
+    		Robot.liftSubsystem.brace(0);
+    	}
+    	 
     }
 
     // Make this return true when this Command no longer needs to run execute()
