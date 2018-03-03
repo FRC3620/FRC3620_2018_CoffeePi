@@ -55,9 +55,7 @@ public abstract class AutoMoveLiftUp extends Command {
     //1440 ticks of encoder = 16.875 inches
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
-    	logger.info("Starting AutoMoveLiftUp Command");
-    	startingEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	logger.info("Lift Encoder in Inches: " + startingEncoderPos);
+    	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	weAreDoneSenor = false;
     }
 
@@ -114,15 +112,14 @@ public abstract class AutoMoveLiftUp extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending AutoMoveLiftUp Command");
+    	logger.info("Ending AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting AutoMoveLiftUp Command");
-    	logger.info("Lift Encoder In Inches at End:" + Robot.liftSubsystem.readEncoderInInches());
+    	logger.info("Interrupting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 }

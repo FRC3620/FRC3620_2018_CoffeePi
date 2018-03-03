@@ -30,8 +30,6 @@ public class HoldLift extends Command {
     protected void initialize() {
     	logger.info("Starting HoldLift Command");
     	currentEncoderPos = Robot.liftSubsystem.readEncoderInTics();
-    	
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -62,12 +60,12 @@ public class HoldLift extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending HoldLift Command");
+    	logger.info("Ending HoldLift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting HoldLift Command");
+    	logger.info("Interrupting HoldLift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 }
