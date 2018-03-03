@@ -72,11 +72,11 @@ public class OI {
 	       pivotUp.whileHeld(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whileHeld(new PivotDownCommand());
-	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	      moveLiftUp.whenPressed(new AutoMoveLiftUp());
+	 //      Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
+	  //    moveLiftUp.whenPressed(new AutoMoveLiftUp());
 	       
-	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
-	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
+	 //      Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
+	   //    moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
 	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
@@ -109,6 +109,8 @@ public class OI {
 //           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
+           SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToTransportHeight());
+           SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
 	}
 	       
 	public double getDriveVerticalJoystick() {

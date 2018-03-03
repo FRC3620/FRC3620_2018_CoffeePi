@@ -27,8 +27,7 @@ import org.slf4j.Logger;
  *
  */
 public class IntakeSubsystem extends Subsystem {
-	private final DigitalInput cubeIntook = RobotMap.intakeSubsystemCubeIntook;
-    private final DigitalInput scaleSensed = RobotMap.intakeSubsystemScaleSensed;
+
     private final SpeedController intakeRoller1 = RobotMap.intakeSubsystemIntakeRoller1;
     private final SpeedController intakeRoller2 = RobotMap.intakeSubsystemIntakeRoller2;
     private final WPI_TalonSRX intakePivot = RobotMap.intakeSubsystemIntakePivot;

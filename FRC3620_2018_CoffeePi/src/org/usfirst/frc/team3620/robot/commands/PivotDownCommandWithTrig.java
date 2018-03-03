@@ -30,7 +30,7 @@ public class PivotDownCommandWithTrig extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoder();
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
   //  	if(liftEncoderPos > upperLiftWindowLimit || liftEncoderPos < lowerLiftWindowLimit) {
     		Robot.intakeSubsystem.trigonPivotDown();;
     //	}

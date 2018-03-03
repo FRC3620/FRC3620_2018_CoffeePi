@@ -30,7 +30,7 @@ public class PivotUpCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoder();
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
     	pivotEncoder = Robot.intakeSubsystem.readEncoder();
     //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     	if (pivotEncoder > 300) {

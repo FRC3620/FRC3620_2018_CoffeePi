@@ -30,7 +30,7 @@ public class AutoPositionPMoveLiftUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	encoderPos = Robot.liftSubsystem.readEncoder();
+    	encoderPos = Robot.liftSubsystem.readEncoderInTics();
     	Robot.liftSubsystem.setPosition(desiredEncoderPos);
     	System.out.println("We're going to " + desiredEncoderPos);
     }

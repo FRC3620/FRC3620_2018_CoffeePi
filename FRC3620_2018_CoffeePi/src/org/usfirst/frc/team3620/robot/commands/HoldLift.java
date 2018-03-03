@@ -27,7 +27,7 @@ public class HoldLift extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	logger.info("Starting HoldLift Command");
-    	currentEncoderPos = Robot.liftSubsystem.readEncoder();
+    	currentEncoderPos = Robot.liftSubsystem.readEncoderInTics();
     	
     	
     }

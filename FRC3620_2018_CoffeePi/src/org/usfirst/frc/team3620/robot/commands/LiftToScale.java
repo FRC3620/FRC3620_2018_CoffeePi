@@ -31,7 +31,7 @@ public class LiftToScale extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if (Robot.liftSubsystem.readEncoder() <= -4949) {
+    	if (Robot.liftSubsystem.readEncoderInTics() <= -4949) {
         return true;
     
     	}

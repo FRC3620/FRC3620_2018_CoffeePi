@@ -11,12 +11,12 @@ import org.slf4j.Logger;
  * 	you in the right direction.
  *
  */
-public class AutoMoveLiftUp extends Command {
+public abstract class AutoMoveLiftUp extends Command {
 	/* These are all of the variables that we define so we can be fully configurable. All of these variables
 	 * are required so that the specific hyperbolic function used by the robot to send percent output can be
 	 * calculated in the Lift Subsystem (line 177).
 	 * 
-	 * oneFootInTics is the number of tics that is roughly equivalent to 1 foot, a good distance for slowing down
+	 * oneFoot is the number of tics that is roughly equivalent to 1 foot, a good distance for slowing down
 	 * and such, which is why the speedUp point 
 	 * 
 	 * The startingEncoderPos is helpful for being able to calculate the k for the hyperbolic function as one
@@ -26,29 +26,37 @@ public class AutoMoveLiftUp extends Command {
 	 * The desiredStartingPower and desiredEndingPower are useful in the calculation of the k.
 	*/
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double encoderPos;
 	double startingEncoderPos;
-	double requestedEncoderPos = 1700; //  TODO was 4700, changed it for testing purposes
-	int oneFootInTics = 892;
-	double slowDownPoint = requestedEncoderPos - oneFootInTics;
-	double speedUpPoint = startingEncoderPos + oneFootInTics;
+	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
+	//1 revolution = 3 inches
+	int oneFoot = 12;
+	double slowDownPoint = requestedEncoderPos - oneFoot;
+	double speedUpPoint = startingEncoderPos + oneFoot;
 	double desiredStartingPower = 0.2;
-	double maxPower = 0.6;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage;
+	double maxPower;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.04;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
+    	maxPower = getMaxPower();
+    	requestedEncoderPos = getRequestedEndPos();
     }
+    
+    public abstract double getRequestedEndPos();
+    public double getMaxPower() {
+    	return 0.6;
+    }
+    
 
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command");
-    	startingEncoderPos =  0;
+    	startingEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	weAreDoneSenor = false;
     }
 
@@ -65,7 +73,7 @@ public class AutoMoveLiftUp extends Command {
     protected void execute() {
     	// TODO check the limit switches FIRST!!!
 
-    	encoderPos = Math.abs(Robot.liftSubsystem.readEncoder());
+    double encoderPos = Math.abs(Robot.liftSubsystem.readEncoderInInches());
 	    if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
 	    	weAreDoneSenor = true;
 	    	System.out.println("We're done");
@@ -76,10 +84,10 @@ public class AutoMoveLiftUp extends Command {
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
     		System.out.println("We're set to maximum overdrive.");
-    	} else if(encoderPos <= slowDownPoint) {
+    	} else if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
-    		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+    		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, speedUpPoint, maxPower));
     	}
     	
     }

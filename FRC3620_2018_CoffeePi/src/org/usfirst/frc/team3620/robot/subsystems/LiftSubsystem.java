@@ -27,31 +27,28 @@ public class LiftSubsystem extends Subsystem {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
 	private final WPI_TalonSRX talon = RobotMap.liftSubsystemTalon1;
-
-	private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
-	private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
-	private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
 	private final DoubleSolenoid liftGearShifter = RobotMap.liftSubsystemGearShifter;
+	private boolean gotCompBot;
 
-	public static final int kSpeedPIDLoopIdx = 0;
-	public static final int kTimeoutMs = 0;
-	public static final boolean kMotorInvert = false;
-	public static boolean isHome = false;
-	public static final int homePosition = 0;
-	public static final int scalePosition = 4949;
-	public static double kPSpeed = 0;
-	public static double kISpeed = 0;
-	public static double kDSpeed = 0;
-	public static double kFSpeed = 0;
-	public static double kIZoneSpeed = 0;
-	public static double peakSpeedHigh = 0.60;
-	public static double lowestSpeed = 0.01;
-	public static int positionErrorMargin = 50;
-	public static int motionMagicCruiseVel;
-	public static int motionMagicAccel;
-	public static double bracingVoltage = 0.08;
-	public static double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
-	public static double minVoltageHigh = bracingVoltage - lowestSpeed;
+	public final int kSpeedPIDLoopIdx = 0;
+	public final int kTimeoutMs = 0;
+	public  final boolean kMotorInvert = false;
+	public boolean isHome = false;
+	public final int homePosition = 0;
+	public  final int scalePosition = 4949;
+	public double kPSpeed = 0;
+	public double kISpeed = 0;
+	public double kDSpeed = 0;
+	public  double kFSpeed = 0;
+	public  double kIZoneSpeed = 0;
+	public double peakSpeedHigh = 0.60;
+	public double lowestSpeed = 0.01;
+	public int positionErrorMargin = 50;
+	public int motionMagicCruiseVel;
+	public int motionMagicAccel;
+	public final double bracingVoltage = 0.08;
+	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
+	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
 	
 
 	public LiftSubsystem() {
@@ -69,14 +66,17 @@ public class LiftSubsystem extends Subsystem {
 			// Setting feedback device type
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			talon.setSensorPhase(true);
+			
+		
 		}
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 		// Put methods for controlling this subsystem
 		// here. Call these from Commands.
     //checks to see if lift is at lowest position
     public boolean isAtHome() {
     	if (talon != null) {
-    		int encoderPos = readEncoder();
+    		int encoderPos = readEncoderInTics();
     		if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
     			return true;
     		}
@@ -88,14 +88,28 @@ public class LiftSubsystem extends Subsystem {
     }
     
 	// reads encoder
-	public int readEncoder() {
+	public int readEncoderInTics() {
 		if (talon != null) {
-			int encoderPos = -(talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
+			int encoderPos = (talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
 		}
 		return 0;
 	}
 
+	public double readEncoderInInches() {
+		double conversionFactor = 1.0/73.02;
+		double competitionMultiplier = 0.5;
+		double encoderPosInInches;
+		if(gotCompBot == true) {
+			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
+			return encoderPosInInches;
+		} else {
+			encoderPosInInches = conversionFactor*-readEncoderInTics();
+			return encoderPosInInches;
+		}
+		
+	}
+	
     public boolean isBottomLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isRevLimitSwitchClosed();
@@ -182,7 +196,7 @@ public class LiftSubsystem extends Subsystem {
 
 	public boolean isAtScale() {
 		if (talon != null) {
-			int encoderPos = readEncoder();
+			int encoderPos = readEncoderInTics();
 			if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
 				return true;
 			} else {
@@ -236,7 +250,8 @@ public class LiftSubsystem extends Subsystem {
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
 		SmartDashboard.putBoolean("Lift Top limit", false);
-		SmartDashboard.putNumber("Lift encoder position: ", readEncoder());
+		SmartDashboard.putNumber("Lift/encoder position: ", readEncoderInTics());
+		SmartDashboard.putNumber("Lift/Encoder in Inches", readEncoderInInches());
 
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
@@ -245,6 +260,7 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
 		}
 		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
+	
 	//	SmartDashboard.putNumber("Lift Percent Output",)
 	}
 
@@ -266,7 +282,7 @@ public class LiftSubsystem extends Subsystem {
 	
 	public void calculateNewPIDParameters() {
 		// look at the current position and lastSetPoint,
-		if (readEncoder() > lastSetPoint) {
+		if (readEncoderInTics() > lastSetPoint) {
 			
 		}
 		// if we are going up or down, and load the correct PID
