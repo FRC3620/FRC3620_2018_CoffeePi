@@ -11,10 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotDownCommand extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
-	double liftEncoderPos;
-	double pivotEncoder;
+	final int lowerLiftWindowLimit = 7;
+	final int upperLiftWindowLimit = 88;
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
     public PivotDownCommand() {
@@ -26,37 +25,34 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
-    	lowerLiftWindowLimit = 7;
-    	upperLiftWindowLimit = 88;
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	pivotEncoder = Robot.intakeSubsystem.readEncoder();
-    	//if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    	if (pivotEncoder <1000) {
-    		Robot.intakeSubsystem.pivotDown(0.4);
+    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+
+    	if (pivotEncoder < 95) {
+    		Robot.intakeSubsystem.pivotDown(0.5);
     	}
-    	else if (pivotEncoder > 1000 && pivotEncoder < 1100) {
+    	else if (pivotEncoder < 120) {
     		Robot.intakeSubsystem.pivotDown(0.1);
     	}
     	else {
     		Robot.intakeSubsystem.pivotDown(0);
     	}
-   // 	}
-    /*	else {
-    		Robot.intakeSubsystem.pivotDown(0);
-    	} */
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
- 	if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+    	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if (!Robot.intakeSubsystem.isEncoderValid) {
+    		logger.warn("I can't pivit down: encoder is not valid!");
+    		return true;
+    	}
+  	    if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     		return true;
  		}
-    	else if (pivotEncoder > 900) {
+    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 90) {
     		return true;
     	}
         return false;
@@ -64,12 +60,17 @@ public class PivotDownCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	EventLogging.commandMessage(logger); 
+    	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
+    	
     	Robot.intakeSubsystem.pivotDown(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	EventLogging.commandMessage(logger);
+    	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
     	Robot.intakeSubsystem.pivotDown(0);
     }
 }

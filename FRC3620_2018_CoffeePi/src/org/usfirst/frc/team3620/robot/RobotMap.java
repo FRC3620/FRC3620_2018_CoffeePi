@@ -251,7 +251,10 @@ public class RobotMap {
 
 			intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
 			resetControllerToKnownState(intakeSubsystemIntakePivot);
+			intakeSubsystemIntakePivot.setNeutralMode(NeutralMode.Brake);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
+			//intakeSubsystemIntakePivot.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
+			//intakeSubsystemIntakePivot.configOpenloopRamp(1, 10); //1 second for 0 to max voltage
 		} else {
 			logger.info("Talon SRX 13 is missing, disabling CAN intake");
 		}

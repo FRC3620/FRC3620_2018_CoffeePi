@@ -11,10 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotUpCommand extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
-	double liftEncoderPos;
-	double pivotEncoder;
+	final int lowerLiftWindowLimit = 7;
+	final int upperLiftWindowLimit = 88;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -30,29 +28,19 @@ public class PivotUpCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
-    	pivotEncoder = Robot.intakeSubsystem.readEncoder();
-    //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    	if (pivotEncoder > 300) {
+    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	if (pivotEncoder > 85) {
     		Robot.intakeSubsystem.pivotUp(0.5);
     	}
     	else {
-    		Robot.intakeSubsystem.pivotUp(.1);
+    		Robot.intakeSubsystem.pivotUp(0.35);
     	}
-    	//}
-    /*	else {
-    		Robot.intakeSubsystem.pivotUp(0);
-    	} */
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
-    		return true;
-    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
-    		return true;
-    	} */
-    	if (pivotEncoder < 200) {
+    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	if (pivotEncoder < 45) {
     		logger.info("pivot up is finished");
     		return true;
     		
@@ -62,12 +50,14 @@ public class PivotUpCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	EventLogging.commandMessage(logger);
     	Robot.intakeSubsystem.pivotUp(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	EventLogging.commandMessage(logger);
     	Robot.intakeSubsystem.pivotUp(0);
     }
 }
