@@ -24,27 +24,24 @@ public class AutoMoveLiftDown extends Command {
 	//1440 ticks = 16.875 inches
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftDown Command");
-    	slowDownPoint = -892;
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	encoderPos = Robot.liftSubsystem.readEncoderInTics();
-    	if(encoderPos <= slowDownPoint) {
-    		Robot.liftSubsystem.setElevatorVelocity(fallingPower);
-    		System.out.println("Coming down at speed");
-    	}
-    	else if(encoderPos > slowDownPoint) {
-    		Robot.liftSubsystem.setElevatorVelocity(fallingPower + ((slowDownPoint - encoderPos)/slowDownPoint)*0.03);
-    	} else if(encoderPos < -171) {
-    		Robot.liftSubsystem.setElevatorVelocity(0);
-    	}
+    	Robot.liftSubsystem.setElevatorVelocity(fallingPower);
+    	
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
+    	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
+    		 return true;
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
     		return true;
     	}
         return false;

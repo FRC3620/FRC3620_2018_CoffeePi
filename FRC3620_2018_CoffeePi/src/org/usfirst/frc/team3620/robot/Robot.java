@@ -200,23 +200,33 @@ public class Robot extends TimedRobot {
 				// no, we don't. calculate autonomous.
 				logger.info("Game Message = {}, Delay = {}, Trust = {}, pos = {}", gameMessage,
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
+				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
 				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
-				CommandGroup unfoldandlift = new CommandGroup();
-				unfoldandlift.addSequential(new FakeCommand(1, 2, new PivotDownCommand()));
-				unfoldandlift.addSequential(new FakeCommand(1, 3, new LiftToSwitch()));
-				commandGroup.addParallel(unfoldandlift);
-				commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
-				if (whereToPutCube == WhereToPutCube.SCALE) {
-					commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
-					commandGroup.addSequential(new FakeCommand(1, 3, new AutoMoveALittleCommand()));
+				
+				if(startingPos != 'C') {
+					CommandGroup unfoldandlift = new CommandGroup();
+					unfoldandlift.addSequential(new PivotDownCommand());
+					if(whereToPutCube == whereToPutCube.SCALE) {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+					} else {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+						
+					}
+					commandGroup.addParallel(unfoldandlift);
+					
 				}
+				
+				commandGroup.addSequential(autonomousDescriptor.getPath());
+				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-					commandGroup.addSequential(new FakeCommand(0.5, 1, new AutonomousPukeCubeCommand()));
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
+				
+				commandGroup.addSequential(new AutoMoveLiftDown());
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
 			}

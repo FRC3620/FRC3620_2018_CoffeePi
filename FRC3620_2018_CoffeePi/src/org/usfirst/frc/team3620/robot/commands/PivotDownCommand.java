@@ -32,6 +32,7 @@ public class PivotDownCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
+    	pivotEncoder = Robot.intakeSubsystem.readEncoder();
     	//if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     	if (pivotEncoder <1000) {
     		Robot.intakeSubsystem.pivotDown(0.4);
@@ -55,6 +56,9 @@ public class PivotDownCommand extends Command {
     	} else if(liftEncoderPos < lowerLiftWindowLimit) {
     		return true;
     	} */
+    	if (pivotEncoder > 900) {
+    		return true;
+    	}
         return false;
     }
 

@@ -99,6 +99,7 @@ public class OI {
 	       
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
+	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
@@ -115,7 +116,7 @@ public class OI {
 //           SmartDashboard.putData("Right start, right scale", new Path_RightStart_RightScale());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
-           SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToTransportHeight());
+           SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
 	}
 	       
