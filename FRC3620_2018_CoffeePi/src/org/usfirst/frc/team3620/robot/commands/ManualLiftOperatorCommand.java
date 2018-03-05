@@ -14,6 +14,7 @@ import org.usfirst.frc.team3620.robot.OI;
  */
 public class ManualLiftOperatorCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+	boolean highGear = Robot.liftSubsystem.highGear;
 
     public ManualLiftOperatorCommand() {
         // Use requires() here to declare subsystem dependencies
@@ -30,6 +31,14 @@ public class ManualLiftOperatorCommand extends Command {
     protected void execute() {
     	double joyPos = Robot.m_oi.getLiftJoystick();
     	logger.info("" + joyPos);
+    if(highGear == false){
+    	if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false){
+    		Robot.liftSubsystem.climb(joyPos);
+    	}
+    	else if(joyPos < -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false){
+    		Robot.liftSubsystem.moveElevatorUp(-joyPos, highGear);
+    	}
+    } else{
     	if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
     		Robot.liftSubsystem.moveElevatorUp(-joyPos);
 //    		System.out.println("Moving Lift Up");
@@ -39,8 +48,9 @@ public class ManualLiftOperatorCommand extends Command {
     			joyPos = joyPos * 0.75;
     		}
     		Robot.liftSubsystem.moveElevatorDown(joyPos);
-//    		System.out.println("Moving Lift Down");
+    		//   		System.out.println("Moving Lift Down");
     	}
+    }
     }
     
     // Make this return true when this Command no longer needs to run execute()

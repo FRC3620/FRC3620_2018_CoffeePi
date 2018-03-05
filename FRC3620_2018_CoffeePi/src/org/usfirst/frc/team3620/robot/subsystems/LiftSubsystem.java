@@ -49,7 +49,7 @@ public class LiftSubsystem extends Subsystem {
 	public final double bracingVoltage = 0.08;
 	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
 	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
-	
+	public boolean highGear = true;
 	public LiftSubsystem() {
 		super();
 		if (talon != null) {
@@ -145,7 +145,12 @@ public class LiftSubsystem extends Subsystem {
 		// runs lift motor for vertSpeed
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
 	}
-	
+	public void moveElevatorUp(double joyPos, boolean highGear) {
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+		}
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
+	}
 	public void moveElevatorDown(double joyPos) {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
@@ -164,6 +169,14 @@ public class LiftSubsystem extends Subsystem {
 	
 	public void fallSlowly() {
 		setLiftTalon(ControlMode.PercentOutput, 0.08);
+	}
+	
+	public void climb(double joyPos){
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+			setLiftTalon(ControlMode.PercentOutput, -(bracingVoltage + (joyPos * peakVoltageHigh)));
+		}
+		
 	}
 //All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
 	public double calculateArcCosH(double input) {
@@ -217,10 +230,12 @@ public class LiftSubsystem extends Subsystem {
 
 	public void setHighGear() {
 		liftGearShifter.set(Value.kReverse);
+		highGear = true;
 	}
 
 	public void setLowGear() {
 		liftGearShifter.set(Value.kForward);
+		highGear = false;
 
 	}
 
