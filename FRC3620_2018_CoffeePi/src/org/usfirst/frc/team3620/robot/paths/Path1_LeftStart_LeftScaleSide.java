@@ -35,7 +35,7 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.5;
+		return 0.565;
 	}
 	
 	@Override

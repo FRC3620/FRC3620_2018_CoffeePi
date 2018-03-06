@@ -77,8 +77,8 @@ public class OI {
 	       pivotUp.whenActive(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
 	       pivotDown.whenActive(new PivotDownCommand());
-	 //      Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	  //    moveLiftUp.whenPressed(new AutoMoveLiftUp());
+	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
+	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
 	 //      Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	   //    moveLiftDown.whenPressed(new AutoMoveLiftDown());

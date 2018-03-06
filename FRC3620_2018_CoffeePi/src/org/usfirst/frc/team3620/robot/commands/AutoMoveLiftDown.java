@@ -11,7 +11,7 @@ import org.slf4j.Logger;
  */
 public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double encoderPos;
+	
 	double slowDownPoint;
 	double fallingPower = 0.02;
     public AutoMoveLiftDown() {
@@ -29,7 +29,7 @@ public class AutoMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	encoderPos = Robot.liftSubsystem.readEncoderInTics();
+    	
     	Robot.liftSubsystem.setElevatorVelocity(fallingPower);
     	
     	
@@ -38,10 +38,11 @@ public class AutoMoveLiftDown extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
-    	} else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
+    	} else if(encoderPos < 12) {
     		return true;
     	}
         return false;

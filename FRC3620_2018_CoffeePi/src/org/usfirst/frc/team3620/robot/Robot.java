@@ -110,6 +110,7 @@ public class Robot extends TimedRobot {
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
 		liftSubsystem = new LiftSubsystem();
+		SmartDashboard.putData("LiftSubsystem",liftSubsystem);
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 
@@ -217,6 +218,7 @@ public class Robot extends TimedRobot {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						
 					}
+					unfoldandlift.addSequential(new HoldLift());
 					commandGroup.addParallel(unfoldandlift);
 					
 				}
@@ -273,6 +275,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
+		liftSubsystem.setHighGear();
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**

@@ -275,21 +275,24 @@ public abstract class AbstractPath extends Command {
 		
 
 		// Console prints for debugging. Comment and uncomment as needed.
-		System.out.println("\noutputLeft = " + outputLeft);
-		System.out.println("outputRight = " + outputRight);
-		System.out.println("Encoders delta L,R = " + leftEncoderDelta + " " + rightEncoderDelta);
-		System.out.println("Encoders L,R = " + encoderPosLeft + " " + encoderPosRight);
-//		System.out.println("left.getHeading() = " + left.getHeading());
-//		System.out.println("r2d-left.getHeading() = " + Pathfinder.r2d(left.getHeading()));
-		System.out.println("desired_heading = " + desired_heading);
-		System.out.println("navx_heading = " + navx_heading);
-		System.out.println("angleDifference = " + angleDifference);
-		System.out.println("tdelta = " + (t1 - t0));
-		System.out.println("turn = " + turn);
-		System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
-		System.out.println("Max motor output: " + maxOutput);
-		System.out.println("Max turn:" + maxTurn);
-
+if(false) {
+	System.out.println("\noutputLeft = " + outputLeft);
+	System.out.println("outputRight = " + outputRight);
+	System.out.println("Encoders delta L,R = " + leftEncoderDelta + " " + rightEncoderDelta);
+	System.out.println("Encoders L,R = " + encoderPosLeft + " " + encoderPosRight);
+//	System.out.println("left.getHeading() = " + left.getHeading());
+//	System.out.println("r2d-left.getHeading() = " + Pathfinder.r2d(left.getHeading()));
+	System.out.println("desired_heading = " + desired_heading);
+	System.out.println("navx_heading = " + navx_heading);
+	System.out.println("angleDifference = " + angleDifference);
+	System.out.println("tdelta = " + (t1 - t0));
+	System.out.println("turn = " + turn);
+	System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
+	System.out.println("Max motor output: " + maxOutput);
+	System.out.println("Max turn:" + maxTurn);
+}
+	
+		
 		// Ends the command when forward trajectory is finished.
 
 		if (outputLeft == 0.0 && outputRight == 0.0) {

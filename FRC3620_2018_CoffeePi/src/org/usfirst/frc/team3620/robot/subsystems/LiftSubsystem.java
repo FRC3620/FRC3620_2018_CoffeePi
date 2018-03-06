@@ -42,14 +42,14 @@ public class LiftSubsystem extends Subsystem {
 	public double kFSpeed = 0;
 	public double kIZoneSpeed = 0;
 	public double peakSpeedHigh = 0.60;
-	public double lowestSpeed = 0.00075; // 0.0025 seems reasonable
+	public double lowestSpeed = 0.00025;
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
 	public final double bracingVoltage = 0.08;
 	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
 	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
-	public boolean highGear = true;
+	private boolean highGear;
 	public LiftSubsystem() {
 		super();
 		if (talon != null) {
@@ -87,7 +87,7 @@ public class LiftSubsystem extends Subsystem {
     }
     
 	// reads encoder
-	public int readEncoderInTics() {
+	 int readEncoderInTics() {
 		if (talon != null) {
 			int encoderPos = (talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
@@ -175,7 +175,10 @@ public class LiftSubsystem extends Subsystem {
 		if(highGear == false){
 			peakSpeedHigh = 1.0;
 			setLiftTalon(ControlMode.PercentOutput, -(bracingVoltage + (joyPos * peakVoltageHigh)));
+			System.out.println(-(bracingVoltage + (joyPos * peakVoltageHigh)));
 		}
+		peakSpeedHigh = 0.6;
+		
 		
 	}
 //All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
@@ -238,6 +241,10 @@ public class LiftSubsystem extends Subsystem {
 		highGear = false;
 
 	}
+	
+	public boolean isInHighGear() {
+		return highGear;
+	}
 
 	public void deadenShifter() {
 		liftGearShifter.set(Value.kOff);
@@ -261,8 +268,8 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
-		SmartDashboard.putBoolean("Lift Top limit", false);
-		SmartDashboard.putNumber("Lift encoder position: ", readEncoderInTics());
+		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		SmartDashboard.putNumber("Lift encoder In Tics", readEncoderInTics());
 		SmartDashboard.putNumber("Lift Encoder in Inches", readEncoderInInches());
 
 		if (talon != null) {
