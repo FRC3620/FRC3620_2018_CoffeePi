@@ -45,10 +45,6 @@ public class RobotDataLoggingSetup {
 			robotDataLogger.addDataProvider("drive.l1.current",
 					() -> f2(RobotMap.driveSubsystemTalonLeft1.getOutputCurrent()));
 		}
-		if (RobotMap.driveSubsystemVictorLeft2 != null) {
-			robotDataLogger.addDataProvider("drive.l2.voltage",
-					() -> f2(RobotMap.driveSubsystemVictorLeft2.getMotorOutputVoltage()));
-		}
 		if (RobotMap.driveSubsystemVictorLeft3 != null) {
 			robotDataLogger.addDataProvider("drive.l3.voltage",
 					() -> f2(RobotMap.driveSubsystemVictorLeft3.getMotorOutputVoltage()));
@@ -64,10 +60,6 @@ public class RobotDataLoggingSetup {
 					() -> f2(RobotMap.driveSubsystemTalonRight1.getMotorOutputVoltage()));
 			robotDataLogger.addDataProvider("drive.r1.current",
 					() -> f2(RobotMap.driveSubsystemTalonRight1.getOutputCurrent()));
-		}
-		if (RobotMap.driveSubsystemVictorRight2 != null) {
-			robotDataLogger.addDataProvider("drive.r2.voltage",
-					() -> f2(RobotMap.driveSubsystemVictorRight2.getMotorOutputVoltage()));
 		}
 		if (RobotMap.driveSubsystemVictorRight3 != null) {
 			robotDataLogger.addDataProvider("drive.r3.voltage",
