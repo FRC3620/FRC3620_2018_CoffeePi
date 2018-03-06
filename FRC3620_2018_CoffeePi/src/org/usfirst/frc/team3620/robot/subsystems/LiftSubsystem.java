@@ -101,12 +101,15 @@ public class LiftSubsystem extends Subsystem {
 		double encoderPosInInches;
 		if(gotCompBot == true) {
 			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
-			return encoderPosInInches;
 		} else {
 			encoderPosInInches = conversionFactor*-readEncoderInTics();
-			return encoderPosInInches;
 		}
-		
+		//LightSubsystem call
+		if (encoderPosInInches >= 8) {
+			new LightSubsystem().setEvent("lift", true);
+		}
+		else {new LightSubsystem().setEvent("lift", false);}
+		return encoderPosInInches;
 	}
 	
     public boolean isBottomLimitDepressed(){
