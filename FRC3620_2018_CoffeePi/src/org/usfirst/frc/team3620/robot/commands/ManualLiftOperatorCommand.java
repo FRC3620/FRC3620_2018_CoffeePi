@@ -31,29 +31,33 @@ public class ManualLiftOperatorCommand extends Command {
     protected void execute() {
     	double joyPos = Robot.m_oi.getLiftJoystick();
     	boolean highGear = Robot.liftSubsystem.isInHighGear();
-    //	logger.info("" + joyPos);
+    	//	logger.info("" + joyPos);
     	logger.info("High Gear? = {}", highGear);
-    if(highGear == false){
-    	if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false){
-    		Robot.liftSubsystem.climb(joyPos);
-    		logger.info("Starting HighGear? = {}", highGear);
-    	}
-    	else if(joyPos < -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false){
-    		Robot.liftSubsystem.moveElevatorUp(-joyPos, highGear);
-    	}
-    } else{
-    	if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
-    		Robot.liftSubsystem.moveElevatorUp(-joyPos);
-//    		System.out.println("Moving Lift Up");
-    	}
-    	else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
-    		if( Robot.liftSubsystem.readEncoderInInches() < 14){
-    			joyPos = joyPos * 0.75;
+    	if(highGear == false){
+    		if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false){
+    			Robot.liftSubsystem.climb(joyPos);
+    			logger.info("Starting HighGear? = {}", highGear);
     		}
-    		Robot.liftSubsystem.moveElevatorDown(joyPos);
-    		//   		System.out.println("Moving Lift Down");
+    		else if(joyPos < -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false){
+    			Robot.liftSubsystem.moveElevatorUp(-joyPos, highGear);
+    		}
+    	} else{
+    		if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
+    			Robot.liftSubsystem.moveElevatorUp(-joyPos);
+    			//    		System.out.println("Moving Lift Up");
+    		}
+    		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
+    			if (true) {
+    				if( Robot.liftSubsystem.readEncoderInInches() < 14){
+    					joyPos = joyPos * 0.75;
+    				}
+    				Robot.liftSubsystem.moveElevatorDown(joyPos);
+    				//   		System.out.println("Moving Lift Down");
+    			} else {
+    				Robot.liftSubsystem.moveAtManualSpeedGiven(0);
+    			}
+    		}
     	}
-    }
     }
     
     // Make this return true when this Command no longer needs to run execute()

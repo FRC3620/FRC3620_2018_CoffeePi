@@ -42,7 +42,7 @@ public class LiftSubsystem extends Subsystem {
 	public double kFSpeed = 0;
 	public double kIZoneSpeed = 0;
 	public double peakSpeedHigh = 0.60;
-	public double lowestSpeed = 0.00025;
+	public double lowestSpeed = 0.0; // 0.00025;
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
