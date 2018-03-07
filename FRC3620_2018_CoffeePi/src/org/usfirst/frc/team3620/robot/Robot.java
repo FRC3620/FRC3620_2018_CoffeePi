@@ -217,6 +217,7 @@ public class Robot extends TimedRobot {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						
 					}
+					unfoldandlift.addSequential(new HoldLift());
 					commandGroup.addParallel(unfoldandlift);
 					
 				}
