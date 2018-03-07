@@ -2,16 +2,18 @@ package org.usfirst.frc.team3620.robot.commands;
 
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.Robot;
+
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class Auto180PointTurn extends Command {
+public class Auto180PointTurn extends Command implements PIDOutput {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
 	double sideStick;
@@ -23,7 +25,7 @@ public class Auto180PointTurn extends Command {
 	//PIDController pidTurn = new PIDController(.035, .001, 00, kF, ahrs, this); overshot
 	//PIDController pidTurn = new PIDController(.015, .001, 00, kF, ahrs, this); overshot
 	//PIDController pidTurn = new PIDController(.015, .0001, 00, kF, ahrs, this); works
-	PIDController pidTurn = new PIDController(.1, .0001, .00, .00, Robot.driveSubsystem.getAhrsPidSource(), this);
+	PIDController pidTurn = new PIDController(.1, .0001, .00, .00, Robot.driveSubsystem.getAhrsPidSource(), (PIDOutput) this);
 	//PIDController pidTurn = new PIDController(100, 20, 0, .00, Robot.driveSubsystem.getAhrsPidSource(), this);
     public Auto180PointTurn(double howFar) {
     	 // Use requires() here to declare subsystem dependencies
@@ -62,15 +64,32 @@ public class Auto180PointTurn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    	double want = Robot.driveSubsystem.getAutomaticHeading();
+    	double got = Robot.driveSubsystem.getAngle();
+    	double error = Robot.driveSubsystem.angleDifference(want, got);
+    	logger.info("want {}, got {}, error {}, ontarget {}, getAvgError {}, getError {}", want, got, error, pidTurn.onTarget(),
+    			pidTurn.getAvgError(),
+    			pidTurn.getError());
+    	
+    	return Math.abs(error) < 3;
+       
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	logger.info("AutomatedTurn end");
+    	pidTurn.disable();
+    	Robot.driveSubsystem.setMotors(0,0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	logger.info("AutomatedTurn interrupted");
+    	end();
     }
+    
+    public void pidWrite(double output) {
+        sideStick = output;
+     }
 }
