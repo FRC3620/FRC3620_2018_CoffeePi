@@ -48,8 +48,12 @@ public class PivotUpCommand extends Command {
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
     	boolean haveCube = Robot.intakeSubsystem.haveCube;
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
     	if (pivotEncoder < 45) {
+    		return true;
+    	}
+    	if (!isClampClosed) {
     		return true;
     	}
 

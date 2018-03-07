@@ -48,11 +48,15 @@ public class PivotDownCommand extends Command {
     protected boolean isFinished() {
 
     	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     	if (!Robot.intakeSubsystem.isEncoderValid) {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
     	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 90) {
+    		return true;
+    	}
+    	if (!isClampClosed) {
     		return true;
     	}
         return false;
