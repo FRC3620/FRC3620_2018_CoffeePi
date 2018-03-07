@@ -42,9 +42,6 @@ public class PivotDownCommand extends Command {
     			Robot.intakeSubsystem.pivotDown(0);
     		}
     	}
-    	else {
-    		;
-    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

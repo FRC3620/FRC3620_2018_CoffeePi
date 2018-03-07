@@ -275,8 +275,8 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
-		liftSubsystem.setHighGear();
-		intakeSubsystem.clampCube();
+		liftSubsystem.setHighGear(); 
+		intakeSubsystem.clampCube(); 
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**
