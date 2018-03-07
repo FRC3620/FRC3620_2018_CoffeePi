@@ -16,8 +16,6 @@ public class AutonomousPukeCubeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
 	Timer timer = new Timer();
-	int delay; 
-	
 	
     public AutonomousPukeCubeCommand() {
     	

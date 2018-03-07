@@ -6,71 +6,118 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.slf4j.Logger;
-/**
+/**		WELCOME to the Auto Lift Commands Choose Your Own Debug Book. If you need to debug something or desire
+ * 	enlightenment as to what the heck something might mean, follow the helpful comments nearby. They will point
+ * 	you in the right direction.
  *
  */
-public class AutoMoveLiftUp extends Command {
+public abstract class AutoMoveLiftUp extends Command {
+	/* These are all of the variables that we define so we can be fully configurable. All of these variables
+	 * are required so that the specific hyperbolic function used by the robot to send percent output can be
+	 * calculated in the Lift Subsystem (line 177).
+	 * 
+	 * oneFoot is the number of tics that is roughly equivalent to 1 foot, a good distance for slowing down
+	 * and such, which is why the speedUp point 
+	 * 
+	 * The startingEncoderPos is helpful for being able to calculate the k for the hyperbolic function as one
+	 * can see in the Lift Subsystem (line 177).
+	 * 
+	 * encoderPos is just the encoder position read every execute. The requestedEncoderPos is the final destination.
+	 * The desiredStartingPower and desiredEndingPower are useful in the calculation of the k.
+	*/
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double encoderPos;
-	double requestedEncoderPos;
-	double slowDownPoint = requestedEncoderPos - 768;
-	double desiredStartingPower;
-	double desiredEndingPower;
+	double startingEncoderPos;
+	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
+	//1 revolution = 3 inches
+	int oneFoot = 12;
+	double slowDownPoint = requestedEncoderPos - oneFoot;
+	double speedUpPoint = startingEncoderPos + oneFoot;
+	double desiredStartingPower = 0.3;
+	double maxPower;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.12;
+	
+	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
+    	maxPower = getMaxPower();
+    	requestedEncoderPos = getRequestedEndPos();
     }
+    
+    public abstract double getRequestedEndPos();
+    public double getMaxPower() {
+    	return 0.6;
+    }
+    
 
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
+    //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
-    	logger.info("Starting AutoMoveLiftUp Command");
-    	requestedEncoderPos = 4949;
-    	desiredStartingPower = 0.125;
-    	desiredEndingPower = 0.1625;
+    	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+    	weAreDoneSenor = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
+    /* So, what is this mess? That's a good question. If one carefully reads the if statements, they should get
+     * a good idea of when each block will run, so I won't go into that. However, one will notice that the first
+     * and third blocks contain "calculatePowerHyperbolic" REFER TO -- LiftSubsytem:177
+     * 
+     * Well, then. Try getting that out of your head. If the lift is in the sweet spot between speeding up and
+     * slowing down, it'll go full speed.
+     * 
+     * If it goes too far, or hits the limit switch (which better not happen), we call it quits.
+     */
     protected void execute() {
-    	encoderPos = Robot.liftSubsystem.readEncoder();
-    	if(encoderPos <= 512) {
-    		Robot.liftSubsystem.moveElevatorUp(0.8*(1/Math.cosh(((encoderPos - 512)/-233.38))));
-    		System.out.println("We're accelerating to Speed");
-    	} else if(encoderPos > 512 && encoderPos < slowDownPoint) {
-    		Robot.liftSubsystem.moveElevatorUp(0.8);
-    		System.out.println("At Cruise Altitude and Speed");
-    	} else if(encoderPos >= slowDownPoint && encoderPos < requestedEncoderPos) {
-    		Robot.liftSubsystem.moveElevatorUp(0.8*(1/Math.cosh(((encoderPos - requestedEncoderPos)/281.32))));
-    		System.out.println("Nearing Destination");
-    	} else if(encoderPos >= requestedEncoderPos) {
-    		
-    		System.out.println("We overshot.");
+    	// TODO check the limit switches FIRST!!!
+
+    double encoderPos = Math.abs(Robot.liftSubsystem.readEncoderInInches());
+	    if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
+	    	weAreDoneSenor = true;
+	    	System.out.println("We're done");
+	    } else if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
+    		Robot.liftSubsystem.autoMoveElevatorUp(
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+    	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
+    		Robot.liftSubsystem.setElevatorVelocity(maxPower);
+    		System.out.println("We're set to maximum overdrive.");
+    	} else if(encoderPos >= slowDownPoint) {
+    		Robot.liftSubsystem.autoMoveElevatorUp(
+    				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
     	}
+    	
     }
+    /*	As you probably now attest to, programmers should get routinely checked for insanity.
+     * 
+     * 	The Moral of the Story is if this Command does not work within A LITTLE debugging, abandon it.
+     * 	Move on to the PositionP Commands. NOTE: You actually can still use AutoMoveLiftDown instead of AutoPositionPMoveLiftDown.
+     * 
+     * 	No, really. Move on to AutoPositionPMoveLiftUp: 7
+  	*/
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.readEncoder() > requestedEncoderPos /* || Robot.liftSubsystem.isTopLimitDepressed() */) {
-    		
-    		System.out.println("Exiting Moving UP");
+
+    	if(weAreDoneSenor == true) {
+
     		return true;
-    	}
-    	else{
+    	} else {
     		return false;
     	}
+    	
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending AutoMoveLiftUp Command");
+    	logger.info("Ending AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting AutoMoveLiftUp Command");
+    	logger.info("Interrupting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 }

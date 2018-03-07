@@ -11,8 +11,9 @@ import org.slf4j.Logger;
  */
 public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double encoderPos;
+	
 	double slowDownPoint;
+	double fallingPower = 0.02;
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -22,28 +23,26 @@ public class AutoMoveLiftDown extends Command {
     // Called just before this Command runs the first time
 	//1440 ticks = 16.875 inches
     protected void initialize() {
-    	logger.info("Starting AutoMoveLiftDown Command");
-    	slowDownPoint = 1024;
+    	logger.info("Starting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	encoderPos = Robot.liftSubsystem.readEncoder();
-    	if(encoderPos >= slowDownPoint) {
-    		Robot.liftSubsystem.moveElevatorDown(0.04);
-    		System.out.println("Coming down at speed");
-    	}
-    	else if(encoderPos < slowDownPoint && encoderPos > -171) {
-    		Robot.liftSubsystem.moveElevatorDown(0.04 + ((slowDownPoint - encoderPos)/(slowDownPoint/0.05)));
-    	} else if(encoderPos < -512) {
-    		
-    	}
+    	
+    	Robot.liftSubsystem.setElevatorVelocity(fallingPower);
+    	
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
+    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
+    		 return true;
+    	} else if(encoderPos < 12) {
     		return true;
     	}
         return false;
@@ -51,13 +50,13 @@ public class AutoMoveLiftDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending AutoMoveLiftDown Command");
-    	    }
+    	logger.info("Ending AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+    }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting AutoMoveLiftDown Command");
+    	logger.info("Interrupting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	
     }
 }

@@ -74,13 +74,14 @@ public class OI {
 	       Button unclamp = new JoystickButton(operatorJoystick, 6);
 	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
-	       pivotUp.whileHeld(new PivotUpCommand());
+	       pivotUp.whenActive(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whileHeld(new PivotDownCommand());
-	       Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	       moveLiftUp.whenPressed(new AutoMoveLiftUp());
-	       Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
-	       moveLiftDown.whenPressed(new AutoMoveLiftDown());
+	       pivotDown.whenActive(new PivotDownCommand());
+	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
+	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
+	       
+	 //      Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
+	   //    moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
 	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
@@ -97,7 +98,9 @@ public class OI {
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
-	       SmartDashboard.putData("ResetPivotEncoder", new ResetLiftEncoderCommand());
+	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
+	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
+	       SmartDashboard.putData("Pivot Up Command", new PivotUpCommand());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
@@ -115,6 +118,8 @@ public class OI {
            SmartDashboard.putData("Right start, right scale side", new Path1_RightStart_RightScaleSide());
 //           SmartDashboard.putData("Right start, right switch", new Path_RightStart_RightSwitch());
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
+           SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
+           SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
 	}
 	       
 	public double getDriveVerticalJoystick() {

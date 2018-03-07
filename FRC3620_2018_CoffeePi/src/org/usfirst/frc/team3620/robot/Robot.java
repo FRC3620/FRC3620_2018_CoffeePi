@@ -24,6 +24,7 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
@@ -109,6 +110,7 @@ public class Robot extends TimedRobot {
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
 		liftSubsystem = new LiftSubsystem();
+		SmartDashboard.putData("LiftSubsystem",liftSubsystem);
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 
@@ -200,25 +202,40 @@ public class Robot extends TimedRobot {
 				// no, we don't. calculate autonomous.
 				logger.info("Game Message = {}, Delay = {}, Trust = {}, pos = {}", gameMessage,
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
+				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
 				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
-				CommandGroup unfoldandlift = new CommandGroup();
-				unfoldandlift.addSequential(new FakeCommand(1, 2, new PivotDownCommand()));
-				unfoldandlift.addSequential(new FakeCommand(1, 3, new LiftToSwitch()));
-				commandGroup.addParallel(unfoldandlift);
-				commandGroup.addSequential(new FakeCommand(5, 7, autonomousDescriptor.getPath()));
-				if (whereToPutCube == WhereToPutCube.SCALE) {
-					commandGroup.addSequential(new FakeCommand(3, 5, new LiftToScale()));
-					commandGroup.addSequential(new FakeCommand(1, 3, new AutoMoveALittleCommand()));
+				commandGroup.addSequential(new LiftShiftHighGear());
+				if(startingPos != 'C') {
+					CommandGroup unfoldandlift = new CommandGroup();
+					unfoldandlift.addSequential(new PivotDownCommand());
+					if(whereToPutCube == whereToPutCube.SCALE) {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+					} else {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+						
+					}
+					unfoldandlift.addSequential(new HoldLift());
+					commandGroup.addParallel(unfoldandlift);
+					
 				}
+				
+				commandGroup.addSequential(autonomousDescriptor.getPath());
+				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-					commandGroup.addSequential(new FakeCommand(0.5, 1, new AutonomousPukeCubeCommand()));
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
+				if(whereToPutCube == whereToPutCube.SCALE) {
+					commandGroup.addSequential(new LiftShiftLowGear());
+					commandGroup.addSequential(new Path_BackUpFromScale());
+				}
+				
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
+				
 			}
 		}
 		
@@ -258,6 +275,7 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
+		liftSubsystem.setHighGear();
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**

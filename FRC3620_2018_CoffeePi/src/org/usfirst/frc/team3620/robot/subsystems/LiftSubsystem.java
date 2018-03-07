@@ -27,33 +27,29 @@ public class LiftSubsystem extends Subsystem {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
 	private final WPI_TalonSRX talon = RobotMap.liftSubsystemTalon1;
-
-	private final DigitalInput elevatorHomeSwitch = RobotMap.liftSubsystemElevatorHomeSwitch;
-	private final DigitalInput intakeInPos = RobotMap.liftSubsystemIntakeInPos;
-	private final DigitalInput intakeFacingBack = RobotMap.liftSubsystemIntakeFacingBack;
 	private final DoubleSolenoid liftGearShifter = RobotMap.liftSubsystemGearShifter;
+	private boolean gotCompBot;
 
-	public static final int kSpeedPIDLoopIdx = 0;
-	public static final int kTimeoutMs = 0;
-	public static final boolean kMotorInvert = false;
-	public static boolean isHome = false;
-	public static final int homePosition = 0;
-	public static final int scalePosition = 4949;
-	public static double kPSpeed = 0;
-	public static double kISpeed = 0;
-	public static double kDSpeed = 0;
-	public static double kFSpeed = .65;
-	public static double kIZoneSpeed = 0;
-	public static double peakSpeedHigh = 0.60;
-	public static double lowestSpeed = 0.03;
-	public static int positionErrorMargin = 50;
-	public static int motionMagicCruiseVel;
-	public static int motionMagicAccel;
-	public static double bracingVoltage = 0.08;
-	public static double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
-	public static double minVoltageHigh = bracingVoltage - lowestSpeed;
-	
-
+	public final int kSpeedPIDLoopIdx = 0;
+	public final int kTimeoutMs = 0;
+	public final boolean kMotorInvert = false;
+	public boolean isHome = false;
+	public final int homePosition = 0;
+	public final int scalePosition = 4949;
+	public double kPSpeed = 0;
+	public double kISpeed = 0;
+	public double kDSpeed = 0;
+	public double kFSpeed = 0;
+	public double kIZoneSpeed = 0;
+	public double peakSpeedHigh = 0.60;
+	public double lowestSpeed = 0.0; // 0.00025;
+	public int positionErrorMargin = 50;
+	public int motionMagicCruiseVel;
+	public int motionMagicAccel;
+	public final double bracingVoltage = 0.08;
+	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
+	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
+	private boolean highGear;
 	public LiftSubsystem() {
 		super();
 		if (talon != null) {
@@ -69,22 +65,17 @@ public class LiftSubsystem extends Subsystem {
 			// Setting feedback device type
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			talon.setSensorPhase(true);
+			
+		
 		}
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 		// Put methods for controlling this subsystem
 		// here. Call these from Commands.
-    
-    public void moveElevatorTestUp() {
-    	setLiftTalon(ControlMode.PercentOutput, .50);
-    }
-    public void moveElevatorTestDown() {
-   		setLiftTalon(ControlMode.PercentOutput, -.50);
-    }
-    
     //checks to see if lift is at lowest position
     public boolean isAtHome() {
     	if (talon != null) {
-    		int encoderPos = readEncoder();
+    		int encoderPos = readEncoderInTics();
     		if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
     			return true;
     		}
@@ -96,28 +87,45 @@ public class LiftSubsystem extends Subsystem {
     }
     
 	// reads encoder
-	public int readEncoder() {
+	 int readEncoderInTics() {
 		if (talon != null) {
-			int encoderPos = -(talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
+			int encoderPos = (talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
 		}
 		return 0;
 	}
 
+	public double readEncoderInInches() {
+		double conversionFactor = 1.0/73.02;
+		double competitionMultiplier = 0.5;
+		double encoderPosInInches;
+		if(gotCompBot == true) {
+			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
+		} else {
+			encoderPosInInches = conversionFactor*-readEncoderInTics();
+		}
+		//LightSubsystem call
+		if (encoderPosInInches >= 8) {
+			new LightSubsystem().setEvent("lift", true);
+		}
+		else {new LightSubsystem().setEvent("lift", false);}
+		return encoderPosInInches;
+	}
+	
     public boolean isBottomLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isRevLimitSwitchClosed();
     	}
     	return false;
     }
- /*   
+ 
     public boolean isTopLimitDepressed(){
     	if (talon != null) {
     		return talon.getSensorCollection().isFwdLimitSwitchClosed();
     	}
     	return false; 
     }
-    */
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -140,26 +148,71 @@ public class LiftSubsystem extends Subsystem {
 		// runs lift motor for vertSpeed
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
 	}
+	public void moveElevatorUp(double joyPos, boolean highGear) {
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+		}
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
+	}
 	public void moveElevatorDown(double joyPos) {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 	}
+	
+	public void autoMoveElevatorUp(double voltage) {
+		setLiftTalon(ControlMode.PercentOutput, voltage);
+	}
 
-	
-	
+	public void autoMoveElevatorDown(double voltage) {
+		setLiftTalon(ControlMode.PercentOutput, voltage);
+	}
 
 	public void setElevatorVelocity(double speed) {
-		setLiftTalon(ControlMode.Velocity, speed);
+		setLiftTalon(ControlMode.PercentOutput, speed);
 	}
 	
 	public void fallSlowly() {
 		setLiftTalon(ControlMode.PercentOutput, 0.08);
 	}
-
 	
+	public void climb(double joyPos){
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+			setLiftTalon(ControlMode.PercentOutput, -(bracingVoltage + (joyPos * peakVoltageHigh)));
+			System.out.println(-(bracingVoltage + (joyPos * peakVoltageHigh)));
+		}
+		peakSpeedHigh = 0.6;
+		
+		
+	}
+//All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
+	public double calculateArcCosH(double input) {
+		double output = Math.log1p((input + Math.sqrt((input*input) -1)) - 1);
+		return output;
+	}
+			
+	
+	/* Welcome to the mathematical magic. The hyperbolic secant function is a nice bell curve, which is why we're
+	 * using it to find percent output so we don't go anywhere TOO fast. Finding k and the equation for the return
+	 * statement can be easily verified by starting with equating the percent output with a hyperbolic secant
+	 * function that has ((x-point)/k) inside of it; this is to translate the function over to a positive domain 
+	 * and then scale it for our purposes.
+	 * 
+	 * What is returned should fall within the desiredStartingPower and 1. I apologize for the parameters.
+	 * 
+	 * The purpose of this function is to allow one to change the specific parameters of how the lift moves
+	 * (i.e. where it's supposed to go, it's max speed in going there, etc.) without having to recalculate
+	 * everything oneself and plugging everything in -- such an approach will eventually screw you over.
+	 * 
+	 * Hopefully, one shouldn't have to touch this. Now, you can go back to AutoMoveLiftUp: 59
+	 */
+	public double calculatePowerHyperbolic(double power, double x, double startingPoint, double point, double maxPower){
+		double k = ((startingPoint - point)/(calculateArcCosH(maxPower/power)));
+		return (maxPower/(Math.cosh((x - point)/k)));
+	}
 
 	public boolean isAtScale() {
 		if (talon != null) {
-			int encoderPos = readEncoder();
+			int encoderPos = readEncoderInTics();
 			if (encoderPos > scalePosition - positionErrorMargin && encoderPos < scalePosition + positionErrorMargin) {
 				return true;
 			} else {
@@ -183,11 +236,17 @@ public class LiftSubsystem extends Subsystem {
 
 	public void setHighGear() {
 		liftGearShifter.set(Value.kReverse);
+		highGear = true;
 	}
 
 	public void setLowGear() {
 		liftGearShifter.set(Value.kForward);
+		highGear = false;
 
+	}
+	
+	public boolean isInHighGear() {
+		return highGear;
 	}
 
 	public void deadenShifter() {
@@ -212,8 +271,9 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
-		SmartDashboard.putBoolean("Lift Top limit", false);
-		SmartDashboard.putNumber("Lift encoder position: ", readEncoder());
+		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		SmartDashboard.putNumber("Lift encoder In Tics", readEncoderInTics());
+		SmartDashboard.putNumber("Lift Encoder in Inches", readEncoderInInches());
 
 		if (talon != null) {
 			SmartDashboard.putNumber("Lift Talon 1 Current Output: ", talon.getOutputCurrent());
@@ -222,6 +282,8 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
 		}
 		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
+	
+	//	SmartDashboard.putNumber("Lift Percent Output",)
 	}
 
 	public void setSetpoint(double positionInInches) {
@@ -236,9 +298,13 @@ public class LiftSubsystem extends Subsystem {
 		}
 	}
 	
+	public void setPosition(double desiredEncoderPos) {
+		setLiftTalon(ControlMode.Position, desiredEncoderPos);
+	}
+	
 	public void calculateNewPIDParameters() {
 		// look at the current position and lastSetPoint,
-		if (readEncoder() > lastSetPoint) {
+		if (readEncoderInTics() > lastSetPoint) {
 			
 		}
 		// if we are going up or down, and load the correct PID
@@ -275,7 +341,7 @@ public class LiftSubsystem extends Subsystem {
 	}
 	
 	public void brace(double addedBangBangPower) {
-			setLiftTalon(ControlMode.PercentOutput, bracingVoltage);
+			setLiftTalon(ControlMode.PercentOutput, bracingVoltage + addedBangBangPower);
 	}
 	
 	void setLiftTalon(ControlMode controlMode, double value) {
@@ -286,6 +352,7 @@ public class LiftSubsystem extends Subsystem {
 			CommandRecord commandRecord = new CommandRecord(controlMode, value, command);
 			recording.add(commandRecord);
 			lastPower = value;
+			SmartDashboard.putNumber("liftPower", value);
 		}
 	}
 	

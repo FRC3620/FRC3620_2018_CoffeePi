@@ -11,12 +11,10 @@ public class JoystickAxisTrigger extends Trigger {
 		super();
 		myJoystick = _joystick;
 		myAxis = _axis;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean get() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

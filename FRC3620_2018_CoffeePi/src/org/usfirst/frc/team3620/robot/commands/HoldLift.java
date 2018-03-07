@@ -15,34 +15,43 @@ import org.slf4j.Logger;
 public class HoldLift extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double currentEncoderPos;
-	double variedEncoderPos;
-	double addedBangBangPower;
+	double addedBangBangMultiplier;
+	double addedBangBangPower = 0.03;
+	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
+	double upperBangBangPowerLimit = 0.23;
     public HoldLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
-    	addedBangBangPower = 0.1;
+    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	logger.info("Starting HoldLift Command");
-    	currentEncoderPos = Robot.liftSubsystem.readEncoder();
-    	
-    	
+    	currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	logger.info("Holding Encoder Position: " + currentEncoderPos);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	variedEncoderPos = Robot.liftSubsystem.readEncoder();
-    	if(variedEncoderPos < currentEncoderPos) {
-    	Robot.liftSubsystem.brace(addedBangBangPower*(currentEncoderPos - variedEncoderPos));
-    	} else if(currentEncoderPos < variedEncoderPos) {
-    		Robot.liftSubsystem.brace(-addedBangBangPower*(variedEncoderPos-currentEncoderPos));
-    	} else if(currentEncoderPos == variedEncoderPos) {
+    	double variedEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if(Robot.liftSubsystem.isBottomLimitDepressed() == true) {
+    		Robot.liftSubsystem.resetEncoder();
+    	} else if(variedEncoderPos < currentEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
+    	} else if(variedEncoderPos > currentEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
+    	} else {
+    		addedBangBangPower = 0;
+    	}
+    	
+    	if(addedBangBangPower > lowerBangBangPowerLimit && addedBangBangPower < upperBangBangPowerLimit) {
+    		Robot.liftSubsystem.brace(addedBangBangPower);
+    	} else {
     		Robot.liftSubsystem.brace(0);
     	}
-  
+    	 
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -52,12 +61,12 @@ public class HoldLift extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	logger.info("Ending HoldLift Command");
+    	logger.info("Ending HoldLift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	logger.info("Interrupting HoldLift Command");
+    	logger.info("Interrupting HoldLift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 }

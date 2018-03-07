@@ -11,9 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class PivotUpCommand extends Command {
-	int lowerLiftWindowLimit;
-	int upperLiftWindowLimit;
+	double lowerLiftWindowLimit = 14.0;
+	double upperLiftWindowLimit = 75.0;
 	double liftEncoderPos;
+	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -29,20 +30,30 @@ public class PivotUpCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftEncoderPos = Robot.liftSubsystem.readEncoder();
-    //	if(liftEncoderPos > upperLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
-    		Robot.intakeSubsystem.pivotUp(0.3);
-    	//}
-    /*	else {
-    		Robot.intakeSubsystem.pivotUp(0);
-    	} */
+    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if (pivotEncoder > 85) {
+    		Robot.intakeSubsystem.pivotUp(0.5);
+    	}
+    	else {
+    		Robot.intakeSubsystem.pivotUp(0.35);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-   /* 	if(liftEncoderPos > upperLiftWindowLimit) {
+    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	boolean haveCube = Robot.intakeSubsystem.haveCube;
+    
+    	if (pivotEncoder < 45) {
     		return true;
-    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
+    	}
+
+    /*	if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
+    		return true;
+    	} */
+    /*	if(haveCube == false) {
     		return true;
     	} */
         return false;
@@ -50,12 +61,14 @@ public class PivotUpCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	EventLogging.commandMessage(logger);
     	Robot.intakeSubsystem.pivotUp(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	EventLogging.commandMessage(logger);
     	Robot.intakeSubsystem.pivotUp(0);
     }
 }
