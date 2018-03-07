@@ -175,7 +175,7 @@ public class IntakeSubsystem extends Subsystem {
 	   haveCube = true;
 	   
 	   //LightSubsystem Call
-		new LightSubsystem().setEvent("cube", true);
+		//new LightSubsystem().setEvent("cube", true);
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
@@ -188,7 +188,7 @@ public class IntakeSubsystem extends Subsystem {
 		   haveCube = false;
 		   
 		   //LightSubsystem Call
-		   new LightSubsystem().setEvent("lift", false);
+		   //new LightSubsystem().setEvent("lift", false);
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
