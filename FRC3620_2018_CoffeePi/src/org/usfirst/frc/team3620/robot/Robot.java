@@ -275,7 +275,10 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
-		liftSubsystem.setHighGear();
+		liftSubsystem.setHighGear(); 
+		logger.info("Lift set to high gear");
+		intakeSubsystem.clampCube(); 
+		logger.info("Clamper closed");
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**
@@ -287,7 +290,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		endPeriodic();
 	}
-	
 	public void testInit() {
 		// This makes sure that the autonomous stops running when
 		// test starts running.

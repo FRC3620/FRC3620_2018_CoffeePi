@@ -31,13 +31,16 @@ public class PivotUpCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     	
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if (pivotEncoder > 85) {
-    		Robot.intakeSubsystem.pivotUp(0.5);
-    	}
-    	else {
-    		Robot.intakeSubsystem.pivotUp(0.35);
+    	if(isClampClosed) {
+    		if (pivotEncoder > 85) {
+    			Robot.intakeSubsystem.pivotUp(0.5);
+    		}
+    		else {
+    			Robot.intakeSubsystem.pivotUp(0.35);
+    		}
     	}
     }
 
@@ -45,8 +48,12 @@ public class PivotUpCommand extends Command {
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
     	boolean haveCube = Robot.intakeSubsystem.haveCube;
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
     	if (pivotEncoder < 45) {
+    		return true;
+    	}
+    	if (!isClampClosed) {
     		return true;
     	}
 

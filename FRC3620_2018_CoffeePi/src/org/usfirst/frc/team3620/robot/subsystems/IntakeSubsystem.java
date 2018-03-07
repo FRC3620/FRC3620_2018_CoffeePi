@@ -194,6 +194,19 @@ public class IntakeSubsystem extends Subsystem {
 	   }
 	   
    }
+   
+   public boolean isClampClosed() {
+	   if (intakeClamperSolenoid != null) {
+		   Value intakeStatus = intakeClamperSolenoid.get(); 
+		   logger.info("Clamper status: " + intakeStatus);
+		    if (intakeStatus == Value.kForward) {
+		    	logger.info("Clamper is closed");
+		    	return true;
+		    }
+	   }
+		   logger.info("Clamper is not closed");
+		   return false;  
+   }
  
    public double readPivotAngleInDegress() {
 	   double encoderPositon = readEncoder();
