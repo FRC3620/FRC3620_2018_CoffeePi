@@ -50,8 +50,8 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 //		return 4;
 //	}
 	
-//	@Override
-//	boolean getPathfinderReverseMode() {
-//		return true;
-//	}
+	@Override
+	boolean getPathfinderReverseMode() {
+		return false;
+	}
 }

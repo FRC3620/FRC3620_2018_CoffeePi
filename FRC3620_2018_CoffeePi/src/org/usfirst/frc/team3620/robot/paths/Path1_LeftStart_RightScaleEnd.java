@@ -12,12 +12,15 @@ public class Path1_LeftStart_RightScaleEnd extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				new Waypoint(1.59, 21.5, 0.0001),
-				new Waypoint(14.0, 24.0, 0.0001),
+				new Waypoint(1.58, 21.5, Pathfinder.d2r(0)),
+				new Waypoint(14.0, 24.0, Pathfinder.d2r(0)),
 				new Waypoint(19.5, 18.5, Pathfinder.d2r(-90)),
 				new Waypoint(19.5, 7.5, Pathfinder.d2r(-90)),
 				new Waypoint(24.5, 2.0, 0.0001),
 				new Waypoint(27.0, 4.5, Pathfinder.d2r(90)),
+				
+				
+				
 				
 		};
 	}

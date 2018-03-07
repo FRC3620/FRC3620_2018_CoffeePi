@@ -25,7 +25,7 @@ public class Auto180PointTurn extends Command implements PIDOutput {
 	//PIDController pidTurn = new PIDController(.035, .001, 00, kF, ahrs, this); overshot
 	//PIDController pidTurn = new PIDController(.015, .001, 00, kF, ahrs, this); overshot
 	//PIDController pidTurn = new PIDController(.015, .0001, 00, kF, ahrs, this); works
-	PIDController pidTurn = new PIDController(.1, .0001, .00, .00, Robot.driveSubsystem.getAhrsPidSource(), (PIDOutput) this);
+	PIDController pidTurn = new PIDController(.004, .00, .00, .00, Robot.driveSubsystem.getAhrsPidSource(), (PIDOutput) this);
 	//PIDController pidTurn = new PIDController(100, 20, 0, .00, Robot.driveSubsystem.getAhrsPidSource(), this);
     public Auto180PointTurn(double howFar) {
     	 // Use requires() here to declare subsystem dependencies
