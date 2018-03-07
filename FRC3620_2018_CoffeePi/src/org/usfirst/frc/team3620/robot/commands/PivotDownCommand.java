@@ -29,15 +29,21 @@ public class PivotDownCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
-    	if (pivotEncoder < 95) {
-    		Robot.intakeSubsystem.pivotDown(0.5);
-    	}
-    	else if (pivotEncoder < 120) {
-    		Robot.intakeSubsystem.pivotDown(0.1);
+    	if (isClampClosed) {
+    		if (pivotEncoder < 95) {
+    			Robot.intakeSubsystem.pivotDown(0.5);
+    		}
+    		else if (pivotEncoder < 120) {
+    			Robot.intakeSubsystem.pivotDown(0.1);
+    		}
+    		else {
+    			Robot.intakeSubsystem.pivotDown(0);
+    		}
     	}
     	else {
-    		Robot.intakeSubsystem.pivotDown(0);
+    		;
     	}
     }
 

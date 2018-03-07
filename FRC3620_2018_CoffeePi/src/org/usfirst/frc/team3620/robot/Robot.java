@@ -276,6 +276,7 @@ public class Robot extends TimedRobot {
 		}
 		
 		liftSubsystem.setHighGear();
+		intakeSubsystem.clampCube();
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**
