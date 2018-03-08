@@ -21,9 +21,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
-import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.AbstractPath;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -211,7 +211,7 @@ public class Robot extends TimedRobot {
 				if(startingPos != 'C') {
 					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
-					if(whereToPutCube == whereToPutCube.SCALE) {
+					if(whereToPutCube == WhereToPutCube.SCALE) {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 					} else {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
@@ -221,12 +221,15 @@ public class Robot extends TimedRobot {
 					
 				}
 				
-				commandGroup.addSequential(autonomousDescriptor.getPath());
+				AbstractPath path = autonomousDescriptor.getPath();
+				if (path != null) {
+					commandGroup.addSequential(path);
+				}
 				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
-				if(whereToPutCube == whereToPutCube.SCALE) {
+				if(whereToPutCube == WhereToPutCube.SCALE) {
 					commandGroup.addSequential(new LiftShiftLowGear());
 					commandGroup.addSequential(new Path_BackUpFromScale());
 				}
