@@ -48,13 +48,12 @@ public class AutoMoveLiftDown extends Command {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
-<<<<<<< HEAD
-    	} else if(encoderPos < 12) {
-=======
-    	} /* else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
->>>>>>> refs/remotes/origin/splineAuto
+
+    	//} else if(encoderPos < 12) {
+    		
+    	}  else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
     		return true;
-    	} */
+    	} 
         return false;
     }
 
