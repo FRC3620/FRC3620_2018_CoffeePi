@@ -97,7 +97,7 @@ public class LiftSubsystem extends Subsystem {
 
 	public double readEncoderInInches() {
 		double conversionFactor = 1.0/73.02;
-		double competitionMultiplier = 0.5;
+		double competitionMultiplier = 0.3854;
 		double encoderPosInInches;
 		if(gotCompBot == true) {
 			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
