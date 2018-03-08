@@ -24,6 +24,8 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
+import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -213,6 +215,7 @@ public class Robot extends TimedRobot {
 					unfoldandlift.addSequential(new PivotDownCommand());
 					if(whereToPutCube == whereToPutCube.SCALE) {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+						unfoldandlift.addSequential(new PivotUpCommand());
 					} else {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						
@@ -227,9 +230,26 @@ public class Robot extends TimedRobot {
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
+				//Add Boolean for shooting for two
 				if(whereToPutCube == whereToPutCube.SCALE) {
-					commandGroup.addSequential(new LiftShiftLowGear());
-					commandGroup.addSequential(new Path_BackUpFromScale());
+					commandGroup.addSequential(new PivotDownCommand());
+					commandGroup.addSequential(new UnClampCommand());
+					commandGroup.addSequential(new AutoMoveLiftDown());
+					if(gameMessage.substring(0).charAt(0) == 'L') {
+				//		commandGroup.addSequential(new Path2_LeftScaleSide_AlleyCube());
+					} else if(gameMessage.substring(0).charAt(0) == 'R') {
+				//		commandGroup.addSequential(new Path2_RightScaleSide_AlleyCube());
+					}
+						
+					commandGroup.addSequential(new ClampCommand());
+					commandGroup.addSequential(new AutoMoveLiftUpToScaleHeight());
+					commandGroup.addSequential(new PivotUpCommand());
+					commandGroup.addSequential(new HoldLift());
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					commandGroup.addSequential(new PivotDownCommand());
+					commandGroup.addSequential(new UnClampCommand());
+					commandGroup.addSequential(new AutoMoveLiftDown());
+					
 				}
 				
 				commandGroup.addSequential(new AllDoneCommand());

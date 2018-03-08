@@ -323,6 +323,7 @@ public abstract class AbstractPath extends Command {
 	@Override
 	protected void end() {
 		EventLogging.commandMessage(logger);
+		System.out.println("Max motor output: " + maxOutput);
 	}
 
 	// Called when another command which requires one or more of the same
