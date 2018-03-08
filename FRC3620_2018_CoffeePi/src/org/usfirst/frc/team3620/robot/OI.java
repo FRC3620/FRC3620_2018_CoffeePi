@@ -18,7 +18,6 @@ import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
-import org.usfirst.frc.team3620.robot.paths.TestPoints;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 import edu.wpi.first.wpilibj.Joystick;
@@ -93,7 +92,7 @@ public class OI {
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
-	       
+	      
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
 	       
@@ -113,6 +112,7 @@ public class OI {
            SmartDashboard.putData("Left start, left switch", new Path1_LeftStart_LeftSwitchEnd());
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
            SmartDashboard.putData("Left start, right scale", new Path1_LeftStart_RightScaleEnd());
+           SmartDashboard.putData("Left Start, Right scale side", new Path1_LeftStart_RightScaleSide());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
            SmartDashboard.putData("Right start, right scale end", new Path1_RightStart_RightScaleEnd());
            SmartDashboard.putData("Right start, right scale side", new Path1_RightStart_RightScaleSide());
@@ -120,6 +120,8 @@ public class OI {
            SmartDashboard.putData("ResetDriveEncoders", new ResetDriveEncodersCommand());
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
+           SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
+           SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
 	}
 	       
 	public double getDriveVerticalJoystick() {

@@ -29,12 +29,19 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
+
 		return 0.62;
+
 	}
 	
 	@Override
 	double getPathfinderV_MAX() {
 		// TODO Auto-generated method stub
 		return 4.5;
+	}
+	
+	@Override
+	boolean getPathfinderReverseMode() {
+		return true;
 	}
 }

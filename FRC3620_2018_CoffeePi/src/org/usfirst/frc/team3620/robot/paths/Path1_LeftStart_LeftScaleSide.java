@@ -35,7 +35,7 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.565;
+		return 0.57;
 	}
 	
 	@Override
@@ -50,8 +50,8 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 //		return 4;
 //	}
 	
-//	@Override
-//	boolean getPathfinderReverseMode() {
-//		return true;
-//	}
+	@Override
+	boolean getPathfinderReverseMode() {
+		return false;
+	}
 }
