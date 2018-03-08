@@ -51,6 +51,9 @@ public class ManualLiftOperatorCommand extends Command {
     				if( Robot.liftSubsystem.readEncoderInInches() < 14){
     					joyPos = joyPos * 0.75;
     				}
+    				if(joyPos > 0.9) {
+    					joyPos = 1.0;
+    				}
     				Robot.liftSubsystem.moveElevatorDown(joyPos);
     				//   		System.out.println("Moving Lift Down");
     			} else {
