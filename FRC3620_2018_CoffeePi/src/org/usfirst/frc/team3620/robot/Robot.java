@@ -228,8 +228,8 @@ public class Robot extends TimedRobot {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
 				if(whereToPutCube == whereToPutCube.SCALE) {
-					commandGroup.addSequential(new LiftShiftLowGear());
 					commandGroup.addSequential(new Path_BackUpFromScale());
+					commandGroup.addSequential(new AutoMoveLiftDown());
 				}
 				
 				commandGroup.addSequential(new AllDoneCommand());
