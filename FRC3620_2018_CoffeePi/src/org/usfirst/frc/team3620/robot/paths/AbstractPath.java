@@ -177,26 +177,33 @@ public abstract class AbstractPath extends Command {
 		
 		Robot.driveSubsystem.resetEncoders();
 		Robot.driveSubsystem.resetNavX();
-
+		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getAngle());
 		left.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
+		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getAngle());
 		right.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
 
 		logger.info("PIDVAs configured.");
-
+		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getAngle());
 		lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
 		//lastRightEncoder = encoderPosRight = RobotMap.driveSubsystemRightEncoder.getRaw();
 		
 		logger.info("Encoders L,R initial = {}, {}", encoderPosLeft, encoderPosRight);
-
-		// TODO test this since moving to here from execute()
-		left.configureEncoder(encoderPosLeft, 512, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
-															// diameter in feet)
-		right.configureEncoder(encoderPosRight, 512, (0.3333));
-
+		logger.info("Reverse mode = {}", getPathfinderReverseMode());
+		logger.info("Navx initial = {}", Robot.driveSubsystem.getAngle());
+		if (getPathfinderReverseMode()) {
+			left.configureEncoder(-encoderPosRight, 512, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
+			// diameter in feet)
+            right.configureEncoder(-encoderPosLeft, 512, (0.3333));
+		} else {
+			left.configureEncoder(encoderPosLeft, 512, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
+			// diameter in feet)
+			right.configureEncoder(encoderPosRight, 512, (0.3333));
+		}
+			
 		t0 = System.currentTimeMillis();
 	}
 	
@@ -210,8 +217,8 @@ public abstract class AbstractPath extends Command {
 	@Override
 	protected void execute() {
 		if (getPathfinderReverseMode()) {
-			encoderPosLeft = -1 * Robot.driveSubsystem.readLeftEncRaw();
-			encoderPosRight = -1 * Robot.driveSubsystem.readRightEncRaw();
+			encoderPosLeft = -1 * Robot.driveSubsystem.readRightEncRaw();
+			encoderPosRight = -1 * Robot.driveSubsystem.readLeftEncRaw();
 		} else {
 			encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 			encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
@@ -227,15 +234,20 @@ public abstract class AbstractPath extends Command {
 		double outputRight = right.calculate(encoderPosRight);
 
 		double navx_heading = Robot.driveSubsystem.getAngle();
-		double desired_heading = Pathfinder.r2d(left.getHeading()); // seems to be outputting a range of 0-360 degrees.
+		// change desired heading to positive right
+		double desired_heading = - Pathfinder.r2d(left.getHeading()); // seems to be outputting a range of 0-360 degrees.
 																	// Hmm...
 		// double desired_heading = Pathfinder.r2d(left.getHeading()) - 180;
 
 		// "Pathfinder.boundHalfDegrees() binds a degree angle to -180..180, preventing
 		// absurdly large turn value."
-		double angleDifference = Pathfinder.boundHalfDegrees(desired_heading + navx_heading); //maybe "+" is counter-intuitive??
+		// positive angle difference means we are pointed too far to the right
+		double angleDifference = Pathfinder.boundHalfDegrees(navx_heading - desired_heading);
 		// Included example angle calculation:
+		// positive angle difference means we are pointed too far to the rigvht
 		double turn = 0.8 * (-1.0 / 80.0) * angleDifference; // tune this to tune turn rate??
+		// negative turn means we are pointed too far right, and need to boost RH power
+		
 		// Custom angle calculation:
 		// double turn = -0.03 * angleDifference; //TODO Determine the appropriate turn
 		// value multiplier.
@@ -252,6 +264,7 @@ public abstract class AbstractPath extends Command {
 //		turn = 0;  //for testing
 
 		// Factor in the turn value and run the motors.
+		// negative turn means we are pointed too far right, and need to boost on RH power
 		double leftMotorSet = outputLeft + turn;
 		double rightMotorSet = outputRight - turn;
 		if (getPathfinderReverseMode()) {

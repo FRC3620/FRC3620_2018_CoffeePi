@@ -347,6 +347,8 @@ public class DriveSubsystem extends Subsystem {
     	if (driveSubsystemTalonRight1 != null) {
     		SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
     	}
+    	
+    	SmartDashboard.putNumber("NavX Heading :", ahrs.getAngle());
     }
     
 

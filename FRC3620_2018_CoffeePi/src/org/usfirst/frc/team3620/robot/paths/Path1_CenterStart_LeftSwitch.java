@@ -24,7 +24,7 @@ public class Path1_CenterStart_LeftSwitch extends AbstractPath {
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.5;
+		return 0.53;
 	}
 	
 	@Override

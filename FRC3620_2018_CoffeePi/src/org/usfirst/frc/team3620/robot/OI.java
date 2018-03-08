@@ -18,7 +18,6 @@ import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
-import org.usfirst.frc.team3620.robot.paths.TestPoints;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 import edu.wpi.first.wpilibj.Joystick;
@@ -122,6 +121,7 @@ public class OI {
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
+           SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
 	}
 	       
 	public double getDriveVerticalJoystick() {
