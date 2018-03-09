@@ -116,7 +116,8 @@ public class Robot extends TimedRobot {
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
 
-		posChooser.addDefault("Left",  "L");
+		posChooser.addDefault("Null", "N");
+		posChooser.addObject("Left",  "L");
 		posChooser.addObject("Center",  "C");
 		posChooser.addObject("Right",  "R");
 		SmartDashboard.putData ("Position chooser", posChooser);
@@ -203,40 +204,44 @@ public class Robot extends TimedRobot {
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
-				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
-				
-				CommandGroup commandGroup = new CommandGroup();
-				commandGroup.addSequential(new LiftShiftHighGear());
-				if(startingPos != 'C') {
-					CommandGroup unfoldandlift = new CommandGroup();
-					unfoldandlift.addSequential(new PivotDownCommand());
-					if(whereToPutCube == WhereToPutCube.SCALE) {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
-					} else {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
-						
+				if (autonomousDescriptor != null) {
+					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+					logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
+
+					CommandGroup commandGroup = new CommandGroup();
+					commandGroup.addSequential(new LiftShiftHighGear());
+					if(startingPos != 'C') {
+						CommandGroup unfoldandlift = new CommandGroup();
+						unfoldandlift.addSequential(new PivotDownCommand());
+						if(whereToPutCube == WhereToPutCube.SCALE) {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+						} else {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+
+						}
+						commandGroup.addParallel(unfoldandlift);
+
 					}
-					commandGroup.addParallel(unfoldandlift);
-					
+
+					AbstractPath path = autonomousDescriptor.getPath();
+					if (path != null) {
+						commandGroup.addSequential(path);
+					}
+
+					if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+						commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					}
+					if(whereToPutCube == WhereToPutCube.SCALE) {
+						commandGroup.addSequential(new LiftShiftLowGear());
+						commandGroup.addSequential(new Path_BackUpFromScale());
+					}
+
+					commandGroup.addSequential(new AllDoneCommand());
+					autonomousCommand = commandGroup;
+				} else {
+					logger.warn("we don't know what to do, we giveup");
+					autonomousCommand = new AllDoneCommand();
 				}
-				
-				AbstractPath path = autonomousDescriptor.getPath();
-				if (path != null) {
-					commandGroup.addSequential(path);
-				}
-				
-				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-					commandGroup.addSequential(new AutonomousPukeCubeCommand());
-				}
-				if(whereToPutCube == WhereToPutCube.SCALE) {
-					commandGroup.addSequential(new LiftShiftLowGear());
-					commandGroup.addSequential(new Path_BackUpFromScale());
-				}
-				
-				commandGroup.addSequential(new AllDoneCommand());
-				autonomousCommand = commandGroup;
-				
 			}
 		}
 		
