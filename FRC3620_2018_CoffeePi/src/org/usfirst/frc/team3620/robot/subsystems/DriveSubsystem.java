@@ -12,6 +12,7 @@
 package org.usfirst.frc.team3620.robot.subsystems;
 
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -51,6 +55,7 @@ public class DriveSubsystem extends Subsystem {
     
     private boolean reverse;
 	private boolean highGear;//for the motors
+	double automaticHeading;
 	
 	private double turnReducer = 0.9;
     
@@ -89,9 +94,11 @@ public class DriveSubsystem extends Subsystem {
 			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
 			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
 			double r2 = turn * turn * turnReducer;
+//			double r2 = turn * turnReducer;
 			if (turn < 0) {
 				r2 = -r2;
 			}
+			speed = (speed * 0.8);
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
@@ -241,6 +248,82 @@ public class DriveSubsystem extends Subsystem {
     	cANDifferentialDrive.tankDrive(speedLeft, speedRight);
     }
 	
+	public void driveAutomatically(double move, double rotate) {
+		cANDifferentialDrive.tankDrive(move, rotate);
+	}
+	
+	public void updateDashboardWithPidStuff(Command who, PIDController pid,
+			double sidestick) {
+//		SmartDashboard.putString("PID Command", who.getName());
+//		SmartDashboard.putNumber("PID P", pid.getP());
+//		SmartDashboard.putNumber("PID I", pid.getI());
+//		SmartDashboard.putNumber("PID D", pid.getD());
+//
+//		SmartDashboard.putNumber("PID Turn Sidestick", sidestick);
+//		SmartDashboard.putNumber("PID Angle Setpoint", pid.getSetpoint());
+//		SmartDashboard.putNumber("PID Angle Error", pid.getError());
+
+		SmartDashboard.putNumber("ActualHeading", getAngle());
+		SmartDashboard.putNumber("DesiredHeading", getAutomaticHeading());
+	}
+	
+	public double getAutomaticHeading() {
+		return automaticHeading;
+	}
+	
+	public double changeAutomaticHeading(double changeAngle) {
+		automaticHeading = automaticHeading + changeAngle;
+		automaticHeading = normalizeAngle(automaticHeading);
+		logger.info("Changing auto heading to" +  automaticHeading);
+		return automaticHeading;
+	}
+	
+	static public double normalizeAngle(double angle) {
+		// bring into range of -360..360
+		double newAngle = angle % 360;
+
+		// if it's between -360..0, put it between 0..360
+		if (newAngle < 0)
+			newAngle += 360;
+
+		return newAngle;
+	}
+	
+	public double angleDifference(double angle1, double angle2) {
+		double diff = Math.abs(angle1 - angle2);
+		if (diff > 180) {
+			diff = 360 - diff;
+		}
+		return diff;
+	}
+	
+	public PIDSource getAhrsPidSource() {
+		if (ahrsIsConnected()) {
+			return ahrs;
+		} else {
+			return new PIDSource() {
+
+				@Override
+				public void setPIDSourceType(PIDSourceType pidSource) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public double pidGet() {
+					// TODO Auto-generated method stub
+					return 0;
+				}
+
+				@Override
+				public PIDSourceType getPIDSourceType() {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			};
+		}
+	}
+
 //	public double readLeftEncoder() {
 //	return 0.0;
 //	}
@@ -266,6 +349,8 @@ public class DriveSubsystem extends Subsystem {
     	if (driveSubsystemTalonRight1 != null) {
     		SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
     	}
+    	
+    	SmartDashboard.putNumber("NavX Heading :", ahrs.getAngle());
     }
     
 

@@ -75,12 +75,13 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public boolean homeButtonIsPressed() {
 		if (intakePivot != null) {
-    		
+    		//Should be reverse limit but we're hoping this works.
     		return intakePivot.getSensorCollection().isRevLimitSwitchClosed();
     		
     	}
     	return false; 
 	}
+	
 	
 	double readEncoder() {
 		if(intakePivot != null) {
@@ -173,6 +174,9 @@ public class IntakeSubsystem extends Subsystem {
 	   if(intakeClamperSolenoid != null) {
 	   intakeClamperSolenoid.set(Value.kForward);
 	   haveCube = true;
+	   
+	   //LightSubsystem Call
+		//new LightSubsystem().setEvent("cube", true);
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
@@ -183,10 +187,26 @@ public class IntakeSubsystem extends Subsystem {
 	   if(intakeClamperSolenoid != null) {
 		   intakeClamperSolenoid.set(Value.kReverse);
 		   haveCube = false;
+		   
+		   //LightSubsystem Call
+		   //new LightSubsystem().setEvent("lift", false);
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
 	   
+   }
+   
+   public boolean isClampClosed() {
+	   if (intakeClamperSolenoid != null) {
+		   Value intakeStatus = intakeClamperSolenoid.get(); 
+		//   logger.info("Clamper status: " + intakeStatus);
+		    if (intakeStatus == Value.kForward) {
+		    //	logger.info("Clamper is closed");
+		    	return true;
+		    }
+	   }
+		   logger.info("Clamper is not closed");
+		   return false;  
    }
  
    public double readPivotAngleInDegress() {

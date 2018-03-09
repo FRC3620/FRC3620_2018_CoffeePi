@@ -18,7 +18,7 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 			new Waypoint(23.5, 4.5, Pathfinder.d2r(40)),
 			*/
 			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
-			new Waypoint(24.4, 4.99, Pathfinder.d2r(18))
+			new Waypoint(24.4, 4.99, Pathfinder.d2r(20))
 		};
 	}
 	
@@ -28,8 +28,20 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 	}
 	
 	@Override
+	double getPathfinderOutputMultiplier() {
+
+		return 0.62;
+
+	}
+	
+	@Override
 	double getPathfinderV_MAX() {
 		// TODO Auto-generated method stub
 		return 4.5;
+	}
+	
+	@Override
+	boolean getPathfinderReverseMode() {
+		return true;
 	}
 }

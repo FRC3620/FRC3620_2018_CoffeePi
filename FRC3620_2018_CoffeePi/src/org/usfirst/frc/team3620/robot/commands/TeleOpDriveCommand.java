@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TeleOpDriveCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double speedMultiplier;
+	
     public TeleOpDriveCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -26,15 +26,8 @@ public class TeleOpDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(liftEncoderPos <= 77.0) {
-    		speedMultiplier = 1;
-    	}
-    	else if(liftEncoderPos > 77.0) {
-    		speedMultiplier = 0.6;
-    	}
     	
-    	Robot.driveSubsystem.teleOpDrive(speedMultiplier*Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getDriveHorizontalJoystick());
+    	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getDriveHorizontalJoystick());
     	//Robot.driveSubsystem.teleOpDriveTransmitter(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getTransmitterHorizontalJoystick());
     }
 

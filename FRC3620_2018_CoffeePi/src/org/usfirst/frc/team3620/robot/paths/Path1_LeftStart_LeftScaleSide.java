@@ -19,7 +19,7 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 				*/
 				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
-				new Waypoint(24.4, 22.0, Pathfinder.d2r(-18)),
+				new Waypoint(32.4, 21.00, Pathfinder.d2r(-21)),
 		};
 	}
 	
@@ -50,8 +50,8 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 //		return 4;
 //	}
 	
-//	@Override
-//	boolean getPathfinderReverseMode() {
-//		return true;
-//	}
+	@Override
+	boolean getPathfinderReverseMode() {
+		return false;
+	}
 }

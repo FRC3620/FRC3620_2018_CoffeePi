@@ -79,14 +79,17 @@ public abstract class AutoMoveLiftUp extends Command {
 	    } else if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
-    				System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+
+    		//System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
     		System.out.println("We're set to maximum overdrive.");
     	} else if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
-    		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, speedUpPoint, maxPower));
+    		// System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, speedUpPoint, maxPower));
+
     	}
     	
     }

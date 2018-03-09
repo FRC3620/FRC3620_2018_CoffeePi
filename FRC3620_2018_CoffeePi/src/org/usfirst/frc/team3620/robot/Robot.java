@@ -23,7 +23,8 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
-import org.usfirst.frc.team3620.robot.paths.AbstractPath;
+import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -110,6 +111,7 @@ public class Robot extends TimedRobot {
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
 		liftSubsystem = new LiftSubsystem();
+		SmartDashboard.putData("LiftSubsystem",liftSubsystem);
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 
@@ -204,36 +206,36 @@ public class Robot extends TimedRobot {
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-				if (autonomousDescriptor != null) {
-					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
-					logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 
-					CommandGroup commandGroup = new CommandGroup();
-					commandGroup.addSequential(new LiftShiftHighGear());
-					if(startingPos != 'C') {
-						CommandGroup unfoldandlift = new CommandGroup();
-						unfoldandlift.addSequential(new PivotDownCommand());
-						if(whereToPutCube == WhereToPutCube.SCALE) {
-							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
-						} else {
-							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
-
-						}
-						commandGroup.addParallel(unfoldandlift);
-
+				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
+				
+				CommandGroup commandGroup = new CommandGroup();
+				commandGroup.addSequential(new LiftShiftHighGear());
+				commandGroup.addSequential(new ClampCommand());
+				if(startingPos != 'C') {
+					CommandGroup unfoldandlift = new CommandGroup();
+					unfoldandlift.addSequential(new PivotDownCommand());
+					if(whereToPutCube == whereToPutCube.SCALE) {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+					} else {
+						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+						
 					}
 
-					AbstractPath path = autonomousDescriptor.getPath();
-					if (path != null) {
-						commandGroup.addSequential(path);
-					}
-
-					if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-						commandGroup.addSequential(new AutonomousPukeCubeCommand());
-					}
-					if(whereToPutCube == WhereToPutCube.SCALE) {
-						commandGroup.addSequential(new LiftShiftLowGear());
+					unfoldandlift.addSequential(new HoldLift());
+					commandGroup.addParallel(unfoldandlift);
+					
+				}
+				
+				commandGroup.addSequential(autonomousDescriptor.getPath());
+				
+				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					
+					if(whereToPutCube == whereToPutCube.SCALE) {
 						commandGroup.addSequential(new Path_BackUpFromScale());
+						commandGroup.addSequential(new AutoMoveLiftDown());
 					}
 
 					commandGroup.addSequential(new AllDoneCommand());
@@ -260,7 +262,12 @@ public class Robot extends TimedRobot {
 		// has a long time gone without any game data?
 		if(autonomousCommand == null && elapsedTime > 10) {
 			// yes. just advance to line
-			autonomousCommand = new AutonomousBailCommand();
+			if(posChooser.getSelected().charAt(0) == 'L') {
+				autonomousCommand = new Path1_LeftStart_DriveAcrossLine();
+			} else if(posChooser.getSelected().charAt(0) == 'R') {
+				autonomousCommand = new Path1_RightStart_DriveAcrossLine();
+			}
+					autonomousCommand = new AutonomousBailCommand();
 			logger.info("Starting {}", autonomousCommand);
 			autonomousCommand.start();
 			autonomousCommandIsStarted = true;
@@ -281,6 +288,10 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
+		liftSubsystem.setHighGear(); 
+		logger.info("Lift set to high gear");
+		intakeSubsystem.clampCube(); 
+		logger.info("Clamper closed");
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**
@@ -292,7 +303,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		endPeriodic();
 	}
-	
 	public void testInit() {
 		// This makes sure that the autonomous stops running when
 		// test starts running.
@@ -331,7 +341,7 @@ public class Robot extends TimedRobot {
 		// if any subsystems need to know about mode changes, let
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
-		lightSubsystem.modeChange(newMode, previousRobotMode);
+	//	lightSubsystem.modeChange(newMode, previousRobotMode);
 		
 	}
 
