@@ -24,6 +24,8 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -209,6 +211,7 @@ public class Robot extends TimedRobot {
 				
 				CommandGroup commandGroup = new CommandGroup();
 				commandGroup.addSequential(new LiftShiftHighGear());
+				commandGroup.addSequential(new ClampCommand());
 				if(startingPos != 'C') {
 					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
@@ -254,7 +257,12 @@ public class Robot extends TimedRobot {
 		// has a long time gone without any game data?
 		if(autonomousCommand == null && elapsedTime > 10) {
 			// yes. just advance to line
-			autonomousCommand = new AutonomousBailCommand();
+			if(posChooser.getSelected().charAt(0) == 'L') {
+				autonomousCommand = new Path1_LeftStart_DriveAcrossLine();
+			} else if(posChooser.getSelected().charAt(0) == 'R') {
+				autonomousCommand = new Path1_RightStart_DriveAcrossLine();
+			}
+					autonomousCommand = new AutonomousBailCommand();
 			logger.info("Starting {}", autonomousCommand);
 			autonomousCommand.start();
 			autonomousCommandIsStarted = true;
@@ -328,7 +336,7 @@ public class Robot extends TimedRobot {
 		// if any subsystems need to know about mode changes, let
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
-		lightSubsystem.modeChange(newMode, previousRobotMode);
+	//	lightSubsystem.modeChange(newMode, previousRobotMode);
 		
 	}
 

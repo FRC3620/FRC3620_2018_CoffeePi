@@ -93,11 +93,12 @@ public class DriveSubsystem extends Subsystem {
 		if (cANDifferentialDrive != null) {
 			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
 			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
-//			double r2 = turn * turn * turnReducer;
-			double r2 = turn * turnReducer;
-//			if (turn < 0) {
-//				r2 = -r2;
-//			}
+			double r2 = turn * turn * turnReducer;
+//			double r2 = turn * turnReducer;
+			if (turn < 0) {
+				r2 = -r2;
+			}
+			speed = (speed * 0.8);
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}

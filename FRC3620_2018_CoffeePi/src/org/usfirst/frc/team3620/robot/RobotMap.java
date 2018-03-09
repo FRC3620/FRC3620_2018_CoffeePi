@@ -212,14 +212,17 @@ public class RobotMap {
 			if (competitionRobot || Robot.canDeviceFinder.isSPXPresent(10)) {
 				liftSubsystemVictor2 = new WPI_VictorSPX(10);
 				resetControllerToKnownState(liftSubsystemVictor2);
+				liftSubsystemVictor2.configNeutralDeadband(0.0001, 0);
 				liftSubsystemVictor2.follow(liftSubsystemTalon1);
 
 				liftSubsystemVictor3 = new WPI_VictorSPX(11);
 				resetControllerToKnownState(liftSubsystemVictor3);
+				liftSubsystemVictor3.configNeutralDeadband(0.0001, 0);
 				liftSubsystemVictor3.follow(liftSubsystemTalon1);
 
 				liftSubsystemVictor4 = new WPI_VictorSPX(12);
 				resetControllerToKnownState(liftSubsystemVictor4);
+				liftSubsystemVictor4.configNeutralDeadband(0.0001, 0);
 				liftSubsystemVictor4.follow(liftSubsystemTalon1);
 			}
 		} else {
@@ -233,14 +236,17 @@ public class RobotMap {
 			intakeSubsystemIntakeRoller1 = new WPI_TalonSRX(13);
 			resetControllerToKnownState(intakeSubsystemIntakeRoller1);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller1", (WPI_TalonSRX) intakeSubsystemIntakeRoller1);
+			intakeSubsystemIntakeRoller1.configOpenloopRamp(0, 10);
 
 			intakeSubsystemIntakeRoller2 = new WPI_TalonSRX(14);
 			resetControllerToKnownState(intakeSubsystemIntakeRoller2);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (WPI_TalonSRX) intakeSubsystemIntakeRoller2);
+			intakeSubsystemIntakeRoller2.configOpenloopRamp(0, 10);
 
 			intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
 			resetControllerToKnownState(intakeSubsystemIntakePivot);
 			intakeSubsystemIntakePivot.setNeutralMode(NeutralMode.Brake);
+			intakeSubsystemIntakePivot.overrideLimitSwitchesEnable(false);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
 			//intakeSubsystemIntakePivot.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
 			//intakeSubsystemIntakePivot.configOpenloopRamp(1, 10); //1 second for 0 to max voltage
@@ -287,6 +293,11 @@ public class RobotMap {
 		x.setInverted(false);
 		x.setNeutralMode(NeutralMode.Coast);
 		x.set(ControlMode.PercentOutput, 0);
+		x.configNominalOutputForward(0, 0);
+		x.configNominalOutputReverse(0, 0);
+		x.configPeakOutputForward(1, 0);
+		x.configPeakOutputReverse(-1, 0);
+		x.configNeutralDeadband(0.04, 0);
 	}
 	
 	public static void checkTheCANBus() {

@@ -42,7 +42,7 @@ public class LiftSubsystem extends Subsystem {
 	public double kFSpeed = 0;
 	public double kIZoneSpeed = 0;
 	public double peakSpeedHigh = 0.60;
-	public double lowestSpeed = 0.0; // 0.00025;
+	public double lowestSpeed = -0.37; // 0.00025;
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
@@ -97,7 +97,7 @@ public class LiftSubsystem extends Subsystem {
 
 	public double readEncoderInInches() {
 		double conversionFactor = 1.0/73.02;
-		double competitionMultiplier = 0.3854;
+		double competitionMultiplier = 2.0;
 		double encoderPosInInches;
 		if(gotCompBot == true) {
 			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
@@ -158,6 +158,7 @@ public class LiftSubsystem extends Subsystem {
 	}
 	public void moveElevatorDown(double joyPos) {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
+		System.out.println(bracingVoltage - (minVoltageHigh*joyPos));
 	}
 	
 	public void autoMoveElevatorUp(double voltage) {

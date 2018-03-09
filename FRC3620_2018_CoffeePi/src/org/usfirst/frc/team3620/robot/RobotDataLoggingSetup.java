@@ -21,19 +21,19 @@ public class RobotDataLoggingSetup {
 		// do not log extra stuff
 		if (Robot.canDeviceFinder.isPDPPresent()) {
 			powerDistributionPanel = new PowerDistributionPanel();
-			robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
+		/*	robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
 			robotDataLogger.addDataProvider("pdp.totalPower", () -> f2(powerDistributionPanel.getTotalPower()));
-			robotDataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy()));
+			robotDataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy())); */
 			
 			// this needs work!
 
-			robotDataLogger.addDataProvider("drive.l0.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(13)));
+	/*		robotDataLogger.addDataProvider("drive.l0.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(13)));
 			robotDataLogger.addDataProvider("drive.l1.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(14)));
 			robotDataLogger.addDataProvider("drive.l2.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(15)));
 
 			robotDataLogger.addDataProvider("drive.r3.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(2)));
 			robotDataLogger.addDataProvider("drive.r4.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(1)));
-			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0)));
+			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0))); */
 		}
 		
 

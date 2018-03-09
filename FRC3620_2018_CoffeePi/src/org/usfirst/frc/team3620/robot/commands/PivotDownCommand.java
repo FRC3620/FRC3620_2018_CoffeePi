@@ -23,7 +23,7 @@ public class PivotDownCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+    	logger.info("Pivoting Down Initialized");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,10 +32,10 @@ public class PivotDownCommand extends Command {
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
     	if (isClampClosed) {
-    		if (pivotEncoder < 95) {
+    		if (pivotEncoder < 105) {
     			Robot.intakeSubsystem.pivotDown(0.5);
     		}
-    		else if (pivotEncoder < 120) {
+    		else if (pivotEncoder < 130) {
     			Robot.intakeSubsystem.pivotDown(0.1);
     		}
     		else {
@@ -53,10 +53,12 @@ public class PivotDownCommand extends Command {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 90) {
+    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 95) {
+    		logger.info("Ending Pivot because we're too far");
     		return true;
     	}
     	if (!isClampClosed) {
+    		logger.info("Ending Pivot cause we aren't closed");
     		return true;
     	}
         return false;
@@ -74,7 +76,7 @@ public class PivotDownCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
-    	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
+    	logger.info("interrupted at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
     	Robot.intakeSubsystem.pivotDown(0);
     }
 }

@@ -83,6 +83,7 @@ public class OI {
 	   //    moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
 	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
+	       
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
