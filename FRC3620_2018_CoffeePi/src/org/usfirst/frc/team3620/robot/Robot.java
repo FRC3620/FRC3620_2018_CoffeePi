@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
-import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
@@ -121,7 +120,8 @@ public class Robot extends TimedRobot {
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
 
-		posChooser.addDefault("Left",  "L");
+		posChooser.addDefault("Null", "N");
+		posChooser.addObject("Left",  "L");
 		posChooser.addObject("Center",  "C");
 		posChooser.addObject("Right",  "R");
 		SmartDashboard.putData ("Position chooser", posChooser);
@@ -208,6 +208,7 @@ public class Robot extends TimedRobot {
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
+
 				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
@@ -224,6 +225,7 @@ public class Robot extends TimedRobot {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						
 					}
+
 					unfoldandlift.addSequential(new HoldLift());
 					commandGroup.addParallel(unfoldandlift);
 					
@@ -233,17 +235,18 @@ public class Robot extends TimedRobot {
 				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
-				}
-				if(whereToPutCube == whereToPutCube.SCALE) {
-					commandGroup.addSequential(new Path_BackUpFromScale());
-					commandGroup.addSequential(new AutoMoveLiftDown());
-				}
-		
-				
+					
+					if(whereToPutCube == whereToPutCube.SCALE) {
+						commandGroup.addSequential(new Path_BackUpFromScale());
+						commandGroup.addSequential(new AutoMoveLiftDown());
+					}
+			
+					
+					
+					
+			}
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
-				
-			}
 		}
 		
 		// do we have a calculated autonomous, but we have not started it yet?
@@ -266,7 +269,7 @@ public class Robot extends TimedRobot {
 			} else if(posChooser.getSelected().charAt(0) == 'R') {
 				autonomousCommand = new Path1_RightStart_DriveAcrossLine();
 			}
-					autonomousCommand = new AutonomousBailCommand();
+				autonomousCommand = new AutonomousBailCommand();
 			logger.info("Starting {}", autonomousCommand);
 			autonomousCommand.start();
 			autonomousCommandIsStarted = true;
@@ -275,6 +278,7 @@ public class Robot extends TimedRobot {
 		// now do autonomous stuff
 		Scheduler.getInstance().run();
 		endPeriodic();
+	}
 	}
 
 	@Override

@@ -35,6 +35,8 @@ public class AutonomousDescriptorMaker {
 			} else {
 				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_RightSwitch.class, WhereToPutCube.SWITCH);
 			}
+		}else if(myPosition == 'N') {
+				return null;
 		} else {
 			String address = ""+myPosition+switchPosition+scalePosition+(trustPartner?'Y':'N');
 			autonomousDescriptor = firstPathMap.get(address);
