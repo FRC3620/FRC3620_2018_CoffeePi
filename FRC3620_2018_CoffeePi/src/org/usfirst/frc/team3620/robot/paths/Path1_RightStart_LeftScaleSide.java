@@ -12,11 +12,16 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
-				new Waypoint(14.0, 4.0, Pathfinder.d2r(0)),
-				new Waypoint(19.25, 8.5, Pathfinder.d2r(90)),
-				new Waypoint(19.25, 17.5, Pathfinder.d2r(90)),
-				new Waypoint(22.00, 22.15, Pathfinder.d2r(0)),
+				//Kinda works
+			/*	new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+				new Waypoint(7.05, 3.69, Pathfinder.d2r(4)),
+				new Waypoint(16.5, 5.55, Pathfinder.d2r(0)), */
+				
+				new Waypoint(1.58, 4.09, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+				new Waypoint(7.05, 3.69, Pathfinder.d2r(4)),
+				new Waypoint(16.5, 5.55, Pathfinder.d2r(0)),
 		};
 	}
 	@Override
@@ -30,6 +35,6 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 //	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.57;
+		return 0.75;
 	}
 }

@@ -24,6 +24,7 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
@@ -210,9 +211,9 @@ public class Robot extends TimedRobot {
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
+				CommandGroup unfoldandlift = new CommandGroup();
 				commandGroup.addSequential(new LiftShiftHighGear());
 				if(startingPos != 'C') {
-					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
 					if(whereToPutCube == whereToPutCube.SCALE) {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
