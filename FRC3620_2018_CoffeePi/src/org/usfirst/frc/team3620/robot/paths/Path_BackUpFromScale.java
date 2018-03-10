@@ -10,7 +10,7 @@ public class Path_BackUpFromScale extends AbstractPath {
 		return new Waypoint[] {
 				
 				new Waypoint(0, 0, Pathfinder.d2r(0)),
-				new Waypoint(2, 0, Pathfinder.d2r(0)),
+				new Waypoint(4, 0, Pathfinder.d2r(0)),
 		};
 		// TODO Auto-generated method stub
 	}

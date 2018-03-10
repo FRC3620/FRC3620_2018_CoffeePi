@@ -29,12 +29,12 @@ public abstract class AutoMoveLiftUp extends Command {
 	double startingEncoderPos;
 	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
 	//1 revolution = 3 inches
-	int oneFoot = 12;
+	int oneFoot = 9;
 	double slowDownPoint = requestedEncoderPos - oneFoot;
 	double speedUpPoint = startingEncoderPos + oneFoot;
-	double desiredStartingPower = 0.3;
+	double desiredStartingPower = 0.35;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.12;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.15;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {

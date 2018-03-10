@@ -25,7 +25,9 @@ import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_RightScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -210,8 +212,9 @@ public class Robot extends TimedRobot {
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
-				commandGroup.addSequential(new LiftShiftHighGear());
-				commandGroup.addSequential(new ClampCommand());
+			
+					commandGroup.addSequential(new LiftShiftHighGear());
+					commandGroup.addSequential(new ClampCommand());
 				if(startingPos != 'C') {
 					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
@@ -235,6 +238,7 @@ public class Robot extends TimedRobot {
 					commandGroup.addSequential(new Path_BackUpFromScale());
 					commandGroup.addSequential(new AutoMoveLiftDown());
 				}
+		
 				
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;

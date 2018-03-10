@@ -313,7 +313,10 @@ public abstract class AbstractPath extends Command {
 				System.out.println("Max turn:" + maxTurn);
 			}
 		}
-
+		System.out.println("\noutputLeft = " + outputLeft);
+		System.out.println("outputRight = " + outputRight);
+		System.out.println("desired_heading = " + desired_heading);
+		System.out.println("navx_heading = " + navx_heading);
 
 
 			// Ends the command when forward trajectory is finished.

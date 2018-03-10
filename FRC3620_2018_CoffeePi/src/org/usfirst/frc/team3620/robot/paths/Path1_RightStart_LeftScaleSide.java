@@ -12,11 +12,27 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
+			/*	new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
+				new Waypoint(12.0, 4.0, Pathfinder.d2r(0)),
+				new Waypoint(17.00, 8.5, Pathfinder.d2r(90)),
+				new Waypoint(17.00, 17.5, Pathfinder.d2r(90)),
+				new Waypoint(22.00, 22.15, Pathfinder.d2r(0)),  */
+				
+		/*		new Waypoint(1.58, 21.5, Pathfinder.d2r(0)),
+				new Waypoint(12.0, 23.0, Pathfinder.d2r(0)),
+				new Waypoint(17.25, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(17.25, 9.5, Pathfinder.d2r(-90)),
+				new Waypoint(20.25, 5.85, Pathfinder.d2r(0)),  */
+				// 27 - y for reflection from the left side
 				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
-				new Waypoint(14.0, 4.0, Pathfinder.d2r(0)),
-				new Waypoint(19.25, 8.5, Pathfinder.d2r(90)),
-				new Waypoint(19.25, 17.5, Pathfinder.d2r(90)),
-				new Waypoint(22.00, 22.15, Pathfinder.d2r(0)),
+				// Straightaway
+				new Waypoint(12.0, 4.0, Pathfinder.d2r(0)),
+				//First Alley Point
+				new Waypoint(18.25, 8.5, Pathfinder.d2r(90)),
+				//Second Alley Point Straightaway
+				new Waypoint(18.25, 17.5, Pathfinder.d2r(90)),
+				//Turn for the endpoint
+				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
 		};
 	}
 	@Override
@@ -30,6 +46,6 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 //	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.57;
+		return 0.55;
 	}
 }
