@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	public static DataLogger robotDataLogger;
+	boolean goForTwo = true;
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
@@ -232,29 +233,46 @@ public class Robot extends TimedRobot {
 				}
 				//Add Boolean for shooting for two
 				if(whereToPutCube == whereToPutCube.SCALE) {
-					commandGroup.addSequential(new PivotDownCommand());
-					commandGroup.addSequential(new UnClampCommand());
-					commandGroup.addSequential(new AutoMoveLiftDown());
-					if(gameMessage.substring(0).charAt(0) == 'L') {
-				//		commandGroup.addSequential(new Path2_LeftScaleSide_AlleyCube());
-					} else if(gameMessage.substring(0).charAt(0) == 'R') {
-				//		commandGroup.addSequential(new Path2_RightScaleSide_AlleyCube());
-					}
+					CommandGroup unfoldAndDrop = new CommandGroup();
+
+					if(((gameMessage.substring(0).charAt(0) == gameMessage.substring(1).charAt(0)) 
+							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwo == true){
+						unfoldAndDrop.addSequential(new PivotDownCommand());
+						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
+						}
 						
-					commandGroup.addSequential(new ClampCommand());
-					commandGroup.addSequential(new AutoMoveLiftUpToScaleHeight());
-					commandGroup.addSequential(new PivotUpCommand());
-					commandGroup.addSequential(new HoldLift());
-					commandGroup.addSequential(new AutonomousPukeCubeCommand());
-					commandGroup.addSequential(new PivotDownCommand());
-					commandGroup.addSequential(new UnClampCommand());
-					commandGroup.addSequential(new AutoMoveLiftDown());
+						unfoldAndDrop.addSequential(new ClampCommand());
+						unfoldAndDrop.addParallel(unfoldandlift);
+						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
+						unfoldAndDrop.addSequential(new PivotDownCommand());
+						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+						
+						
+						//DOES UNFOLDANDLIFT EXIST OUTSIDE OF THE IF STATEMENT?
+						
+						
+					} else{								
+						unfoldAndDrop.addSequential(new PivotDownCommand());
+													//Needs to be run forwards
+						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+					}
+					commandGroup.addSequential(unfoldAndDrop);
+					goForTwo = false;
+					
+					
 					
 				}
 				
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
-				
+				goForTwo = true;
 			}
 		}
 		
