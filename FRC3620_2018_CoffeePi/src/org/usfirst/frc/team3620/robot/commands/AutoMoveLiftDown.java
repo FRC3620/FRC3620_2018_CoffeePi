@@ -31,7 +31,7 @@ public class AutoMoveLiftDown extends Command {
     protected void execute() {
 
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(encoderPos > 14){
+    	if(encoderPos > 5){
     		Robot.liftSubsystem.setElevatorVelocity(0);
     	} else {
     		//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
