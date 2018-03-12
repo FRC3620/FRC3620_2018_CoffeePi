@@ -9,7 +9,7 @@ public class LoggingMaster {
 
     private static String _timestampString = null;
 
-    private static File _logDirectory = null;
+    private static volatile File _logDirectory = null;
     
     private static String defaultLogLocation = "/home/lvuser/logs"; 
 

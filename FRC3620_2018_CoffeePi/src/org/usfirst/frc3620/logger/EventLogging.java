@@ -129,7 +129,7 @@ public class EventLogging {
         return message.toString();
     }
 
-    private static boolean setupDone = false;
+    private static volatile boolean setupDone = false;
 
     public static void setup() {
         setup(LoggingMaster.getLoggingDirectory());
@@ -183,7 +183,7 @@ public class EventLogging {
 
     static class MyFileHandler extends StreamHandler {
         File logDirectory;
-        FileOutputStream fileOutputStream = null;
+        volatile FileOutputStream fileOutputStream = null;
 
         public MyFileHandler(File logDirectory) {
             super();
