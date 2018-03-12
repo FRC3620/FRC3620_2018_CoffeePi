@@ -54,6 +54,7 @@ public class ControlPanelWatcher {
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	void updateChooserFromControlPanel (AverageSendableChooser2018 chooser, int controlPanelIndex, String name) {
 		// get all the names from the chooser
 		List<String> chooserNames = chooser.getChoiceNames();

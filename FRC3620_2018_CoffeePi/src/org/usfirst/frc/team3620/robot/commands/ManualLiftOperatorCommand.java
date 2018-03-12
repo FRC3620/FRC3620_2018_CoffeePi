@@ -4,11 +4,9 @@ package org.usfirst.frc.team3620.robot.commands;
 import org.usfirst.frc.team3620.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.slf4j.Logger;
-import org.usfirst.frc.team3620.robot.OI;
 /**
  *
  */

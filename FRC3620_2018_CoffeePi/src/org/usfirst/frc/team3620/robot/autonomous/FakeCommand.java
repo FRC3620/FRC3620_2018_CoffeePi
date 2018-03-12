@@ -16,13 +16,15 @@ public class FakeCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
+	static private Random random = new Random();
+	
 	Timer timer = new Timer();
 	double delay; 
 	String name;
 
     public FakeCommand(double ll, double ul, Command realCommand) {
     	name = realCommand.getClass().getName();
-    	delay = ll + ( (new Random()).nextDouble()*(ul-ll));
+    	delay = ll + ( random.nextDouble()*(ul-ll));
     }
 
     // Called just before this Command runs the first time

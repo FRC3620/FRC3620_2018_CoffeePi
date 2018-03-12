@@ -7,16 +7,7 @@
 
 package org.usfirst.frc.team3620.robot;
 
-
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
-import org.usfirst.frc.team3620.robot.commands.ClampCommand;
-import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
-import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
+import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
@@ -24,7 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team3620.robot.commands.*;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -94,9 +85,6 @@ public class OI {
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
 	      
-	       Button posSet8 = new JoystickButton(kaiBox, 8);
-	       Button posSet9 = new JoystickButton(kaiBox, 9);
-	       
 	       SmartDashboard.putData("ResetLiftEncoder", new ResetLiftEncoderCommand());
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
 	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());

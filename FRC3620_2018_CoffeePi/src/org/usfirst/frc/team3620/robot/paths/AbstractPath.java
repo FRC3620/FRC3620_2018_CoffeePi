@@ -2,8 +2,6 @@ package org.usfirst.frc.team3620.robot.paths;
 
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.Robot;
-import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -295,8 +293,7 @@ public abstract class AbstractPath extends Command {
 
 		// TODO log with logger.debug() instead.
 		if (debugMode) {
-			// Console prints for debugging. Comment and uncomment as needed.
-			if(false) {
+			// Console prints for debugging. Set debugMode to toggle
 				System.out.println("\noutputLeft = " + outputLeft);
 				System.out.println("outputRight = " + outputRight);
 				System.out.println("Encoders delta L,R = " + leftEncoderDelta + " " + rightEncoderDelta);
@@ -311,10 +308,7 @@ public abstract class AbstractPath extends Command {
 				System.out.println("Motor output L/R: " + leftMotorSet + ", " + rightMotorSet);
 				System.out.println("Max motor output: " + maxOutput);
 				System.out.println("Max turn:" + maxTurn);
-			}
 		}
-
-
 
 			// Ends the command when forward trajectory is finished.
 

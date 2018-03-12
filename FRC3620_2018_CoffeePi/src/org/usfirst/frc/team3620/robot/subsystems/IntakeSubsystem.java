@@ -1,10 +1,7 @@
 package org.usfirst.frc.team3620.robot.subsystems;
 
-
-
-import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
+
 import org.usfirst.frc.team3620.robot.commands.ManualCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -14,15 +11,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.security.Key;
 
 import org.slf4j.Logger;
 /**

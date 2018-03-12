@@ -47,7 +47,6 @@ public class PivotUpCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
-    	boolean haveCube = Robot.intakeSubsystem.haveCube;
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
     	if (pivotEncoder < 20) {

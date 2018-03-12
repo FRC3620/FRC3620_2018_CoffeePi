@@ -216,7 +216,7 @@ public class Robot extends TimedRobot {
 				if(startingPos != 'C') {
 					CommandGroup unfoldandlift = new CommandGroup();
 					unfoldandlift.addSequential(new PivotDownCommand());
-					if(whereToPutCube == whereToPutCube.SCALE) {
+					if(whereToPutCube == WhereToPutCube.SCALE) {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 					} else {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
@@ -233,7 +233,7 @@ public class Robot extends TimedRobot {
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 					
-					if(whereToPutCube == whereToPutCube.SCALE) {
+					if(whereToPutCube == WhereToPutCube.SCALE) {
 						commandGroup.addSequential(new Path_BackUpFromScale());
 						commandGroup.addSequential(new AutoMoveLiftDown());
 					}
