@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.slf4j.Logger;
+import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -57,7 +58,10 @@ public class DriveSubsystem extends Subsystem {
 	private boolean highGear;//for the motors
 	double automaticHeading;
 	
-	private double turnReducer = 0.9;
+	// Allows double squaring to be turned on and off, while avoiding another qual9 mistake
+	private boolean doubleSquaredTurn = true; // Set to true to re-square the turn input.
+	private double turnReducer = 0.9; // Multiplied by turn value to scale it down	
+	private boolean heightBasedSpeed = true; // Set to true to reduce speed for lift height, false to override.
     
 	public DriveSubsystem() {
 		super();               
@@ -84,19 +88,47 @@ public class DriveSubsystem extends Subsystem {
 		return(value);
 	}
 	
-	private double getSpeedModifier() {
-		//return reverse ? -1 : 1;//this will return 1 if reverse is false, and -1 if reverse is true.
-		return 1;
+	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+	private double getSpeedModifier() {	// TODO Tune me!!
+		if(heightBasedSpeed) {
+			if(liftEncoderPos <= 40.0) {
+				return 1.0;
+			}
+			else if(liftEncoderPos > 40.0 && liftEncoderPos <= 50.0) {
+				return 0.95;
+			}
+			else if(liftEncoderPos > 50.0 && liftEncoderPos <= 60.0) {
+				return 0.90;
+			}
+			else if(liftEncoderPos > 60.0 && liftEncoderPos <= 70.0) {
+				return 0.85;
+			}
+			else if(liftEncoderPos > 70.0) {
+				return 0.8;
+			}
+			else {
+				return 1.0;
+			}
+		}
+		else {
+			return 1.0;
+		}
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
 		if (cANDifferentialDrive != null) {
-			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
-			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
-			double r2 = turn * turn * turnReducer;
-//			double r2 = turn * turnReducer;
-			if (turn < 0) {
-				r2 = -r2;
+			speed=lowerLimit(speed, 0.2) * getSpeedModifier();				// Multiplied by speedModifier to slow things down when the lift is high
+			turn=lowerLimit(turn, 0.1) * ((getSpeedModifier() + 1.0) / 2);  // Extra math on speedModifier here makes it 1/2 as effective on our turn
+			double r2;
+			// Lets double turn squaring be switched on and off quickly with the boolean up top.
+			if(doubleSquaredTurn) {
+				r2 = turn * turn * turnReducer;
+				if (turn < 0) {
+					r2 = -r2;
+				}
+			}
+			else {
+				r2 = turn * turnReducer;
 			}
 			speed = (speed * 0.8);
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
