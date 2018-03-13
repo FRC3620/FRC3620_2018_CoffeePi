@@ -208,77 +208,74 @@ public class Robot extends TimedRobot {
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-
-				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
-				
-				CommandGroup commandGroup = new CommandGroup();
-			
+
+				if (autonomousDescriptor != null) {
+					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+
+
+					CommandGroup commandGroup = new CommandGroup();
+
 					commandGroup.addSequential(new LiftShiftHighGear());
 					commandGroup.addSequential(new ClampCommand());
-				if(startingPos != 'C') {
-					CommandGroup unfoldandlift = new CommandGroup();
-					unfoldandlift.addSequential(new PivotDownCommand());
-					if(whereToPutCube == whereToPutCube.SCALE) {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
-					} else {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
-						
+					if(startingPos != 'C') {
+						CommandGroup unfoldandlift = new CommandGroup();
+						unfoldandlift.addSequential(new PivotDownCommand());
+						if(whereToPutCube == whereToPutCube.SCALE) {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+						} else {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+						}
+
+						unfoldandlift.addSequential(new HoldLift());
+						commandGroup.addParallel(unfoldandlift);
 					}
 
-					unfoldandlift.addSequential(new HoldLift());
-					commandGroup.addParallel(unfoldandlift);
-					
-				}
-				
-				commandGroup.addSequential(autonomousDescriptor.getPath());
-				
-				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-					commandGroup.addSequential(new AutonomousPukeCubeCommand());
-					
-					if(whereToPutCube == whereToPutCube.SCALE) {
-						commandGroup.addSequential(new Path_BackUpFromScale());
-						commandGroup.addSequential(new AutoMoveLiftDown());
+					commandGroup.addSequential(autonomousDescriptor.getPath());
+
+					if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+						commandGroup.addSequential(new AutonomousPukeCubeCommand());
+
+						if(whereToPutCube == whereToPutCube.SCALE) {
+							commandGroup.addSequential(new Path_BackUpFromScale());
+							commandGroup.addSequential(new AutoMoveLiftDown());
+						}
 					}
-			
-					
-					
-					
+					commandGroup.addSequential(new AllDoneCommand());
+					autonomousCommand = commandGroup;
+				}
 			}
-				commandGroup.addSequential(new AllDoneCommand());
-				autonomousCommand = commandGroup;
-		}
-		
-		// do we have a calculated autonomous, but we have not started it yet?
-		if(autonomousCommand != null && !autonomousCommandIsStarted) {
-			// yes. is it time to start yet?
-			int delay = delayChooser.getSelected();
-			if(elapsedTime > delay) {
-				// yes. start it.
+
+			// do we have a calculated autonomous, but we have not started it yet?
+			if(autonomousCommand != null && !autonomousCommandIsStarted) {
+				// yes. is it time to start yet?
+				int delay = delayChooser.getSelected();
+				if(elapsedTime > delay) {
+					// yes. start it.
+					logger.info("Starting {}", autonomousCommand);
+					autonomousCommand.start();
+					autonomousCommandIsStarted = true;
+				}
+			}
+
+			// has a long time gone without any game data?
+			if(autonomousCommand == null && elapsedTime > 10) {
+				// yes. just advance to line
+				if(posChooser.getSelected().charAt(0) == 'L') {
+					autonomousCommand = new Path1_LeftStart_DriveAcrossLine();
+				} else if(posChooser.getSelected().charAt(0) == 'R') {
+					autonomousCommand = new Path1_RightStart_DriveAcrossLine();
+				}
+				autonomousCommand = new AutonomousBailCommand();
 				logger.info("Starting {}", autonomousCommand);
 				autonomousCommand.start();
 				autonomousCommandIsStarted = true;
 			}
+
+			// now do autonomous stuff
+			Scheduler.getInstance().run();
+			endPeriodic();
 		}
-		 
-		// has a long time gone without any game data?
-		if(autonomousCommand == null && elapsedTime > 10) {
-			// yes. just advance to line
-			if(posChooser.getSelected().charAt(0) == 'L') {
-				autonomousCommand = new Path1_LeftStart_DriveAcrossLine();
-			} else if(posChooser.getSelected().charAt(0) == 'R') {
-				autonomousCommand = new Path1_RightStart_DriveAcrossLine();
-			}
-				autonomousCommand = new AutonomousBailCommand();
-			logger.info("Starting {}", autonomousCommand);
-			autonomousCommand.start();
-			autonomousCommandIsStarted = true;
-		}
-		
-		// now do autonomous stuff
-		Scheduler.getInstance().run();
-		endPeriodic();
-	}
 	}
 
 	@Override

@@ -24,13 +24,25 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 				new Waypoint(17.25, 9.5, Pathfinder.d2r(-90)),
 				new Waypoint(20.25, 5.85, Pathfinder.d2r(0)),  */
 				// 27 - y for reflection from the left side
+				/*
+				//Auton penalties				
 				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
 				// Straightaway
-				new Waypoint(12.0, 4.0, Pathfinder.d2r(0)),
+				new Waypoint(9.50, 4.0, Pathfinder.d2r(0)),
 				//First Alley Point
-				new Waypoint(18.25, 8.5, Pathfinder.d2r(90)),
+				new Waypoint(13.50, 8.5, Pathfinder.d2r(90)),
 				//Second Alley Point Straightaway
-				new Waypoint(18.25, 17.5, Pathfinder.d2r(90)),
+				new Waypoint(13.50, 17.5, Pathfinder.d2r(90)),
+				//Turn for the endpoint
+				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
+				*/
+				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
+				// Straightaway
+				new Waypoint(10.5, 4.0, Pathfinder.d2r(0)),
+				//First Alley Point
+				new Waypoint(15.00, 8.5, Pathfinder.d2r(90)),
+				//Second Alley Point Straightaway
+				new Waypoint(15.00, 18.0, Pathfinder.d2r(90)),
 				//Turn for the endpoint
 				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
 		};
