@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
+	private final LightSubsystem lightSubsystem = Robot.lightSubsystem;
 	private final WPI_TalonSRX talon = RobotMap.liftSubsystemTalon1;
 	private final DoubleSolenoid liftGearShifter = RobotMap.liftSubsystemGearShifter;
 	private boolean gotCompBot;
@@ -106,9 +107,9 @@ public class LiftSubsystem extends Subsystem {
 		}
 		//LightSubsystem call
 		if (encoderPosInInches >= 8) {
-			//new LightSubsystem().setEvent("lift", true);
+			lightSubsystem.setEvent("lift", true);
 		}
-		else {//new LightSubsystem().setEvent("lift", false);
+		else {lightSubsystem.setEvent("lift", false);
 			
 		}
 		return encoderPosInInches;
