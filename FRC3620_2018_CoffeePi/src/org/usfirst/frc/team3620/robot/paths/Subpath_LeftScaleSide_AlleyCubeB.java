@@ -12,7 +12,7 @@ public class Subpath_LeftScaleSide_AlleyCubeB extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				
+
 		};
 	}
 }

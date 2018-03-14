@@ -11,61 +11,61 @@ import org.slf4j.Logger;
  */
 public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+
 	double slowDownPoint;
 	double fallingPower = 0;
-    public AutoMoveLiftDown() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.liftSubsystem);
-    }
+	public AutoMoveLiftDown() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.liftSubsystem);
+	}
 
-    // Called just before this Command runs the first time
+	// Called just before this Command runs the first time
 	//1440 ticks = 16.875 inches
-    protected void initialize() {
-    	logger.info("Starting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
-    	
-    }
+	protected void initialize() {
+		logger.info("Starting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+	}
 
-    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(encoderPos > 5){
-    		Robot.liftSubsystem.setElevatorVelocity(0);
-    	} else {
-    		//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
-    		Robot.liftSubsystem.setElevatorVelocity(0.0206);
-    	}
-    	
-    	
-    	
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(Robot.liftSubsystem.isBottomLimitDepressed()){
-    		Robot.liftSubsystem.resetEncoder();
-    		 return true;
+		double encoderPos = Robot.liftSubsystem.readEncoderInInches();
+		if(encoderPos > 5){
+			Robot.liftSubsystem.setElevatorVelocity(0);
+		} else {
+			//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
+			Robot.liftSubsystem.setElevatorVelocity(0.0206);
+		}
 
-    	//} else if(encoderPos < 12) {
-    		
-    	}  else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
-    		return true;
-    	} 
-        return false;
-    }
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	logger.info("Ending AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
-    }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	logger.info("Interrupting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
-    	
-    }
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		double encoderPos = Robot.liftSubsystem.readEncoderInInches();
+		if(Robot.liftSubsystem.isBottomLimitDepressed()){
+			Robot.liftSubsystem.resetEncoder();
+			return true;
+
+			//} else if(encoderPos < 12) {
+
+		}  else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
+			return true;
+		} 
+		return false;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+		logger.info("Ending AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		logger.info("Interrupting AutoMoveLiftDown Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+
+	}
 }

@@ -12,13 +12,13 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-			/*	new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
+				/*	new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
 				new Waypoint(12.0, 4.0, Pathfinder.d2r(0)),
 				new Waypoint(17.00, 8.5, Pathfinder.d2r(90)),
 				new Waypoint(17.00, 17.5, Pathfinder.d2r(90)),
 				new Waypoint(22.00, 22.15, Pathfinder.d2r(0)),  */
-				
-		/*		new Waypoint(1.58, 21.5, Pathfinder.d2r(0)),
+
+				/*		new Waypoint(1.58, 21.5, Pathfinder.d2r(0)),
 				new Waypoint(12.0, 23.0, Pathfinder.d2r(0)),
 				new Waypoint(17.25, 18.5, Pathfinder.d2r(-90)),
 				new Waypoint(17.25, 9.5, Pathfinder.d2r(-90)),
@@ -35,7 +35,7 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 				new Waypoint(13.50, 17.5, Pathfinder.d2r(90)),
 				//Turn for the endpoint
 				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
-				*/
+				 */
 				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
 				// Straightaway
 				new Waypoint(10.5, 4.0, Pathfinder.d2r(0)),
@@ -51,11 +51,11 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 	double getPathfinderGenVelocityMultiplier() {
 		return 0.68;
 	}
-//	@Override
-//	double getPathfinderP() {
-//		return 0.001;
-//	}
-//	
+	//	@Override
+	//	double getPathfinderP() {
+	//		return 0.001;
+	//	}
+	//	
 	@Override
 	double getPathfinderOutputMultiplier() {
 		return 0.55;

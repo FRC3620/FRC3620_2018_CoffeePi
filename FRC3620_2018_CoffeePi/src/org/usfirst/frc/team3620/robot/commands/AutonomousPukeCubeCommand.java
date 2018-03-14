@@ -12,48 +12,48 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class AutonomousPukeCubeCommand extends Command {
-	
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+
 	Timer timer = new Timer();
-	
-    public AutonomousPukeCubeCommand() {
-    	
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	EventLogging.commandMessage(logger);
-    	timer.reset();
-    	timer.start();
-    }
+	public AutonomousPukeCubeCommand() {
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	Robot.intakeSubsystem.pushCubeOut(0.7);
-    }
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	double howlong = timer.get();
-    	if (howlong > 1) {
-    		return true;
-    	}
-        return false;
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		EventLogging.commandMessage(logger);
+		timer.reset();
+		timer.start();
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	EventLogging.commandMessage(logger);
-    	Robot.intakeSubsystem.pushCubeOut(0);
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		Robot.intakeSubsystem.pushCubeOut(0.7);
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	EventLogging.commandMessage(logger);
-    	Robot.intakeSubsystem.pushCubeOut(0);
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		double howlong = timer.get();
+		if (howlong > 1) {
+			return true;
+		}
+		return false;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+		EventLogging.commandMessage(logger);
+		Robot.intakeSubsystem.pushCubeOut(0);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+		Robot.intakeSubsystem.pushCubeOut(0);
+	}
 }

@@ -19,7 +19,7 @@ public class Path1_RightStart_RightSwitchSide extends AbstractPath {
 				new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
 				new Waypoint(5.75, 6.54, Pathfinder.d2r(43)),
 				new Waypoint(11.46, 8.58, Pathfinder.d2r(0)),
-				*/
+				 */
 		};
 	}
 }

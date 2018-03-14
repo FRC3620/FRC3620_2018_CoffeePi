@@ -13,35 +13,35 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ResetLiftEncoderCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    public ResetLiftEncoderCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.liftSubsystem);
-    }
+	public ResetLiftEncoderCommand() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.liftSubsystem);
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	EventLogging.commandMessage(logger);
-    	Robot.liftSubsystem.resetEncoder();
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		EventLogging.commandMessage(logger);
+		Robot.liftSubsystem.resetEncoder();
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return true;
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return true;
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		EventLogging.commandMessage(logger);
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+	}
 }

@@ -24,7 +24,7 @@ public class AutonomousDescriptorMaker {
 		firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RRLN",new AutonomousDescriptor(Path1_RightStart_RightSwitchEnd.class, WhereToPutCube.SWITCH));		
 		firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightSwitchEnd.class, WhereToPutCube.SWITCH));
-		
+
 		//firstPathMap.put("",Path_#_L.class);
 	}
 	public static AutonomousDescriptor makeAutonomousDescriptor(char myPosition, char switchPosition,char scalePosition,boolean trustPartner) {
@@ -36,16 +36,16 @@ public class AutonomousDescriptorMaker {
 				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_RightSwitch.class, WhereToPutCube.SWITCH);
 			}
 		}else if(myPosition == 'N') {
-				return null;
+			return null;
 		} else {
 			String address = ""+myPosition+switchPosition+scalePosition+(trustPartner?'Y':'N');
 			autonomousDescriptor = firstPathMap.get(address);
 		}
 		return autonomousDescriptor;
 	}
-	
-	
-	
+
+
+
 	public static void main(String[] args) {
 		char[] lr = new char[] {'L', 'R'};
 		char[] lcr = new char[] {'L', 'C', 'R'};
@@ -58,7 +58,7 @@ public class AutonomousDescriptorMaker {
 			}
 		}
 	}
-	
+
 	static void test(char myPosition, char switchPosition,char scalePosition,boolean trustPartner) {
 		AutonomousDescriptor result = makeAutonomousDescriptor(myPosition, switchPosition, scalePosition, trustPartner);
 		System.out.println("" + myPosition + " " + switchPosition + " " + scalePosition + " " + trustPartner + " -> " + result);

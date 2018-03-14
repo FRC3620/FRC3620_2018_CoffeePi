@@ -17,12 +17,12 @@ public class Path1_LeftStart_LeftScaleEnd extends AbstractPath {
 				new Waypoint(27.0, 22.5, Pathfinder.d2r(-90)),
 		};
 	}
-	
+
 	@Override
 	double getPathfinderP() {
 		return 0.001;
 	}
-	
+
 	@Override
 	double getPathfinderOutputMultiplier() {
 		return 0.5;

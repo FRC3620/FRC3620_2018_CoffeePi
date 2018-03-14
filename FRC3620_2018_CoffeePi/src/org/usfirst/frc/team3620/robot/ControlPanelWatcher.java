@@ -17,21 +17,21 @@ public class ControlPanelWatcher {
 
 	Timer timer = new Timer();
 	Joystick controlPanel = Robot.m_oi.kaiBox;
-	
+
 	PersistentChooser trustPersister, posPersister, delayPersister;
 
 	public ControlPanelWatcher() {
 		// look at the control panel every 2000 ms (2 seconds)
 		logger.info("starting control panel watcher");
-		
+
 		trustPersister = new PersistentChooser(Robot.trustChooser, "trustChooser");
 		posPersister = new PersistentChooser(Robot.posChooser, "posChooser");
 		delayPersister = new PersistentChooser(Robot.delayChooser, "delayChooser");
-		
+
 		if (controlPanel != null) {
 			logger.info("Control Panel appears to be a {}", controlPanel.getName());
 		}
-		
+
 		timer.schedule(new MyTimerTask(), 0, 2000);
 	}
 
@@ -42,18 +42,18 @@ public class ControlPanelWatcher {
 					&& controlPanel.getName().equals("Arduino Leonardo") 
 					&& controlPanel.getY() < -0.95
 					&& controlPanel.getZ() > 0.95;
-			// the control panel is connected to the driver's station
-			if (controlPanelPresent) {
-				trustPersister.setFromControlPanel(readTrustFromControlPanel());
-				posPersister.setFromControlPanel(readPosFromControlPanel());
-				delayPersister.setFromControlPanel(readDelayFromControlPanel());
-			}
-			trustPersister.persist();
-			posPersister.persist();
-			delayPersister.persist();
+					// the control panel is connected to the driver's station
+					if (controlPanelPresent) {
+						trustPersister.setFromControlPanel(readTrustFromControlPanel());
+						posPersister.setFromControlPanel(readPosFromControlPanel());
+						delayPersister.setFromControlPanel(readDelayFromControlPanel());
+					}
+					trustPersister.persist();
+					posPersister.persist();
+					delayPersister.persist();
 		}
 	}
-	
+
 	void updateChooserFromControlPanel (AverageSendableChooser2018 chooser, int controlPanelIndex, String name) {
 		// get all the names from the chooser
 		List<String> chooserNames = chooser.getChoiceNames();
@@ -70,9 +70,9 @@ public class ControlPanelWatcher {
 			logger.info("{} mismatch, changing {} to {}", name, chooserSelectedName, controlPanelName);
 			chooser.select(controlPanelName);
 		}
-		
+
 	}
-	
+
 	int readXxxFromControlPanel(int arduinoStart, int arduinoEnd, String label) {
 		int rv = 0;
 		for (int i = arduinoEnd+1; i >= arduinoStart+1; i--) {
@@ -90,14 +90,14 @@ public class ControlPanelWatcher {
 		return readXxxFromControlPanel(4,  5, "pos");
 	}
 
-    int readTrustFromControlPanel() {
-        // these bits are 3 on the Arduino end
+	int readTrustFromControlPanel() {
+		// these bits are 3 on the Arduino end
 		return readXxxFromControlPanel(6,  6, "trust");
-    }
-    
-    int readDelayFromControlPanel() {
-        // these bits are 4, 5 and 6 on the Arduino end
+	}
+
+	int readDelayFromControlPanel() {
+		// these bits are 4, 5 and 6 on the Arduino end
 		return readXxxFromControlPanel(7,  9, "delay");
-    }
+	}
 
 }

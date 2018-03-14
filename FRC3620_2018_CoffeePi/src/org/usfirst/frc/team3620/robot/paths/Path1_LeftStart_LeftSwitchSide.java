@@ -11,10 +11,10 @@ public class Path1_LeftStart_LeftSwitchSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-			new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
-			new Waypoint(5.75, 20.46, Pathfinder.d2r(-43)),
-			new Waypoint(9.92, 18.0, Pathfinder.d2r(0)),
-			
+				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				new Waypoint(5.75, 20.46, Pathfinder.d2r(-43)),
+				new Waypoint(9.92, 18.0, Pathfinder.d2r(0)),
+
 		};
 	}
 }

@@ -12,38 +12,38 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class AutoMoveALittleCommand extends Command {
-	
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	Timer timer = new Timer();
-	
+
 	public AutoMoveALittleCommand() {
 		requires(Robot.driveSubsystem);
 	}
-	
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	EventLogging.commandMessage(logger);
-    	timer.reset();
-    	timer.start();
-    }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		EventLogging.commandMessage(logger);
+		timer.reset();
+		timer.start();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return timer.get() > 1;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return timer.get() > 1;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		EventLogging.commandMessage(logger);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+	}
 }

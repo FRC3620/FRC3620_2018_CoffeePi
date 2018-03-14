@@ -22,7 +22,7 @@ public class Path1_RightStart_RightScaleEnd extends AbstractPath {
 				new Waypoint(15.0, 2.25, Pathfinder.d2r(-5)),
 				new Waypoint(22.5, 2.25, Pathfinder.d2r(5)),
 				new Waypoint(27.0, 5.75, Pathfinder.d2r(90)),
-				*/
+				 */
 		};
 	}
 }

@@ -13,37 +13,37 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  *
  */
 public class AutonomousBailCommand extends Command {
-	
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	Timer timer = new Timer();
-	
-    public AutonomousBailCommand() {
-        requires(Robot.driveSubsystem);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	EventLogging.commandMessage(logger);
-    	timer.reset();
-    	timer.start();
-    }
+	public AutonomousBailCommand() {
+		requires(Robot.driveSubsystem);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		EventLogging.commandMessage(logger);
+		timer.reset();
+		timer.start();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	return timer.get() > 3.0;
-    }
-    // Called once after isFinished returns true
-    protected void end() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	EventLogging.commandMessage(logger);
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return timer.get() > 3.0;
+	}
+	// Called once after isFinished returns true
+	protected void end() {
+		EventLogging.commandMessage(logger);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+	}
 }

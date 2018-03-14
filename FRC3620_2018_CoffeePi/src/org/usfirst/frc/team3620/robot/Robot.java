@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	public static DataLogger robotDataLogger;
-	
+
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
 	public static DriveSubsystem driveSubsystem;
@@ -60,16 +60,16 @@ public class Robot extends TimedRobot {
 	public static IntakeSubsystem intakeSubsystem;
 	public static LiftSubsystem liftSubsystem;
 	public static Preferences preferences;
-	
+
 	// non subsystem globals
 	public static OperatorView operatorView;
 	public static CANDeviceFinder canDeviceFinder;
-	
+
 	// OI
 	public static OI m_oi;
 
 	Command autonomousCommand;
-	
+
 	static AverageSendableChooser2018<String> posChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Boolean> trustChooser = new AverageSendableChooser2018<>();
 	static AverageSendableChooser2018<Integer> delayChooser = new AverageSendableChooser2018<>();
@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
 			System.exit(1); // kill the program so it can restart
 		}
 	}
-	
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
 		trustChooser.addDefault("Yes", true);
 		trustChooser.addObject("No", false);
 		SmartDashboard.putData ("trust chooser", trustChooser);
-		
+
 		delayChooser.addDefault("0", 0);
 		delayChooser.addObject("1", 1);
 		delayChooser.addObject("2", 2);
@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
 		delayChooser.addObject("4", 4);
 		delayChooser.addObject("5", 5);
 		SmartDashboard.putData ("delay chooser", delayChooser);
-		
+
 		// start the thingy that keeps the operator console and the chooser in
 		// sync
 		new ControlPanelWatcher();
@@ -149,7 +149,7 @@ public class Robot extends TimedRobot {
 		robotDataLogger.start();
 	}
 
-	
+
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -167,7 +167,7 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		endPeriodic();
 	}
-	
+
 	boolean autonomousCommandIsStarted = false;
 	Timer autonomousTimer = new Timer();
 
@@ -177,12 +177,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
-		
+
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
 		autonomousCommand = null;
-		
+
 		autonomousCommandIsStarted = false;
 		autonomousTimer.reset();
 		autonomousTimer.start();
@@ -194,11 +194,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
-		
+
 		double elapsedTime = autonomousTimer.get();
-		
+
 		String gameMessage = DriverStation.getInstance().getGameSpecificMessage();
-		
+
 		// do we have game data yet?
 		if (gameMessage != null && gameMessage.length() >= 3) {
 			// yes, we do. have we calculated our autonomous?
@@ -287,7 +287,7 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
-		
+
 		liftSubsystem.setHighGear(); 
 		logger.info("Lift set to high gear");
 		intakeSubsystem.clampCube(); 
@@ -321,7 +321,7 @@ public class Robot extends TimedRobot {
 		//LiveWindow.run();
 		endPeriodic();
 	}
-	
+
 	/************************************************************************
 	 * here are the 3620 goodies
 	 ************************************************************************/
@@ -330,19 +330,19 @@ public class Robot extends TimedRobot {
 	 */
 	void processRobotModeChange(RobotMode newMode) {
 		logger.info("Switching from {} to {}", currentRobotMode, newMode);
-		
+
 		if (currentRobotMode == RobotMode.INIT) {
 			RobotMap.checkTheCANBus();
 		}
-		
+
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 
 		// if any subsystems need to know about mode changes, let
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
-	//	lightSubsystem.modeChange(newMode, previousRobotMode);
-		
+		//	lightSubsystem.modeChange(newMode, previousRobotMode);
+
 	}
 
 	/*
@@ -352,10 +352,10 @@ public class Robot extends TimedRobot {
 		// if some subsystems need to get called in all modes at the beginning
 		// of periodic, do it here
 		SmartDashboard.putNumber("NavX", driveSubsystem.getAngle());
-    	SmartDashboard.putNumber("Left Encoder", Robot.driveSubsystem.readLeftEncRaw() );
-    	SmartDashboard.putNumber("Right Encoder", Robot.driveSubsystem.readRightEncRaw() );
-    	
-    	liftSubsystem.beginPeriodic();
+		SmartDashboard.putNumber("Left Encoder", Robot.driveSubsystem.readLeftEncRaw() );
+		SmartDashboard.putNumber("Right Encoder", Robot.driveSubsystem.readRightEncRaw() );
+
+		liftSubsystem.beginPeriodic();
 
 		// don't need to do anything
 	}
@@ -364,16 +364,16 @@ public class Robot extends TimedRobot {
 		// if some subsystems need to get called in all modes at the end
 		// of periodic, do it here
 		//gearSubsystem.updateDashboard();
-    	liftSubsystem.endPeriodic();
+		liftSubsystem.endPeriodic();
 
 		// and log data!
 		updateDashboard();
-		
+
 	}
-	
+
 	void updateDashboard() {
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
 	}
-	
+
 }

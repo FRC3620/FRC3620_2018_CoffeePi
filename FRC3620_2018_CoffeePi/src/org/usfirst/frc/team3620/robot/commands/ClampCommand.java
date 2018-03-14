@@ -11,36 +11,36 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ClampCommand extends Command {
-	
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    public ClampCommand() {
-    	
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
+	public ClampCommand() {
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	EventLogging.commandMessage(logger);
-    	Robot.intakeSubsystem.clampCube();
-    }
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		EventLogging.commandMessage(logger);
+		Robot.intakeSubsystem.clampCube();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return true;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return true;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

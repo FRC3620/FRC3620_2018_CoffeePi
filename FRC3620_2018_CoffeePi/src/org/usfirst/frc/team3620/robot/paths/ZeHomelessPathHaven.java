@@ -14,7 +14,7 @@ public class ZeHomelessPathHaven extends AbstractPath {
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
 				new Waypoint(0, 23, 0.001),
-				
+
 		};
 	}
 }

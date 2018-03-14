@@ -199,13 +199,13 @@ public abstract class AbstractPath extends Command {
 		if (getPathfinderReverseMode()) {
 			left.configureEncoder(-encoderPosRight, 1024, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
 			// diameter in feet)
-            right.configureEncoder(-encoderPosLeft, 1024, (0.3333));
+			right.configureEncoder(-encoderPosLeft, 1024, (0.3333));
 		} else {
 			left.configureEncoder(encoderPosLeft, 1024, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
 			// diameter in feet)
 			right.configureEncoder(encoderPosRight, 1024, (0.3333));
 		}
-			
+
 
 		t0 = System.currentTimeMillis();
 	}
@@ -240,7 +240,7 @@ public abstract class AbstractPath extends Command {
 
 		// change desired heading to positive right
 		double desired_heading = - Pathfinder.r2d(left.getHeading()); // seems to be outputting a range of 0-360 degrees.
-																	// Hmm...
+		// Hmm...
 
 		// double desired_heading = Pathfinder.r2d(left.getHeading()) - 180;
 
@@ -252,7 +252,7 @@ public abstract class AbstractPath extends Command {
 		// positive angle difference means we are pointed too far to the rigvht
 		double turn = 0.8 * (-1.0 / 80.0) * angleDifference; // tune this to tune turn rate??
 		// negative turn means we are pointed too far right, and need to boost RH power
-		
+
 		// Custom angle calculation:
 		// double turn = -0.03 * angleDifference; //TODO Determine the appropriate turn
 		// value multiplier.
@@ -301,6 +301,7 @@ public abstract class AbstractPath extends Command {
 				System.out.println("outputRight = " + outputRight);
 				System.out.println("Encoders delta L,R = " + leftEncoderDelta + " " + rightEncoderDelta);
 				System.out.println("Encoders L,R = " + encoderPosLeft + " " + encoderPosRight);
+				System.out.println("End encoder positions L,R: " + encoderPosLeft + ", " + encoderPosRight);
 				//	System.out.println("left.getHeading() = " + left.getHeading());
 				//	System.out.println("r2d-left.getHeading() = " + Pathfinder.r2d(left.getHeading()));
 				System.out.println("desired_heading = " + desired_heading);
@@ -319,42 +320,42 @@ public abstract class AbstractPath extends Command {
 		System.out.println("navx_heading = " + navx_heading);
 
 
-			// Ends the command when forward trajectory is finished.
+		// Ends the command when forward trajectory is finished.
 
-			if (outputLeft == 0.0 && outputRight == 0.0) {
-				//			double endTime = timeSinceInitialized();
-				//			while (timeSinceInitialized() < endTime + 1000) {
-				//			}
-				finishedFlag = true;
-			}
-
-			t0 = t1;
-
-			//		if (maxOutput > 0.1) {
-			//			if (Math.abs(leftMotorSet) < 0.1 && Math.abs(rightMotorSet) < 0.1) {
-			//				finishedFlag = true;
+		if (outputLeft == 0.0 && outputRight == 0.0) {
+			//			double endTime = timeSinceInitialized();
+			//			while (timeSinceInitialized() < endTime + 1000) {
 			//			}
-			//		}
-
+			finishedFlag = true;
 		}
 
-		// Make this return true when this Command no longer needs to run execute()
-		@Override
-		protected boolean isFinished() {
-			return finishedFlag;
-		}
+		t0 = t1;
 
-		// Called once after isFinished returns true
-		@Override
-		protected void end() {
-			EventLogging.commandMessage(logger);
-			System.out.println("Max motor output: " + maxOutput);
-		}
+		//		if (maxOutput > 0.1) {
+		//			if (Math.abs(leftMotorSet) < 0.1 && Math.abs(rightMotorSet) < 0.1) {
+		//				finishedFlag = true;
+		//			}
+		//		}
 
-		// Called when another command which requires one or more of the same
-		// subsystems is scheduled to run
-		@Override
-		protected void interrupted() {
-			EventLogging.commandMessage(logger);
-		}
 	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return finishedFlag;
+	}
+
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		EventLogging.commandMessage(logger);
+		System.out.println("Max motor output: " + maxOutput);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+	}
+}

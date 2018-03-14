@@ -14,69 +14,69 @@ public class PivotDownCommand extends Command {
 	double liftEncoderPos;
 	double pivotEncoder;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
-    public PivotDownCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.intakeSubsystem);
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	logger.info("Pivoting Down Initialized");
-    }
+	public PivotDownCommand() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(Robot.intakeSubsystem);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
-    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		logger.info("Pivoting Down Initialized");
+	}
 
-    	if (isClampClosed) {
-    		if (pivotEncoder < 105) {
-    			Robot.intakeSubsystem.pivotDown(0.5);
-    		}
-    		else if (pivotEncoder < 130) {
-    			Robot.intakeSubsystem.pivotDown(0.1);
-    		}
-    		else {
-    			Robot.intakeSubsystem.pivotDown(0);
-    		}
-    	}
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+		boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
+		if (isClampClosed) {
+			if (pivotEncoder < 105) {
+				Robot.intakeSubsystem.pivotDown(0.5);
+			}
+			else if (pivotEncoder < 130) {
+				Robot.intakeSubsystem.pivotDown(0.1);
+			}
+			else {
+				Robot.intakeSubsystem.pivotDown(0);
+			}
+		}
+	}
 
-    	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
-    	if (!Robot.intakeSubsystem.isEncoderValid) {
-    		logger.warn("I can't pivit down: encoder is not valid!");
-    		return true;
-    	}
-    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 95) {
-    		logger.info("Ending Pivot because we're too far");
-    		return true;
-    	}
-    	if (!isClampClosed) {
-    		logger.info("Ending Pivot cause we aren't closed");
-    		return true;
-    	}
-        return false;
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	EventLogging.commandMessage(logger); 
-    	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
-    	
-    	Robot.intakeSubsystem.pivotDown(0);
-    }
+		double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+		boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
+		if (!Robot.intakeSubsystem.isEncoderValid) {
+			logger.warn("I can't pivit down: encoder is not valid!");
+			return true;
+		}
+		else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 95) {
+			logger.info("Ending Pivot because we're too far");
+			return true;
+		}
+		if (!isClampClosed) {
+			logger.info("Ending Pivot cause we aren't closed");
+			return true;
+		}
+		return false;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	EventLogging.commandMessage(logger);
-    	logger.info("interrupted at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
-    	Robot.intakeSubsystem.pivotDown(0);
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		EventLogging.commandMessage(logger); 
+		logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
+
+		Robot.intakeSubsystem.pivotDown(0);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		EventLogging.commandMessage(logger);
+		logger.info("interrupted at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
+		Robot.intakeSubsystem.pivotDown(0);
+	}
 }

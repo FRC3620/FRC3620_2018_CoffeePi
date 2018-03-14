@@ -57,37 +57,37 @@ public class LiftSubsystem extends Subsystem {
 			talon.config_kP(kSpeedPIDLoopIdx, kPSpeed, kTimeoutMs);
 			talon.config_kI(kSpeedPIDLoopIdx, kISpeed, kTimeoutMs);
 			talon.config_kD(kSpeedPIDLoopIdx, kDSpeed, kTimeoutMs);
-		
+
 			//Setting feedback device type
 			setLiftTalon(ControlMode.Position, 0);
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,0,0);
-			
+
 			// Setting feedback device type
 			talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
 			talon.setSensorPhase(true);
-			
-		
+
+
 		}
 		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
-		// Put methods for controlling this subsystem
-		// here. Call these from Commands.
-    //checks to see if lift is at lowest position
-    public boolean isAtHome() {
-    	if (talon != null) {
-    		int encoderPos = readEncoderInTics();
-    		if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
-    			return true;
-    		}
-    		else {
-    			return false;
-    		}
-    	}
-    	return true; //we are faking it
-    }
-    
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	//checks to see if lift is at lowest position
+	public boolean isAtHome() {
+		if (talon != null) {
+			int encoderPos = readEncoderInTics();
+			if  (encoderPos > homePosition - positionErrorMargin && encoderPos < homePosition + positionErrorMargin) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return true; //we are faking it
+	}
+
 	// reads encoder
-	 int readEncoderInTics() {
+	int readEncoderInTics() {
 		if (talon != null) {
 			int encoderPos = (talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
@@ -109,29 +109,29 @@ public class LiftSubsystem extends Subsystem {
 			//new LightSubsystem().setEvent("lift", true);
 		}
 		else {//new LightSubsystem().setEvent("lift", false);
-			
+
 		}
 		return encoderPosInInches;
 	}
-	
-    public boolean isBottomLimitDepressed(){
-    	if (talon != null) {
-    		return talon.getSensorCollection().isRevLimitSwitchClosed();
-    	}
-    	return false;
-    }
- 
-    public boolean isTopLimitDepressed(){
-    	if (talon != null) {
-    		return talon.getSensorCollection().isFwdLimitSwitchClosed();
-    	}
-    	return false; 
-    }
+
+	public boolean isBottomLimitDepressed(){
+		if (talon != null) {
+			return talon.getSensorCollection().isRevLimitSwitchClosed();
+		}
+		return false;
+	}
+
+	public boolean isTopLimitDepressed(){
+		if (talon != null) {
+			return talon.getSensorCollection().isFwdLimitSwitchClosed();
+		}
+		return false; 
+	}
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-    @Override
+	@Override
 	public void initDefaultCommand() {
 		// Set the default000000000 command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
@@ -161,7 +161,7 @@ public class LiftSubsystem extends Subsystem {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
 		System.out.println(bracingVoltage - (minVoltageHigh*joyPos));
 	}
-	
+
 	public void autoMoveElevatorUp(double voltage) {
 		setLiftTalon(ControlMode.PercentOutput, voltage);
 	}
@@ -173,11 +173,11 @@ public class LiftSubsystem extends Subsystem {
 	public void setElevatorVelocity(double speed) {
 		setLiftTalon(ControlMode.PercentOutput, speed);
 	}
-	
+
 	public void fallSlowly() {
 		setLiftTalon(ControlMode.PercentOutput, 0.08);
 	}
-	
+
 	public void climb(double joyPos){
 		if(highGear == false){
 			peakSpeedHigh = 1.0;
@@ -185,16 +185,16 @@ public class LiftSubsystem extends Subsystem {
 			System.out.println(-(bracingVoltage + (joyPos * peakVoltageHigh)));
 		}
 		peakSpeedHigh = 0.6;
-		
-		
+
+
 	}
-//All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
+	//All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
 	public double calculateArcCosH(double input) {
 		double output = Math.log1p((input + Math.sqrt((input*input) -1)) - 1);
 		return output;
 	}
-			
-	
+
+
 	/* Welcome to the mathematical magic. The hyperbolic secant function is a nice bell curve, which is why we're
 	 * using it to find percent output so we don't go anywhere TOO fast. Finding k and the equation for the return
 	 * statement can be easily verified by starting with equating the percent output with a hyperbolic secant
@@ -232,7 +232,7 @@ public class LiftSubsystem extends Subsystem {
 		return home;
 
 	}
-	*/
+	 */
 
 	public void moveToScale() {
 		setLiftTalon(ControlMode.MotionMagic, scalePosition);
@@ -248,7 +248,7 @@ public class LiftSubsystem extends Subsystem {
 		highGear = false;
 
 	}
-	
+
 	public boolean isInHighGear() {
 		return highGear;
 	}
@@ -286,8 +286,8 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
 		}
 		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
-	
-	//	SmartDashboard.putNumber("Lift Percent Output",)
+
+		//	SmartDashboard.putNumber("Lift Percent Output",)
 	}
 
 	public void setSetpoint(double positionInInches) {
@@ -301,15 +301,15 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}
 	}
-	
+
 	public void setPosition(double desiredEncoderPos) {
 		setLiftTalon(ControlMode.Position, desiredEncoderPos);
 	}
-	
+
 	public void calculateNewPIDParameters() {
 		// look at the current position and lastSetPoint,
 		if (readEncoderInTics() > lastSetPoint) {
-			
+
 		}
 		// if we are going up or down, and load the correct PID
 		// parameters into the Talon.
@@ -325,9 +325,9 @@ public class LiftSubsystem extends Subsystem {
 			talon.config_kF(0, F, 10);
 		}
 	}
-	
+
 	public void configMotionMagic(int acceleration, int velocity) {
-		
+
 		motionMagicAccel = acceleration;
 		motionMagicCruiseVel = velocity;
 		if (talon != null) {
@@ -335,19 +335,19 @@ public class LiftSubsystem extends Subsystem {
 			talon.configMotionAcceleration(kSpeedPIDLoopIdx, motionMagicAccel);
 		}
 	}
-	
+
 	public void moveToSetPoint(int position) {
-			setLiftTalon(ControlMode.MotionMagic, position);
+		setLiftTalon(ControlMode.MotionMagic, position);
 	}
-	
+
 	public void moveAtManualSpeedGiven(double speed) {
-			setLiftTalon(ControlMode.PercentOutput, -speed);
+		setLiftTalon(ControlMode.PercentOutput, -speed);
 	}
-	
+
 	public void brace(double addedBangBangPower) {
-			setLiftTalon(ControlMode.PercentOutput, bracingVoltage + addedBangBangPower);
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + addedBangBangPower);
 	}
-	
+
 	void setLiftTalon(ControlMode controlMode, double value) {
 		if (talon != null) {
 			talon.set(controlMode, value);
@@ -359,7 +359,7 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("liftPower", value);
 		}
 	}
-	
+
 	public class CommandRecord {
 		public CommandRecord(ControlMode controlMode, double value, StackTraceElement where) {
 			this.controlMode = controlMode;
@@ -374,12 +374,12 @@ public class LiftSubsystem extends Subsystem {
 			return "CommandRecord [controlMode=" + controlMode + ", value=" + value + ", where = " + where.getClassName() + "." + where.getMethodName() + "()]";
 		}
 	}
-	
+
 	List<CommandRecord> recording = new ArrayList<>();
 	double lastPower = 0;
-	
+
 	public void beginPeriodic() {
-	    recording.clear();	
+		recording.clear();	
 	}
 
 	public void endPeriodic() {
@@ -387,10 +387,10 @@ public class LiftSubsystem extends Subsystem {
 			logger.warn ("lift got set too much: {}", recording);
 		}
 		//System.out.println (recording + " " /* + getCurrentPower() */);
-		
+
 	}
-	
-/*	double getCurrentPower() {
+
+	/*	double getCurrentPower() {
 		if (talon != null) {
 			return talon.get();
 		}

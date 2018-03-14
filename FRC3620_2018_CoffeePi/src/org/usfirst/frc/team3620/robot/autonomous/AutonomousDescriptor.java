@@ -5,7 +5,7 @@ import org.usfirst.frc.team3620.robot.paths.AbstractPath;
 public class AutonomousDescriptor {
 	Class<? extends AbstractPath> pathClass;
 	WhereToPutCube whereToPutCube;
-	
+
 	public AutonomousDescriptor (Class<? extends AbstractPath> clazz, WhereToPutCube _whereToPutCube) {
 		this.pathClass = clazz;
 		this.whereToPutCube = _whereToPutCube;

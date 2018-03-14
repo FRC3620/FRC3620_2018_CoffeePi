@@ -16,12 +16,12 @@ public class Path_CenterStart_LeftSwitch extends AbstractPath {
 				new Waypoint(9.92, 17.50, Pathfinder.d2r(0)),
 		};
 	}
-	
+
 	@Override
 	double getPathfinderP() {
 		return 0.001;
 	}
-	
+
 	@Override
 	double getPathfinderOutputMultiplier() {
 		// TODO Auto-generated method stub

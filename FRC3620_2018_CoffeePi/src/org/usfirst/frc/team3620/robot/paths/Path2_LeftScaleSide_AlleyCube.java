@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class Path2_LeftScaleSide_AlleyCube extends CommandGroup {
 
-    public Path2_LeftScaleSide_AlleyCube() {
-//        addSequential(Subpath_LeftScaleSide_AlleyCubeA);
-//        addSequential(Subpath_LeftScaleSide_AlleyCubeB);
-    }
+	public Path2_LeftScaleSide_AlleyCube() {
+		//        addSequential(Subpath_LeftScaleSide_AlleyCubeA);
+		//        addSequential(Subpath_LeftScaleSide_AlleyCubeB);
+	}
 }
