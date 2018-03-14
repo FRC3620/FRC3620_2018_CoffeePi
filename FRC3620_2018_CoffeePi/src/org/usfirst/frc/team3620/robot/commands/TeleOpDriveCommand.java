@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TeleOpDriveCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double topHeight = 91.0;
-	double topSpeedAtTopHeight = 0.8;
-	double speedMultiplier =  1 - topSpeedAtTopHeight;
+	
     public TeleOpDriveCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -28,19 +26,18 @@ public class TeleOpDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	double throttleJoyPos = Robot.m_oi.getDriveVerticalJoystick();
-    	double turnJoyPos = Robot.m_oi.getDriveHorizontalJoystick();
-    	if(liftEncoderPos > 10) {
-    		throttleJoyPos = throttleJoyPos - throttleJoyPos*speedMultiplier*(liftEncoderPos/topHeight);
-    		turnJoyPos = turnJoyPos - turnJoyPos*speedMultiplier*(liftEncoderPos/topHeight);
-    	}
-    	Robot.driveSubsystem.teleOpDrive(throttleJoyPos, turnJoyPos);
+    	
+    	Robot.driveSubsystem.teleOpDrive(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getDriveHorizontalJoystick());
     	//Robot.driveSubsystem.teleOpDriveTransmitter(Robot.m_oi.getDriveVerticalJoystick(),Robot.m_oi.getTransmitterHorizontalJoystick());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	double intakeJoyPos;
+    	intakeJoyPos = Robot.m_oi.getCubeJoystick();
+    	if (intakeJoyPos < -0.2 ) {
+    		return true;
+    	}
         return false;
     }
 
