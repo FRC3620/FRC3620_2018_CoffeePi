@@ -29,12 +29,12 @@ public abstract class AutoMoveLiftUp extends Command {
 	double startingEncoderPos;
 	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
 	//1 revolution = 3 inches
-	int oneFoot = 9;
+	double oneFoot;
 	double slowDownPoint = requestedEncoderPos - oneFoot;
 	double speedUpPoint = startingEncoderPos + oneFoot;
-	double desiredStartingPower = 0.35;
+	double desiredStartingPower;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.15;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.3;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
@@ -45,18 +45,27 @@ public abstract class AutoMoveLiftUp extends Command {
     	requestedEncoderPos = getRequestedEndPos();
     }
     
+    
     public abstract double getRequestedEndPos();
     public double getMaxPower() {
     	return 0.6;
     }
     
-
+    public double getStartingPower() {
+    	return 0.35;
+    }
+    
+    public double getAccelDecelDistance() {
+    	return 9;
+    }
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	weAreDoneSenor = false;
+    	desiredStartingPower = getStartingPower();
+    	oneFoot = getAccelDecelDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
