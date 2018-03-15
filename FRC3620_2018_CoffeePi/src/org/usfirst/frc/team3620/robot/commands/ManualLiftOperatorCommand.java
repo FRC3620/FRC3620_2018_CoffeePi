@@ -49,7 +49,7 @@ public class ManualLiftOperatorCommand extends Command {
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {
     				if( Robot.liftSubsystem.readEncoderInInches() < 14){
-    					joyPos = joyPos * 0.75;
+    					joyPos = joyPos * 0.25;
     				}
     				if( joyPos > 0.85) {
     					joyPos = 1.0;
