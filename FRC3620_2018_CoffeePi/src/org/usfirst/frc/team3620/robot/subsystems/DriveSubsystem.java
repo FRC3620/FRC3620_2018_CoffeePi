@@ -88,37 +88,15 @@ public class DriveSubsystem extends Subsystem {
 		return(value);
 	}
 	
-	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+	
 	private double getSpeedModifier() {	// TODO Tune me!!
-		if(heightBasedSpeed) {
-			if(liftEncoderPos <= 40.0) {
-				return 1.0;
-			}
-			else if(liftEncoderPos > 40.0 && liftEncoderPos <= 50.0) {
-				return 0.95;
-			}
-			else if(liftEncoderPos > 50.0 && liftEncoderPos <= 60.0) {
-				return 0.90;
-			}
-			else if(liftEncoderPos > 60.0 && liftEncoderPos <= 70.0) {
-				return 0.85;
-			}
-			else if(liftEncoderPos > 70.0) {
-				return 0.8;
-			}
-			else {
-				return 1.0;
-			}
-		}
-		else {
-			return 1.0;
-		}
+		return 1.0;
+		
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
 		if (cANDifferentialDrive != null) {
-			speed=lowerLimit(speed, 0.2) * getSpeedModifier();				// Multiplied by speedModifier to slow things down when the lift is high
-			turn=lowerLimit(turn, 0.1) * ((getSpeedModifier() + 1.0) / 2);  // Extra math on speedModifier here makes it 1/2 as effective on our turn
+		
 			double r2;
 			// Lets double turn squaring be switched on and off quickly with the boolean up top.
 			if(doubleSquaredTurn) {
@@ -130,7 +108,7 @@ public class DriveSubsystem extends Subsystem {
 			else {
 				r2 = turn * turnReducer;
 			}
-			speed = (speed * 0.8);
+			speed = (speed * 0.9);
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
