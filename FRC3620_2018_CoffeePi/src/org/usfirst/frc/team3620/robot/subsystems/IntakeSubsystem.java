@@ -48,7 +48,7 @@ public class IntakeSubsystem extends Subsystem {
 	public double encoderAt180 = 1330;
 	//public double encoderAt90 = 330;
 	//public double startingPivotAngle;
-	public double maxPivotSpeed = 0.3;
+	public double maxPivotSpeed = 0.3; //WAS 0.3 CHANGED UNTIL ENCODER IS FIXED
 	public double encoderErrorMargin = 50;
 	public double pivotAngleDeg;
 	public double cosMultiplier;

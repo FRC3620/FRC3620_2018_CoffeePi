@@ -53,7 +53,7 @@ public class PivotDownCommand extends Command {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 95) {
+    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 135) {
     		logger.info("Ending Pivot because we're too far");
     		return true;
     	}
