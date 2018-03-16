@@ -9,6 +9,7 @@ public class AutoFlipUpToScale extends CommandGroup {
 
     public AutoFlipUpToScale() {
     	addSequential(new PivotUpCommand());
+    	addSequential(new AutoMoveLiftALittleUp());
     	addSequential(new AutoMoveLiftUpToScaleHeight());
         // Add Commands here:
         // e.g. addSequential(new Command1());

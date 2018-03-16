@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
+import org.usfirst.frc.team3620.robot.commands.TeleopDriveCommandWithStepperLimiter;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -60,7 +61,7 @@ public class DriveSubsystem extends Subsystem {
 	
 	// Allows double squaring to be turned on and off, while avoiding another qual9 mistake
 	private boolean doubleSquaredTurn = true; // Set to true to re-square the turn input.
-	private double turnReducer = 0.9; // Multiplied by turn value to scale it down	
+	private double turnReducer = 0.8; // Multiplied by turn value to scale it down	
 	private boolean heightBasedSpeed = true; // Set to true to reduce speed for lift height, false to override.
     
 	public DriveSubsystem() {
@@ -79,6 +80,7 @@ public class DriveSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new TeleOpDriveCommand());
+//    	setDefaultCommand(new TeleopDriveCommandWithStepperLimiter());
     }
 
 	private double lowerLimit(double value, double lowerLimit) {//This function removes low input values to insure low voltage don't fidget the motors

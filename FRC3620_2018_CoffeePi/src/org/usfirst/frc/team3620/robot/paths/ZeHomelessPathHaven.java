@@ -13,8 +13,20 @@ public class ZeHomelessPathHaven extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				new Waypoint(0, 23, 0.001),
+				new Waypoint(0, 22.91, Pathfinder.d2r(0)),
+				new Waypoint(11.5, 22.91, Pathfinder.d2r(-45)),
+				new Waypoint(12.5, 16.91, Pathfinder.d2r(-90)),
 				
 		};
+	}
+	
+	@Override
+	public boolean getPathfinderReverseMode() {
+		return true;
+	}
+	
+	@Override
+	public double getPathfinderP() {
+		return 0.6;
 	}
 }

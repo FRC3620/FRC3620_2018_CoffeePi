@@ -74,8 +74,8 @@ public class OI {
 	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whenActive(new PivotUpCommand());
-	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whenActive(new PivotDownCommand());
+/*	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
+	       pivotDown.whenActive(new PivotDownCommand()); */
 	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
@@ -123,6 +123,7 @@ public class OI {
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
+           SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
 	}
 	       
 	public double getDriveVerticalJoystick() {
