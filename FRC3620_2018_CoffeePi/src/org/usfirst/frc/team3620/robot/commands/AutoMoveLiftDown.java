@@ -13,7 +13,7 @@ public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double encoderPos;
 	double slowDownPoint;
-	double fallingPower = -0.50;
+	double fallingPower = -0.40;
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -41,7 +41,7 @@ public class AutoMoveLiftDown extends Command {
     	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
-    	} else if(Robot.liftSubsystem.readEncoderInInches() < 20) {
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 30) {
     		return true;
     	}
         return false;
