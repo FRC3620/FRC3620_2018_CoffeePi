@@ -23,7 +23,7 @@ public abstract class AbstractPath extends Command {
 
 	boolean finishedFlag = false;
 	boolean debugMode = false;
-
+	int competitionMultiplier;
 	EncoderFollower left;
 	EncoderFollower right;
 
@@ -196,10 +196,15 @@ public abstract class AbstractPath extends Command {
 		logger.info("Reverse mode = {}", getPathfinderReverseMode());
 		logger.info("Navx initial = {}", Robot.driveSubsystem.getAngle());
 		//CHANGED TICK PER REVOLUTION TO 1024 from 512
+		if(Robot.driveSubsystem.gotCompBot()) {
+			competitionMultiplier = 2;
+		} else {
+			competitionMultiplier = 1;
+		}
 		if (getPathfinderReverseMode()) {
-			left.configureEncoder(-encoderPosRight, 512, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
+			left.configureEncoder(-encoderPosRight, 512*competitionMultiplier, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
 			// diameter in feet)
-            right.configureEncoder(-encoderPosLeft, 512, (0.3333));
+            right.configureEncoder(-encoderPosLeft, 512*competitionMultiplier, (0.3333));
 		} else {
 			left.configureEncoder(encoderPosLeft, 512, (0.3333)); // (raw encoder position, ticks per wheel rotation, wheel
 			// diameter in feet)
