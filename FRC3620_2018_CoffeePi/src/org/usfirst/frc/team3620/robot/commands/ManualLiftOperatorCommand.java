@@ -65,6 +65,7 @@ public class ManualLiftOperatorCommand extends Command {
     
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	double joyPos = Robot.m_oi.getLiftJoystick();
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
     		Robot.liftSubsystem.resetEncoder();
@@ -76,9 +77,15 @@ public class ManualLiftOperatorCommand extends Command {
     		
     		return true;
     	}
-    */	else {
-    		return false;
+    	
+    */	if(Robot.intakeSubsystem.isArmDown) {
+    		if(Robot.liftSubsystem.readEncoderInInches() > 10) {
+    			if(joyPos > 0.2) {
+    				return true;
+    			}
+    		}
     	}
+    	return false;
     }
     
     // Called once after isFinished returns true
