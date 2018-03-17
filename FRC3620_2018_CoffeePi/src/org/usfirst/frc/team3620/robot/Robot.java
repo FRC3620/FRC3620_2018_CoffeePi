@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
-		goForTwo = true;
+	/*	goForTwo = true;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -303,7 +303,9 @@ public class Robot extends TimedRobot {
 			autonomousCommand.start();
 			autonomousCommandIsStarted = true;
 		}
-		
+		*/
+		CommandGroup autoCommandTester = new CommandGroup();
+		autonomousCommand = autoCommandTester;
 		// now do autonomous stuff
 		Scheduler.getInstance().run();
 		endPeriodic();
