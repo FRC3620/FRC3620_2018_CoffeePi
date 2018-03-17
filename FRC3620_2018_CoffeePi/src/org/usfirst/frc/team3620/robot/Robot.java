@@ -24,6 +24,7 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
@@ -51,7 +52,7 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	public static DataLogger robotDataLogger;
-	boolean goForTwo = true;
+	boolean goForTwo = false;
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
@@ -192,6 +193,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
+		goForTwo = true;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -210,13 +212,14 @@ public class Robot extends TimedRobot {
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 				
 				CommandGroup commandGroup = new CommandGroup();
+				CommandGroup unfoldandlift = new CommandGroup();
 				commandGroup.addSequential(new LiftShiftHighGear());
 				if(startingPos != 'C') {
-					CommandGroup unfoldandlift = new CommandGroup();
-					unfoldandlift.addSequential(new PivotDownCommand());
+					
+					unfoldandlift.addSequential(new PivotUpCommand());
 					if(whereToPutCube == whereToPutCube.SCALE) {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
-						unfoldandlift.addSequential(new PivotUpCommand());
+					
 					} else {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						
@@ -237,28 +240,32 @@ public class Robot extends TimedRobot {
 
 					if(((gameMessage.substring(0).charAt(0) == gameMessage.substring(1).charAt(0)) 
 							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwo == true){
+						
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addParallel(new Path2_RightScaleSide_AlleyCube());
+						}
+						
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
 						unfoldAndDrop.addSequential(new PivotDownCommand());
 						unfoldAndDrop.addSequential(new UnClampCommand());
-						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
-						if(gameMessage.substring(1).charAt(0) == 'L') {
-							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
-						} else if(gameMessage.substring(1).charAt(0) == 'R') {
-							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
-						}
 						
 						unfoldAndDrop.addSequential(new ClampCommand());
 						unfoldAndDrop.addParallel(unfoldandlift);
 						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-						unfoldAndDrop.addSequential(new PivotDownCommand());
+						
 						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+						
 						
 						
 						//DOES UNFOLDANDLIFT EXIST OUTSIDE OF THE IF STATEMENT?
 						
 						
 					} else{								
-						unfoldAndDrop.addSequential(new PivotDownCommand());
+						
 													//Needs to be run forwards
 						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
@@ -272,7 +279,7 @@ public class Robot extends TimedRobot {
 				
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
-				goForTwo = true;
+				goForTwo = false;
 			}
 		}
 		
