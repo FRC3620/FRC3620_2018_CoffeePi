@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutonomousPukeCubeCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+	double competitionMultiplier;
 	Timer timer = new Timer();
 	
     public AutonomousPukeCubeCommand() {
@@ -28,12 +28,17 @@ public class AutonomousPukeCubeCommand extends Command {
     	EventLogging.commandMessage(logger);
     	timer.reset();
     	timer.start();
+    	if(Robot.intakeSubsystem.gotCompBot()) {
+    		competitionMultiplier  = -1.0;
+    	}else {
+    		competitionMultiplier = 1.0;
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
-    	Robot.intakeSubsystem.pushCubeOut(-0.6);
+    	
+    	Robot.intakeSubsystem.pushCubeOut(-0.6*competitionMultiplier);
 
     }
 
