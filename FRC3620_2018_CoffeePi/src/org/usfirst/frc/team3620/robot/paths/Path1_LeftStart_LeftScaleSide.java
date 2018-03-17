@@ -26,24 +26,24 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 				*/
 				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
-				new Waypoint(7.05, 23.31, Pathfinder.d2r(-4)),
-				new Waypoint(16.5, 21.45, Pathfinder.d2r(0)),
+				new Waypoint(9.40, 22.96, Pathfinder.d2r(-4)),
+				new Waypoint(21.25, 20.75, Pathfinder.d2r(0)),
 		};
 	}
 	
 	@Override
 	double getPathfinderP() {
-		return 0.001;
+		return 0.09;
 	}
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.68;		//Slightly slower to keep sharp-turn motor output below 1.0
+		return 1.0;		//Slightly slower to keep sharp-turn motor output below 1.0
 	}
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.75;
+		return 0.55;
 	}
 	
 	@Override

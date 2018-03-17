@@ -21,7 +21,7 @@ public class Path_BackUpFromScale extends AbstractPath {
 	
 	@Override
 	boolean getPathfinderReverseMode() {
-		return true;
+		return false;
 	}
 	@Override
 	double getPathfinderOutputMultiplier() {
