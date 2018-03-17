@@ -29,12 +29,12 @@ public abstract class AutoMoveLiftUp extends Command {
 	double startingEncoderPos;
 	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
 	//1 revolution = 3 inches
-	int oneFoot = 12;
+	double oneFoot;
 	double slowDownPoint = requestedEncoderPos - oneFoot;
 	double speedUpPoint = startingEncoderPos + oneFoot;
-	double desiredStartingPower = 0.3;
+	double desiredStartingPower;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.12;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.3;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
@@ -45,18 +45,27 @@ public abstract class AutoMoveLiftUp extends Command {
     	requestedEncoderPos = getRequestedEndPos();
     }
     
+    
     public abstract double getRequestedEndPos();
     public double getMaxPower() {
     	return 0.6;
     }
     
-
+    public double getStartingPower() {
+    	return 0.35;
+    }
+    
+    public double getAccelDecelDistance() {
+    	return 9;
+    }
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     	weAreDoneSenor = false;
+    	desiredStartingPower = getStartingPower();
+    	oneFoot = getAccelDecelDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -79,7 +88,9 @@ public abstract class AutoMoveLiftUp extends Command {
 	    } else if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
-    		//		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+
+    		//System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
     		System.out.println("We're set to maximum overdrive.");
@@ -87,6 +98,7 @@ public abstract class AutoMoveLiftUp extends Command {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
     		// System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, speedUpPoint, maxPower));
+
     	}
     	
     }

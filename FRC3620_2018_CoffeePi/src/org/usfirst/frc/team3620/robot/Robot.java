@@ -21,12 +21,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
-import org.usfirst.frc.team3620.robot.autonomous.FakeCommand;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
+
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -114,13 +116,15 @@ public class Robot extends TimedRobot {
 		lightSubsystem = new LightSubsystem();
 		intakeSubsystem = new IntakeSubsystem();
 		liftSubsystem = new LiftSubsystem();
+		SmartDashboard.putData("LiftSubsystem",liftSubsystem);
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 
 		// Initialize Operator Interface 
 		m_oi = new OI(); 
 
-		posChooser.addDefault("Left",  "L");
+		posChooser.addDefault("Null", "N");
+		posChooser.addObject("Left",  "L");
 		posChooser.addObject("Center",  "C");
 		posChooser.addObject("Right",  "R");
 		SmartDashboard.putData ("Position chooser", posChooser);
@@ -208,30 +212,33 @@ public class Robot extends TimedRobot {
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
-				WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
-				
-				CommandGroup commandGroup = new CommandGroup();
-				CommandGroup unfoldandlift = new CommandGroup();
-				commandGroup.addSequential(new LiftShiftHighGear());
-				if(startingPos != 'C') {
 
-					
-					unfoldandlift.addSequential(new PivotUpCommand());
 
-					if(whereToPutCube == whereToPutCube.SCALE) {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
-					
-					} else {
-						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+				if (autonomousDescriptor != null) {
+					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
+
+
+					CommandGroup commandGroup = new CommandGroup();
+
+					commandGroup.addSequential(new LiftShiftHighGear());
+					commandGroup.addSequential(new ClampCommand());
+					CommandGroup unfoldandlift = new CommandGroup();
+					if(startingPos != 'C') {
 						
+						unfoldandlift.addSequential(new PivotUpCommand());
+						if(whereToPutCube == whereToPutCube.SCALE) {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+						} else {
+							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+						}
+
+						unfoldandlift.addSequential(new HoldLift());
+						commandGroup.addParallel(unfoldandlift);
+
 					}
-					unfoldandlift.addSequential(new HoldLift());
-					commandGroup.addParallel(unfoldandlift);
-					
-				}
-				
-				commandGroup.addSequential(autonomousDescriptor.getPath());
+
+					commandGroup.addSequential(autonomousDescriptor.getPath());
 				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
@@ -282,20 +289,40 @@ public class Robot extends TimedRobot {
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
 				goForTwo = false;
+
 			}
-		}
-		
-		// do we have a calculated autonomous, but we have not started it yet?
-		if(autonomousCommand != null && !autonomousCommandIsStarted) {
-			// yes. is it time to start yet?
-			int delay = delayChooser.getSelected();
-			if(elapsedTime > delay) {
-				// yes. start it.
+
+			// do we have a calculated autonomous, but we have not started it yet?
+			if(autonomousCommand != null && !autonomousCommandIsStarted) {
+				// yes. is it time to start yet?
+				int delay = delayChooser.getSelected();
+				if(elapsedTime > delay) {
+					// yes. start it.
+					logger.info("Starting {}", autonomousCommand);
+					autonomousCommand.start();
+					autonomousCommandIsStarted = true;
+				}
+			}
+
+			// has a long time gone without any game data?
+			if(autonomousCommand == null && elapsedTime > 10) {
+				// yes. just advance to line
+				if(posChooser.getSelected().charAt(0) == 'L') {
+					autonomousCommand = new Path1_LeftStart_DriveAcrossLine();
+				} else if(posChooser.getSelected().charAt(0) == 'R') {
+					autonomousCommand = new Path1_RightStart_DriveAcrossLine();
+				}
+				autonomousCommand = new AutonomousBailCommand();
 				logger.info("Starting {}", autonomousCommand);
 				autonomousCommand.start();
 				autonomousCommandIsStarted = true;
 			}
+
+			// now do autonomous stuff
+			Scheduler.getInstance().run();
+			endPeriodic();
 		}
+
 		 
 		// has a long time gone without any game data?
 		if(autonomousCommand == null && elapsedTime > 10) {
@@ -305,12 +332,14 @@ public class Robot extends TimedRobot {
 			autonomousCommand.start();
 			autonomousCommandIsStarted = true;
 		}
+	}
 		
 	/*	CommandGroup autoCommandTester = new CommandGroup();
 		autonomousCommand = autoCommandTester; */
 		// now do autonomous stuff
 		Scheduler.getInstance().run();
 		endPeriodic();
+		
 	}
 
 	@Override
@@ -323,6 +352,10 @@ public class Robot extends TimedRobot {
 			autonomousCommand.cancel();
 		}
 		
+		liftSubsystem.setHighGear(); 
+		logger.info("Lift set to high gear");
+		intakeSubsystem.clampCube(); 
+		logger.info("Clamper closed");
 		processRobotModeChange(RobotMode.TELEOP);
 	}
 	/**
@@ -334,7 +367,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 		endPeriodic();
 	}
-	
 	public void testInit() {
 		// This makes sure that the autonomous stops running when
 		// test starts running.
@@ -373,7 +405,7 @@ public class Robot extends TimedRobot {
 		// if any subsystems need to know about mode changes, let
 		// them know here.
 		// exampleSubsystem.processRobotModeChange(newMode);
-		lightSubsystem.modeChange(newMode, previousRobotMode);
+	//	lightSubsystem.modeChange(newMode, previousRobotMode);
 		
 	}
 

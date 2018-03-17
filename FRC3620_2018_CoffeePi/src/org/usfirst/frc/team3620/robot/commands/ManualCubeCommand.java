@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ManualCubeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+	double competitionMultiplier;
 	
     public ManualCubeCommand() {
     	requires(Robot.intakeSubsystem);
@@ -22,18 +22,25 @@ public class ManualCubeCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	if(Robot.intakeSubsystem.gotCompBot()) {
+    		competitionMultiplier = -1.0;
+    	} else {
+    		competitionMultiplier = 1.0;
+    	}
     	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     	double joyPos;
     	joyPos = Robot.m_oi.getCubeJoystick();
+    	
     	if(joyPos < -0.2 ) {
-    		Robot.intakeSubsystem.pushCubeOut(-joyPos);
+    		Robot.intakeSubsystem.pushCubeOut(0.6* joyPos*competitionMultiplier);
     	}
     	else if(joyPos > 0.2) {
-    		Robot.intakeSubsystem.bringCubeIn(joyPos);
+    		Robot.intakeSubsystem.bringCubeIn(0.6 * -joyPos*competitionMultiplier);
     	} else if(joyPos < 0.2 && joyPos > -0.2) {
     		Robot.intakeSubsystem.pushCubeOut(0);
     	}

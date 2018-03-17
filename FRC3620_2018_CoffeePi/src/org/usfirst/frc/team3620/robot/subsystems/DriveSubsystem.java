@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import org.slf4j.Logger;
+import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.TeleOpDriveCommand;
+import org.usfirst.frc.team3620.robot.commands.TeleopDriveCommandWithStepperLimiter;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -57,12 +59,18 @@ public class DriveSubsystem extends Subsystem {
 	private boolean highGear;//for the motors
 	double automaticHeading;
 	
-	private double turnReducer = 0.9;
+	// Allows double squaring to be turned on and off, while avoiding another qual9 mistake
+	private boolean doubleSquaredTurn = true; // Set to true to re-square the turn input.
+	private double turnReducer = 0.8; // Multiplied by turn value to scale it down	
+	private boolean heightBasedSpeed = true; // Set to true to reduce speed for lift height, false to override.
+	private boolean gotCompBot;
     
 	public DriveSubsystem() {
 		super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		ahrs.enableLogging(false);
+		
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 	
 	@Override
@@ -75,8 +83,13 @@ public class DriveSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new TeleOpDriveCommand());
+//    	setDefaultCommand(new TeleopDriveCommandWithStepperLimiter());
     }
 
+	public boolean gotCompBot() {
+		return gotCompBot;
+	}
+	
 	private double lowerLimit(double value, double lowerLimit) {//This function removes low input values to insure low voltage don't fidget the motors
 		if(Math.abs(value)<=lowerLimit) {
 			return(0.0);
@@ -84,19 +97,27 @@ public class DriveSubsystem extends Subsystem {
 		return(value);
 	}
 	
-	private double getSpeedModifier() {
-		//return reverse ? -1 : 1;//this will return 1 if reverse is false, and -1 if reverse is true.
-		return 1;
+	
+	private double getSpeedModifier() {	// TODO Tune me!!
+		return 1.0;
+		
 	}
 	
 	public void teleOpDrive(double speed,double turn) {
 		if (cANDifferentialDrive != null) {
-			speed=lowerLimit(speed, 0.2)*getSpeedModifier();
-			turn=lowerLimit(turn, 0.1)*getSpeedModifier();
-			double r2 = turn * turn * turnReducer;
-			if (turn < 0) {
-				r2 = -r2;
+		
+			double r2;
+			// Lets double turn squaring be switched on and off quickly with the boolean up top.
+			if(doubleSquaredTurn) {
+				r2 = turn * turn * turnReducer;
+				if (turn < 0) {
+					r2 = -r2;
+				}
 			}
+			else {
+				r2 = turn * turnReducer;
+			}
+			speed = (speed * 0.9);
 			cANDifferentialDrive.arcadeDrive(-speed, r2, true);
 		}
 	}
@@ -347,6 +368,8 @@ public class DriveSubsystem extends Subsystem {
     	if (driveSubsystemTalonRight1 != null) {
     		SmartDashboard.putNumber("Current Draw on Right Talon 1: ", driveSubsystemTalonRight1.getOutputCurrent());
     	}
+    	
+    	SmartDashboard.putNumber("NavX Heading :", ahrs.getAngle());
     }
     
 

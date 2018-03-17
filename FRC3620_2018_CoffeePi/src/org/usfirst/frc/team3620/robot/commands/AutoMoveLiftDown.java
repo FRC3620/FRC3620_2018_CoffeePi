@@ -11,9 +11,10 @@ import org.slf4j.Logger;
  */
 public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double encoderPos;
+	
 	double slowDownPoint;
 	double fallingPower = -0.40;
+
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -29,8 +30,14 @@ public class AutoMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	encoderPos = Robot.liftSubsystem.readEncoderInTics();
-    	Robot.liftSubsystem.setElevatorVelocity(fallingPower);
+
+    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if(encoderPos > 5){
+    		Robot.liftSubsystem.setElevatorVelocity(0);
+    	} else {
+    		//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
+    		Robot.liftSubsystem.setElevatorVelocity(0.0206);
+    	}
     	
     	
     	
@@ -38,12 +45,15 @@ public class AutoMoveLiftDown extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
+
     	} else if(Robot.liftSubsystem.readEncoderInInches() < 30) {
+
     		return true;
-    	}
+    	} 
         return false;
     }
 

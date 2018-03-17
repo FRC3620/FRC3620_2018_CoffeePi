@@ -18,7 +18,6 @@ import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
 import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
-import org.usfirst.frc.team3620.robot.paths.TestPoints;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
 import edu.wpi.first.wpilibj.Joystick;
@@ -75,15 +74,16 @@ public class OI {
 	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whenActive(new PivotUpCommand());
-	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whenActive(new PivotDownCommand());
-	 //      Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
-	  //    moveLiftUp.whenPressed(new AutoMoveLiftUp());
+/*	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
+	       pivotDown.whenActive(new PivotDownCommand()); */
+	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
+	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
 	 //      Button moveLiftDown = new JoystickButton(operatorJoystick, 1);
 	   //    moveLiftDown.whenPressed(new AutoMoveLiftDown());
 	       Button shiftIntoHighGear = new JoystickButton(operatorJoystick, 8);
 	       shiftIntoHighGear.whenPressed(new LiftShiftHighGear());
+	       
 	       Button shiftIntoLowGear = new JoystickButton(operatorJoystick, 7);
 	       shiftIntoLowGear.whenPressed(new LiftShiftLowGear()); 
 	       
@@ -122,7 +122,12 @@ public class OI {
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
+
            SmartDashboard.putData("Left Scale Side to Alley Cube", new Path2_LeftScaleSide_AlleyCube());
+
+           SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
+           SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
+
 	}
 	       
 	public double getDriveVerticalJoystick() {

@@ -10,18 +10,18 @@ public class AutonomousDescriptorMaker {
 	static {
 		firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LLRY",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE));
+		firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRRY",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftSwitchEnd.class, WhereToPutCube.SWITCH));
 		firstPathMap.put("LLRN",new AutonomousDescriptor(Path1_LeftStart_LeftSwitchEnd.class, WhereToPutCube.SWITCH));
-		firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE));
+		firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RLLY",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE));
+		firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RRLY",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));		
 		firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RLLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE));
+		firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RRLN",new AutonomousDescriptor(Path1_RightStart_RightSwitchEnd.class, WhereToPutCube.SWITCH));		
 		firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightSwitchEnd.class, WhereToPutCube.SWITCH));
 		
@@ -35,6 +35,8 @@ public class AutonomousDescriptorMaker {
 			} else {
 				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_RightSwitch.class, WhereToPutCube.SWITCH);
 			}
+		}else if(myPosition == 'N') {
+				return null;
 		} else {
 			String address = ""+myPosition+switchPosition+scalePosition+(trustPartner?'Y':'N');
 			autonomousDescriptor = firstPathMap.get(address);

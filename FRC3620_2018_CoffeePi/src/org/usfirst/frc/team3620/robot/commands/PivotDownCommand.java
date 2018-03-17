@@ -23,21 +23,24 @@ public class PivotDownCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+    	logger.info("Pivoting Down Initialized");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
-    	if (pivotEncoder < 95) {
-    		Robot.intakeSubsystem.pivotDown(0.5);
-    	}
-    	else if (pivotEncoder < 120) {
-    		Robot.intakeSubsystem.pivotDown(0.1);
-    	}
-    	else {
-    		Robot.intakeSubsystem.pivotDown(0);
+    	if (isClampClosed) {
+    		if (pivotEncoder < 105) {
+    			Robot.intakeSubsystem.pivotDown(0.5);
+    		}
+    		else if (pivotEncoder < 130) {
+    			Robot.intakeSubsystem.pivotDown(0.1);
+    		}
+    		else {
+    			Robot.intakeSubsystem.pivotDown(0);
+    		}
     	}
     }
 
@@ -45,11 +48,17 @@ public class PivotDownCommand extends Command {
     protected boolean isFinished() {
 
     	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     	if (!Robot.intakeSubsystem.isEncoderValid) {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 90) {
+    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 120) {
+    		logger.info("Ending Pivot because we're too far");
+    		return true;
+    	}
+    	if (!isClampClosed) {
+    		logger.info("Ending Pivot cause we aren't closed");
     		return true;
     	}
         return false;
@@ -67,7 +76,7 @@ public class PivotDownCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
-    	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
+    	logger.info("interrupted at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
     	Robot.intakeSubsystem.pivotDown(0);
     }
 }

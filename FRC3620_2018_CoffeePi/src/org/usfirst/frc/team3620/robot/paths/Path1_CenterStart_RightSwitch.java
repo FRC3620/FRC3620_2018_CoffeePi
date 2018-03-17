@@ -10,9 +10,11 @@ public class Path1_CenterStart_RightSwitch extends AbstractPath {
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
 				new Waypoint(1.58, 13.083, Pathfinder.d2r(0)),
+
 				//new Waypoint(5.75, 14.75, Pathfinder.d2r(80)),  //for center-of-ds start point
 				new Waypoint(4.25, 12.330, Pathfinder.d2r(-45)),
 				new Waypoint(9.22, 11.630, Pathfinder.d2r(0))
+
 				
 				//new Waypoint(5.75, 11.08, Pathfinder.d2r(-50)),
 				//new Waypoint(9.92, 8.58, Pathfinder.d2r(0)),

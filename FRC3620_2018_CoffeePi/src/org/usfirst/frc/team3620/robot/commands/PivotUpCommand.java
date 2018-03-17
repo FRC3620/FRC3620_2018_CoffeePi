@@ -14,8 +14,7 @@ public class PivotUpCommand extends Command {
 	double lowerLiftWindowLimit = 14.0;
 	double upperLiftWindowLimit = 75.0;
 	double liftEncoderPos;
-	double pivotEncoder;
-	boolean haveCube;
+	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public PivotUpCommand() {
@@ -32,31 +31,38 @@ public class PivotUpCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
-    	haveCube = Robot.intakeSubsystem.haveCube;
-    	liftEncoderPos = Robot.liftSubsystem.readEncoderInTics();
-    	if (pivotEncoder > 85) {
-    		Robot.intakeSubsystem.pivotUp(0.5);
-    	}
-    	else {
-    		Robot.intakeSubsystem.pivotUp(0.35);
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
+    	
+    	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if(isClampClosed) {
+    		if (pivotEncoder > 95) {
+    			Robot.intakeSubsystem.pivotUp(0.7);
+    		}
+    		else {
+    			Robot.intakeSubsystem.pivotUp(0.2);
+    		}
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
-    	if (pivotEncoder < 45) {
+    	boolean haveCube = Robot.intakeSubsystem.haveCube;
+    	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
+    
+    	if (pivotEncoder < 40) {
+    		return true;
+    	}
+    	if (!isClampClosed) {
     		return true;
     	}
 
-    	if(liftEncoderPos > upperLiftWindowLimit) {
+    /*	if(liftEncoderPos > lowerLiftWindowLimit && liftEncoderPos < upperLiftWindowLimit) {
     		return true;
-    	} else if(liftEncoderPos < lowerLiftWindowLimit) {
+    	} */
+    /*	if(haveCube == false) {
     		return true;
-    	}
-    	if(haveCube == false) {
-    		return true;
-    	}
+    	} */
         return false;
     }
 

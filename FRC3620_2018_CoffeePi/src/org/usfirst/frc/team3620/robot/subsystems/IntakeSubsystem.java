@@ -2,9 +2,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 
-import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.ManualCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -14,15 +12,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.security.Key;
 
 import org.slf4j.Logger;
 /**
@@ -48,12 +42,14 @@ public class IntakeSubsystem extends Subsystem {
 	public double encoderAt180 = 1330;
 	//public double encoderAt90 = 330;
 	//public double startingPivotAngle;
-	public double maxPivotSpeed = 0.3;
+	public double maxPivotSpeed = 0.3; //WAS 0.3 CHANGED UNTIL ENCODER IS FIXED
 	public double encoderErrorMargin = 50;
 	public double pivotAngleDeg;
 	public double cosMultiplier;
 	public double finalSpeed;
 	public boolean haveCube;
+	public boolean gotCompBot;
+	
 	
 	public IntakeSubsystem() {
 		super();
@@ -65,6 +61,7 @@ public class IntakeSubsystem extends Subsystem {
 			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
 		resetEncoder();
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 	
 	public boolean isEncoderValid;
@@ -75,12 +72,17 @@ public class IntakeSubsystem extends Subsystem {
 	
 	public boolean homeButtonIsPressed() {
 		if (intakePivot != null) {
-    		
+    		//Should be reverse limit but we're hoping this works.
     		return intakePivot.getSensorCollection().isRevLimitSwitchClosed();
     		
     	}
     	return false; 
 	}
+	
+	public boolean gotCompBot() {
+		return gotCompBot;
+	}
+	
 	
 	double readEncoder() {
 		if(intakePivot != null) {
@@ -173,6 +175,9 @@ public class IntakeSubsystem extends Subsystem {
 	   if(intakeClamperSolenoid != null) {
 	   intakeClamperSolenoid.set(Value.kForward);
 	   haveCube = true;
+	   
+	   //LightSubsystem Call
+		//new LightSubsystem().setEvent("cube", true);
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
@@ -183,10 +188,26 @@ public class IntakeSubsystem extends Subsystem {
 	   if(intakeClamperSolenoid != null) {
 		   intakeClamperSolenoid.set(Value.kReverse);
 		   haveCube = false;
+		   
+		   //LightSubsystem Call
+		   //new LightSubsystem().setEvent("lift", false);
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
 	   
+   }
+   
+   public boolean isClampClosed() {
+	   if (intakeClamperSolenoid != null) {
+		   Value intakeStatus = intakeClamperSolenoid.get(); 
+		//   logger.info("Clamper status: " + intakeStatus);
+		    if (intakeStatus == Value.kForward) {
+		    //	logger.info("Clamper is closed");
+		    	return true;
+		    }
+	   }
+		   logger.info("Clamper is not closed");
+		   return false;  
    }
  
    public double readPivotAngleInDegress() {

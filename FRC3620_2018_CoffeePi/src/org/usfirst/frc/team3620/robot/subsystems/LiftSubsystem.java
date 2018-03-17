@@ -41,15 +41,15 @@ public class LiftSubsystem extends Subsystem {
 	public double kDSpeed = 0;
 	public double kFSpeed = 0;
 	public double kIZoneSpeed = 0;
-	public double peakSpeedHigh = 0.60;
-	public double lowestSpeed = 0.00075; // 0.0025 seems reasonable
+	public double peakSpeedHigh = 0.75;
+	public double lowestSpeed = -0.47; // 0.00025;
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
 	public int motionMagicAccel;
 	public final double bracingVoltage = 0.08;
 	public final double peakVoltageHigh = peakSpeedHigh - bracingVoltage;
 	public final double minVoltageHigh = bracingVoltage - lowestSpeed;
-	
+	private boolean highGear;
 	public LiftSubsystem() {
 		super();
 		if (talon != null) {
@@ -86,8 +86,12 @@ public class LiftSubsystem extends Subsystem {
     	return true; //we are faking it
     }
     
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
+    
 	// reads encoder
-	public int readEncoderInTics() {
+	 int readEncoderInTics() {
 		if (talon != null) {
 			int encoderPos = (talon.getSelectedSensorPosition(kSpeedPIDLoopIdx));
 			return encoderPos;
@@ -97,16 +101,21 @@ public class LiftSubsystem extends Subsystem {
 
 	public double readEncoderInInches() {
 		double conversionFactor = 1.0/73.02;
-		double competitionMultiplier = 0.5;
+		double competitionMultiplier = 2.0;
 		double encoderPosInInches;
 		if(gotCompBot == true) {
 			encoderPosInInches = competitionMultiplier*conversionFactor*-readEncoderInTics();
-			return encoderPosInInches;
 		} else {
 			encoderPosInInches = conversionFactor*-readEncoderInTics();
-			return encoderPosInInches;
 		}
-		
+		//LightSubsystem call
+		if (encoderPosInInches >= 8) {
+			//new LightSubsystem().setEvent("lift", true);
+		}
+		else {//new LightSubsystem().setEvent("lift", false);
+			
+		}
+		return encoderPosInInches;
 	}
 	
     public boolean isBottomLimitDepressed(){
@@ -126,6 +135,7 @@ public class LiftSubsystem extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
+    @Override
 	public void initDefaultCommand() {
 		// Set the default000000000 command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
@@ -145,9 +155,15 @@ public class LiftSubsystem extends Subsystem {
 		// runs lift motor for vertSpeed
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
 	}
-	
+	public void moveElevatorUp(double joyPos, boolean highGear) {
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+		}
+		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
+	}
 	public void moveElevatorDown(double joyPos) {
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage - (minVoltageHigh*joyPos));
+		System.out.println(bracingVoltage - (minVoltageHigh*joyPos));
 	}
 	
 	public void autoMoveElevatorUp(double voltage) {
@@ -164,6 +180,17 @@ public class LiftSubsystem extends Subsystem {
 	
 	public void fallSlowly() {
 		setLiftTalon(ControlMode.PercentOutput, 0.08);
+	}
+	
+	public void climb(double joyPos){
+		if(highGear == false){
+			peakSpeedHigh = 1.0;
+			setLiftTalon(ControlMode.PercentOutput, -(bracingVoltage + (joyPos * peakVoltageHigh)));
+			System.out.println(-(bracingVoltage + (joyPos * peakVoltageHigh)));
+		}
+		peakSpeedHigh = 0.6;
+		
+		
 	}
 //All this does is use the math library to add an arccosh function to our repertoire for the hyperbolic calculation
 	public double calculateArcCosH(double input) {
@@ -217,11 +244,17 @@ public class LiftSubsystem extends Subsystem {
 
 	public void setHighGear() {
 		liftGearShifter.set(Value.kReverse);
+		highGear = true;
 	}
 
 	public void setLowGear() {
 		liftGearShifter.set(Value.kForward);
+		highGear = false;
 
+	}
+	
+	public boolean isInHighGear() {
+		return highGear;
 	}
 
 	public void deadenShifter() {
@@ -246,8 +279,8 @@ public class LiftSubsystem extends Subsystem {
 			}
 		}*/
 		SmartDashboard.putBoolean("Lift Bottom limit", isBottomLimitDepressed());
-		SmartDashboard.putBoolean("Lift Top limit", false);
-		SmartDashboard.putNumber("Lift encoder position: ", readEncoderInTics());
+		SmartDashboard.putBoolean("Lift Top limit", isTopLimitDepressed());
+		SmartDashboard.putNumber("Lift encoder In Tics", readEncoderInTics());
 		SmartDashboard.putNumber("Lift Encoder in Inches", readEncoderInInches());
 
 		if (talon != null) {
