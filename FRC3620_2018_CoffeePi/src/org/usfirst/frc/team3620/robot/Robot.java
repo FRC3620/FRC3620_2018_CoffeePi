@@ -201,6 +201,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		beginPeriodic();
 	goForTwoScale = false;
+	goForTwoSwitch = true;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -292,7 +293,10 @@ public class Robot extends TimedRobot {
 					switchUnfoldAndUnclamp.addSequential(new PivotDownCommand());
 					switchUnfoldAndUnclamp.addSequential(new UnClampCommand());
 					commandGroup.addParallel(switchUnfoldAndUnclamp);
-					commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
+					if(gameMessage.substring(0).charAt(0) == 'L') {
+						commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
+					}
+					
 					CommandGroup clampAndFoldUp = new CommandGroup();
 					clampAndFoldUp.addSequential(new ClampCommand());
 					commandGroup.addSequential(clampAndFoldUp);
