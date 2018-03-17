@@ -48,6 +48,8 @@ public class IntakeSubsystem extends Subsystem {
 	public double cosMultiplier;
 	public double finalSpeed;
 	public boolean haveCube;
+	public boolean gotCompBot;
+	
 	
 	public IntakeSubsystem() {
 		super();
@@ -59,6 +61,7 @@ public class IntakeSubsystem extends Subsystem {
 			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
 		resetEncoder();
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 	
 	public boolean isEncoderValid;
@@ -74,6 +77,10 @@ public class IntakeSubsystem extends Subsystem {
     		
     	}
     	return false; 
+	}
+	
+	public boolean gotCompBot() {
+		return gotCompBot;
 	}
 	
 	

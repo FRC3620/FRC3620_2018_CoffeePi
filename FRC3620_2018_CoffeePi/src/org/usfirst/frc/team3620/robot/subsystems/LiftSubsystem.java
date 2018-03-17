@@ -86,6 +86,10 @@ public class LiftSubsystem extends Subsystem {
     	return true; //we are faking it
     }
     
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
+    
 	// reads encoder
 	 int readEncoderInTics() {
 		if (talon != null) {

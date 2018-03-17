@@ -63,11 +63,14 @@ public class DriveSubsystem extends Subsystem {
 	private boolean doubleSquaredTurn = true; // Set to true to re-square the turn input.
 	private double turnReducer = 0.8; // Multiplied by turn value to scale it down	
 	private boolean heightBasedSpeed = true; // Set to true to reduce speed for lift height, false to override.
+	private boolean gotCompBot;
     
 	public DriveSubsystem() {
 		super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		ahrs.enableLogging(false);
+		
+		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
 	
 	@Override
@@ -83,6 +86,10 @@ public class DriveSubsystem extends Subsystem {
 //    	setDefaultCommand(new TeleopDriveCommandWithStepperLimiter());
     }
 
+	public boolean gotCompBot() {
+		return gotCompBot;
+	}
+	
 	private double lowerLimit(double value, double lowerLimit) {//This function removes low input values to insure low voltage don't fidget the motors
 		if(Math.abs(value)<=lowerLimit) {
 			return(0.0);
