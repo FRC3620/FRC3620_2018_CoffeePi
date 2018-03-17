@@ -26,9 +26,10 @@ import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
+import org.usfirst.frc.team3620.robot.paths.Path2_CubeZone_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
-
+import org.usfirst.frc.team3620.robot.paths.Path2_RightSwitch_CubeZone;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -54,7 +55,9 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	public static DataLogger robotDataLogger;
-	boolean goForTwo = false;
+	boolean goForTwoScale = false;
+	boolean goForTwoSwitch = false;
+	
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
@@ -197,7 +200,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
-	goForTwo = false;
+	goForTwoScale = false;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -248,7 +251,7 @@ public class Robot extends TimedRobot {
 					CommandGroup unfoldAndDrop = new CommandGroup();
 
 					if(((gameMessage.substring(0).charAt(0) == gameMessage.substring(1).charAt(0)) 
-							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwo == true){
+							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwoScale == true){
 						
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
@@ -278,17 +281,29 @@ public class Robot extends TimedRobot {
 													//Needs to be run forwards
 						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
-					}
+					} 
 					commandGroup.addSequential(unfoldAndDrop);
-					goForTwo = false;
+					goForTwoScale = false;
 					
 					
 					
+				} else if(whereToPutCube == whereToPutCube.SWITCH && goForTwoSwitch == true) {
+					CommandGroup switchUnfoldAndUnclamp = new CommandGroup();
+					switchUnfoldAndUnclamp.addSequential(new PivotDownCommand());
+					switchUnfoldAndUnclamp.addSequential(new UnClampCommand());
+					commandGroup.addParallel(switchUnfoldAndUnclamp);
+					commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
+					CommandGroup clampAndFoldUp = new CommandGroup();
+					clampAndFoldUp.addSequential(new ClampCommand());
+					commandGroup.addSequential(clampAndFoldUp);
+					commandGroup.addParallel(new PivotUpCommand());
+					commandGroup.addSequential(new Path2_CubeZone_RightSwitch());
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
 				
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
-				goForTwo = false;
+				goForTwoScale = false;
 
 			}
 
