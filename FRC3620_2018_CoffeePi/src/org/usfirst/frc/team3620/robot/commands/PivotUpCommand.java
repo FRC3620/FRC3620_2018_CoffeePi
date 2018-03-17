@@ -35,11 +35,11 @@ public class PivotUpCommand extends Command {
     	
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(isClampClosed) {
-    		if (pivotEncoder > 75) {
-    			Robot.intakeSubsystem.pivotUp(0.5);
+    		if (pivotEncoder > 95) {
+    			Robot.intakeSubsystem.pivotUp(0.7);
     		}
     		else {
-    			Robot.intakeSubsystem.pivotUp(0.35);
+    			Robot.intakeSubsystem.pivotUp(0.2);
     		}
     	}
     }
