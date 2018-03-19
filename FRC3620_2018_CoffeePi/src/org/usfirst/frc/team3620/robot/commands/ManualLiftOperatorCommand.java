@@ -83,7 +83,7 @@ public class ManualLiftOperatorCommand extends Command {
     	
     */	if(Robot.intakeSubsystem.isArmDown) {
     		if(Robot.liftSubsystem.readEncoderInInches() > 10) {
-    			if(joyPos > 0.2) {
+    			if(joyPos < -0.2) {
     				return true;
     			}
     		}
