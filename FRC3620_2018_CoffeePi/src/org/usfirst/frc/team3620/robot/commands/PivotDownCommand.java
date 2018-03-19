@@ -70,6 +70,7 @@ public class PivotDownCommand extends Command {
     	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
     	
     	Robot.intakeSubsystem.pivotDown(0);
+    	Robot.intakeSubsystem.isArmDown = true;
     }
 
     // Called when another command which requires one or more of the same

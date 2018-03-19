@@ -70,6 +70,7 @@ public class PivotUpCommand extends Command {
     protected void end() {
     	EventLogging.commandMessage(logger);
     	Robot.intakeSubsystem.pivotUp(0);
+    	Robot.intakeSubsystem.isArmDown = false;
     }
 
     // Called when another command which requires one or more of the same

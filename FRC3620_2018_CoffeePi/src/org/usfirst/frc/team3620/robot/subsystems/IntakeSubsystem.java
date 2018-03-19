@@ -65,6 +65,7 @@ public class IntakeSubsystem extends Subsystem {
 	}
 	
 	public boolean isEncoderValid;
+	public boolean isArmDown;
 	
 	public boolean getEncoderIsValid(){
 		return isEncoderValid;
@@ -73,8 +74,13 @@ public class IntakeSubsystem extends Subsystem {
 	public boolean homeButtonIsPressed() {
 		if (intakePivot != null) {
     		//Should be reverse limit but we're hoping this works.
-    		return intakePivot.getSensorCollection().isRevLimitSwitchClosed();
-    		
+			if (intakePivot.getSensorCollection().isRevLimitSwitchClosed()) {
+				isArmDown = false;
+				return false;
+			}
+		}
+			else {
+    		return false;
     	}
     	return false; 
 	}
