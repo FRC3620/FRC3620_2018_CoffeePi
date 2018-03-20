@@ -42,6 +42,7 @@ public class ManualLiftOperatorCommand extends Command {
     			Robot.liftSubsystem.moveElevatorUp(-joyPos, highGear);
     		}
     	} else{
+
     		if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
     			Robot.liftSubsystem.moveElevatorUp(-joyPos);
     			//    		System.out.println("Moving Lift Up");
@@ -51,8 +52,8 @@ public class ManualLiftOperatorCommand extends Command {
     				if( Robot.liftSubsystem.readEncoderInInches() < 20){
     					joyPos = joyPos * 0.23;
     				}
-    		//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
-    			//		joyPos = joyPos * 0.2;
+    				//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
+    				//		joyPos = joyPos * 0.2;
     				//}
     				if( joyPos > 0.85) {
     					joyPos = 1.0;
@@ -65,7 +66,7 @@ public class ManualLiftOperatorCommand extends Command {
     		}
     	}
     }
-    
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double joyPos = Robot.m_oi.getLiftJoystick();
@@ -82,8 +83,9 @@ public class ManualLiftOperatorCommand extends Command {
     	}
     	
     */	if(Robot.intakeSubsystem.isArmDown) {
-    		if(Robot.liftSubsystem.readEncoderInInches() > 10) {
-    			if(joyPos < -0.2) {
+    		if(Robot.liftSubsystem.readEncoderInInches() > 20) {
+    			if(joyPos < 0) {//this was -0.2
+    				logger.info("Arm is down, lift is to high, joystick is moving, ending ManualLiftOperator");
     				return true;
     			}
     		}

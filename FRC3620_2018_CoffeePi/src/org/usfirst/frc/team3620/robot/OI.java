@@ -8,15 +8,6 @@
 package org.usfirst.frc.team3620.robot;
 
 
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
-import org.usfirst.frc.team3620.robot.commands.ClampCommand;
-import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
-import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
@@ -74,8 +65,8 @@ public class OI {
 	       unclamp.whenPressed(new UnClampCommand());
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whenActive(new PivotUpCommand());
-/*	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whenActive(new PivotDownCommand()); */
+	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
+	       pivotDown.whileHeld(new CreepIntakeUp()); 
 	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
