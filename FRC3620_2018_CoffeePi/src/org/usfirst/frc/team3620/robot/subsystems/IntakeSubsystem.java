@@ -240,6 +240,7 @@ public class IntakeSubsystem extends Subsystem {
 	   return pivotAngleDeg;
    }
    
+   
    @Override
    public void periodic() {
 	   if (homeButtonIsPressed()) {
