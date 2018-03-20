@@ -36,10 +36,10 @@ public class PivotUpCommand extends Command {
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(isClampClosed) {
     		if (pivotEncoder > 95) {
-    			Robot.intakeSubsystem.pivotUp(0.7);
+    			Robot.intakeSubsystem.pivotUp(0.85);
     		}
     		else {
-    			Robot.intakeSubsystem.pivotUp(0.2);
+    			Robot.intakeSubsystem.pivotUp(0.1);
     		}
     	}
     }
@@ -47,10 +47,10 @@ public class PivotUpCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
-    	boolean haveCube = Robot.intakeSubsystem.haveCube;
+    	boolean haveCube = Robot.intakeSubsystem.haveCube ;
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
-    	if (pivotEncoder < 40) {
+    	if (pivotEncoder < 120) {
     		return true;
     	}
     	if (!isClampClosed) {

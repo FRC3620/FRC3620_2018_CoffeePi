@@ -76,7 +76,7 @@ public class IntakeSubsystem extends Subsystem {
     		//Should be reverse limit but we're hoping this works.
 			if (intakePivot.getSensorCollection().isRevLimitSwitchClosed()) {
 				isArmDown = false;
-				return false;
+				return true;
 			}
 		}
 			else {
@@ -91,11 +91,13 @@ public class IntakeSubsystem extends Subsystem {
 	
 	
 	double readEncoder() {
+		
 		if(intakePivot != null) {
-			//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
 			int encoderPos = intakePivot.getSelectedSensorPosition(kSpeedPositionLoopIdx);
+			
 			return encoderPos;
 		}
+		
 		return 0;
 	}
 	
@@ -108,7 +110,7 @@ public class IntakeSubsystem extends Subsystem {
 		}
 	}
 
-	public void movePivotDown(int position) {
+	/*public void movePivotDown(int position) {
 		
 		if (isEncoderValid) {
 			if (intakePivot != null) {
@@ -118,7 +120,7 @@ public class IntakeSubsystem extends Subsystem {
 			}
 		}
 		
-	}
+	}*/
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -161,7 +163,12 @@ public class IntakeSubsystem extends Subsystem {
    }
    public void pivotUp(double speed){
 	   if(intakePivot != null) {
-		   intakePivot.set(ControlMode.PercentOutput, speed);
+		   if(speed == 0) {
+			   intakePivot.neutralOutput();
+		   }
+		   else {
+			   intakePivot.set(ControlMode.PercentOutput, speed);
+		   }
 	   } else { 
 		   
 		  logger.info("Tried to pivot up - no CANTalons!");
@@ -170,7 +177,12 @@ public class IntakeSubsystem extends Subsystem {
    
    public void pivotDown(double speed){
 	   if(intakePivot != null) {
-		   intakePivot.set(ControlMode.PercentOutput, -speed);
+		   if(speed == 0) {
+			   intakePivot.neutralOutput();
+		   }
+		   else {
+			   intakePivot.set(ControlMode.PercentOutput, -speed);
+		   }
 	   } else {
 		  logger.info("Tried to pivot down - no CANTalons!");
 	   }
@@ -219,6 +231,12 @@ public class IntakeSubsystem extends Subsystem {
    public double readPivotAngleInDegress() {
 	   double encoderPositon = readEncoder();
 	   double pivotAngleDeg = (encoderPositon * (180.0/encoderAt180));
+	   if(pivotAngleDeg >= 120) {
+			isArmDown = true;
+		//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
+		
+		
+		}
 	   return pivotAngleDeg;
    }
    
@@ -237,6 +255,7 @@ public class IntakeSubsystem extends Subsystem {
 		   SmartDashboard.putNumber("Pivot Angle in degrees", readPivotAngleInDegress());
 		   SmartDashboard.putBoolean
 		   ("Pivot home is pressed", homeButtonIsPressed());
+		   SmartDashboard.putBoolean("Pivot encoder valid", isEncoderValid);
 	   }
    }
    
