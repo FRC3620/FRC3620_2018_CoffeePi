@@ -252,6 +252,7 @@ public class RobotMap {
 			resetControllerToKnownState(intakeSubsystemIntakePivot);
 			intakeSubsystemIntakePivot.setNeutralMode(NeutralMode.Brake);
 			intakeSubsystemIntakePivot.overrideLimitSwitchesEnable(false);
+			intakeSubsystemIntakePivot.configNeutralDeadband(0.0001, 0);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
 			//intakeSubsystemIntakePivot.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
 			//intakeSubsystemIntakePivot.configOpenloopRamp(1, 10); //1 second for 0 to max voltage

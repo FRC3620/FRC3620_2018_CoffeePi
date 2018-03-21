@@ -21,11 +21,12 @@ public class PivotToPosition extends Command implements PIDSource, PIDOutput {
 	//Kp 0.01 left us 10 degrees short
 	//Kp = 0.02 is too much
 	//Kp set back to 0.01, working on Ki
-	final double Ki = 0.0001;
-	final double Kd = 0;
+	//ki = 0.0001
+	final double Ki = 0.0005; //works
+	final double Kd = 0.15;
 	
 	PIDController pidController = new PIDController(Kp, Ki, Kd, this, this);
-	double PIVOT_IN_MIDDLE = 45;     //TODO verify this value 
+	double PIVOT_IN_MIDDLE = 25.0;     //TODO verify this value 
 
     public PivotToPosition() {
         // Use requires() here to declare subsystem dependencies

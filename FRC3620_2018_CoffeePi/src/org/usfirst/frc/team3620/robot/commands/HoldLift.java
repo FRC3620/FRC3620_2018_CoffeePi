@@ -29,9 +29,10 @@ public class HoldLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	logger.info("Starting HoldLift Command at {}", currentEncoderPos);
     	currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(currentEncoderPos > 3) {
+    	logger.info("Starting HoldLift Command at {}", currentEncoderPos);
+    	
+    	if(!Robot.liftSubsystem.isBottomLimitDepressed()) {
     		noPowerToHold = false;
     		
     	} else {
