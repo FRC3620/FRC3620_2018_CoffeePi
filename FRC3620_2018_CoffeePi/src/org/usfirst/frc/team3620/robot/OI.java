@@ -92,6 +92,7 @@ public class OI {
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
 	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
 	       SmartDashboard.putData("Pivot Up Command", new PivotUpCommand());
+	       SmartDashboard.putData("Pivot to position command", new PivotToPosition());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
