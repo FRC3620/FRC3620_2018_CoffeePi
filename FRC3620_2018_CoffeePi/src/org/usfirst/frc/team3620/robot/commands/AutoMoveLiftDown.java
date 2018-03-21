@@ -50,7 +50,7 @@ public class AutoMoveLiftDown extends Command {
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
 
-    	} else if(Robot.liftSubsystem.readEncoderInInches() < 30) {
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 16) {
 
     		return true;
     	} 

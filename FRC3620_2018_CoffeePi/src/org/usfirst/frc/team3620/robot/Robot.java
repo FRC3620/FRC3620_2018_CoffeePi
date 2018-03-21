@@ -26,10 +26,8 @@ import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
-import org.usfirst.frc.team3620.robot.paths.Path2_CubeZone_RightSwitch;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
-import org.usfirst.frc.team3620.robot.paths.Path2_RightSwitch_CubeZone;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -294,14 +292,14 @@ public class Robot extends TimedRobot {
 					switchUnfoldAndUnclamp.addSequential(new UnClampCommand());
 					commandGroup.addParallel(switchUnfoldAndUnclamp);
 					if(gameMessage.substring(0).charAt(0) == 'L') {
-						commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
+			//			commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
 					}
 					
 					CommandGroup clampAndFoldUp = new CommandGroup();
 					clampAndFoldUp.addSequential(new ClampCommand());
 					commandGroup.addSequential(clampAndFoldUp);
 					commandGroup.addParallel(new PivotUpCommand());
-					commandGroup.addSequential(new Path2_CubeZone_RightSwitch());
+			//		commandGroup.addSequential(new Path2_CubeZone_RightSwitch());
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
 				
