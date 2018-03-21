@@ -126,6 +126,8 @@ public class RobotMap {
 			driveSubsystemTalonLeft1.configPeakCurrentDuration(0, 0);
 			driveSubsystemTalonLeft1.configContinuousCurrentLimit(30, 100);
 			driveSubsystemTalonLeft1.enableCurrentLimit(true);
+			/* DANGER WILL ROBINSON: Make sure this is handled correctly for auto as well as tele. */
+			driveSubsystemTalonLeft1.configOpenloopRamp(.1, 10);
 			
 			driveSubsystemVictorLeft3 = new WPI_VictorSPX(3);
 			resetControllerToKnownState(driveSubsystemVictorLeft3);
@@ -155,6 +157,9 @@ public class RobotMap {
 			driveSubsystemTalonRight1.configPeakCurrentDuration(0, 0);
 			driveSubsystemTalonRight1.configContinuousCurrentLimit(30, 100);
 			driveSubsystemTalonRight1.enableCurrentLimit(true);
+			
+			/* DANGER WILL ROBINSON: Make sure this is handled correctly for auto as well as tele. */
+			driveSubsystemTalonRight1.configOpenloopRamp(.1, 10);
 			
 			driveSubsystemVictorRight3 = new WPI_VictorSPX(7);
 			resetControllerToKnownState(driveSubsystemVictorRight3);

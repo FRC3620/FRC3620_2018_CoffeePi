@@ -8,15 +8,6 @@
 package org.usfirst.frc.team3620.robot;
 
 
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
-import org.usfirst.frc.team3620.robot.commands.ClampCommand;
-import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
-import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
@@ -75,7 +66,7 @@ public class OI {
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whenActive(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whenActive(new PivotDownCommand());
+	       pivotDown.whileHeld(new CreepIntakeUp()); 
 	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
@@ -101,6 +92,7 @@ public class OI {
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
 	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
 	       SmartDashboard.putData("Pivot Up Command", new PivotUpCommand());
+	       SmartDashboard.putData("Pivot to position command", new PivotToPosition());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
@@ -123,6 +115,7 @@ public class OI {
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
+           SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
 	}
 	       
 	public double getDriveVerticalJoystick() {

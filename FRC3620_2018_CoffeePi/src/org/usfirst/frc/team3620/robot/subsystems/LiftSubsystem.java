@@ -42,7 +42,7 @@ public class LiftSubsystem extends Subsystem {
 	public double kDSpeed = 0;
 	public double kFSpeed = 0;
 	public double kIZoneSpeed = 0;
-	public double peakSpeedHigh = 0.60;
+	public double peakSpeedHigh = 0.75;
 	public double lowestSpeed = -0.47; // 0.00025;
 	public int positionErrorMargin = 50;
 	public int motionMagicCruiseVel;
@@ -86,6 +86,10 @@ public class LiftSubsystem extends Subsystem {
     	}
     	return true; //we are faking it
     }
+    
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
     
 	// reads encoder
 	 int readEncoderInTics() {

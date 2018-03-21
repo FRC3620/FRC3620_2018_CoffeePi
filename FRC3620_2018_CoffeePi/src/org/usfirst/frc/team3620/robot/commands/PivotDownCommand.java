@@ -26,6 +26,7 @@ public class PivotDownCommand extends Command {
     	logger.info("Pivoting Down Initialized");
     }
 
+    
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double pivotEncoder = Robot.intakeSubsystem.readPivotAngleInDegress();
@@ -33,9 +34,9 @@ public class PivotDownCommand extends Command {
 
     	if (isClampClosed) {
     		if (pivotEncoder < 105) {
-    			Robot.intakeSubsystem.pivotDown(0.5);
+    			Robot.intakeSubsystem.pivotDown(0.7);
     		}
-    		else if (pivotEncoder < 130) {
+    		else if (pivotEncoder < 110) {
     			Robot.intakeSubsystem.pivotDown(0.1);
     		}
     		else {
@@ -53,7 +54,7 @@ public class PivotDownCommand extends Command {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	else if (Robot.intakeSubsystem.readPivotAngleInDegress() > 95) {
+    	if (Robot.intakeSubsystem.readPivotAngleInDegress() > 160) {
     		logger.info("Ending Pivot because we're too far");
     		return true;
     	}
@@ -70,6 +71,7 @@ public class PivotDownCommand extends Command {
     	logger.info("end at pivot angle {}", Robot.liftSubsystem.readEncoderInInches());
     	
     	Robot.intakeSubsystem.pivotDown(0);
+    	Robot.intakeSubsystem.isArmDown = true;
     }
 
     // Called when another command which requires one or more of the same

@@ -42,15 +42,19 @@ public class ManualLiftOperatorCommand extends Command {
     			Robot.liftSubsystem.moveElevatorUp(-joyPos, highGear);
     		}
     	} else{
+
     		if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
     			Robot.liftSubsystem.moveElevatorUp(-joyPos);
     			//    		System.out.println("Moving Lift Up");
     		}
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {
-    				if( Robot.liftSubsystem.readEncoderInInches() < 14){
-    					joyPos = joyPos * 0.75;
+    				if( Robot.liftSubsystem.readEncoderInInches() < 20){
+    					joyPos = joyPos * 0.23;
     				}
+    				//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
+    				//		joyPos = joyPos * 0.2;
+    				//}
     				if( joyPos > 0.85) {
     					joyPos = 1.0;
     				}
@@ -62,9 +66,10 @@ public class ManualLiftOperatorCommand extends Command {
     		}
     	}
     }
-    
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	double joyPos = Robot.m_oi.getLiftJoystick();
     	if(Robot.liftSubsystem.isBottomLimitDepressed()) {
     		System.out.println("Bottom Switch just got pushed.");
     		Robot.liftSubsystem.resetEncoder();
@@ -76,9 +81,16 @@ public class ManualLiftOperatorCommand extends Command {
     		
     		return true;
     	}
-    */	else {
-    		return false;
+    	
+    */	if(Robot.intakeSubsystem.isArmDown) {
+    		if(Robot.liftSubsystem.readEncoderInInches() > 20) {
+    			if(joyPos < 0) {//this was -0.2
+    				logger.info("Arm is down, lift is to high, joystick is moving, ending ManualLiftOperator");
+    				return true;
+    			}
+    		}
     	}
+    	return false;
     }
     
     // Called once after isFinished returns true

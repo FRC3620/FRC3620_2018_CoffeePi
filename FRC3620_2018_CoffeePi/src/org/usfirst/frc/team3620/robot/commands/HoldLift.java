@@ -19,6 +19,7 @@ public class HoldLift extends Command {
 	double addedBangBangPower = 0.03;
 	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
 	double upperBangBangPowerLimit = 0.23;
+	boolean noPowerToHold;
     public HoldLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -28,14 +29,25 @@ public class HoldLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	logger.info("Starting HoldLift Command");
+    	logger.info("Starting HoldLift Command at {}", currentEncoderPos);
     	currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	logger.info("Holding Encoder Position: " + currentEncoderPos);
+    	if(currentEncoderPos > 3) {
+    		noPowerToHold = false;
+    		
+    	} else {
+    		noPowerToHold = true;
+    	}
+    	
+    
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	double variedEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	if(noPowerToHold) {
+    		Robot.liftSubsystem.moveAtManualSpeedGiven(0);
+    		return;
+    	}
     	if(Robot.liftSubsystem.isBottomLimitDepressed() == true) {
     		Robot.liftSubsystem.resetEncoder();
     	} else if(variedEncoderPos < currentEncoderPos) {
@@ -56,6 +68,7 @@ public class HoldLift extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+  
         return false;
     }
 
