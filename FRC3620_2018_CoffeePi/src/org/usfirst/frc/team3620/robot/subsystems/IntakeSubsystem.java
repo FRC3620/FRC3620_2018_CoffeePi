@@ -2,6 +2,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 
+import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
 import org.usfirst.frc.team3620.robot.commands.ManualCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
