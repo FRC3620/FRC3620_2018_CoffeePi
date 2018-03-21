@@ -16,11 +16,10 @@ public class TriggerButton extends Button {
 
 	public boolean get() {
 		if (isLeft) {
-			return Math.abs(stick.getRawAxis(2)) > deadZone;
+			return Math.abs(stick.getRawAxis(XBoxConstants.AXIS_LEFT_TRIGGER)) > deadZone;
 		} else {
-			return Math.abs(stick.getRawAxis(3)) > deadZone;
+			return Math.abs(stick.getRawAxis(XBoxConstants.AXIS_RIGHT_TRIGGER)) > deadZone;
 		}
-
 	}
 
 }
