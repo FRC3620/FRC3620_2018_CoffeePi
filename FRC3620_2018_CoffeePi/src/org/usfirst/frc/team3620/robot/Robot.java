@@ -178,6 +178,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		processRobotModeChange(RobotMode.AUTONOMOUS);
 		
+		
 		if (autonomousCommand != null) {
 			autonomousCommand.cancel();
 		}
