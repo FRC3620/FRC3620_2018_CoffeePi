@@ -30,6 +30,7 @@ import org.slf4j.Logger;
  */
 public class IntakeSubsystem extends Subsystem {
 
+	private final LightSubsystem lightSubsystem = Robot.lightSubsystem;
     private final SpeedController intakeRoller1 = RobotMap.intakeSubsystemIntakeRoller1;
     private final SpeedController intakeRoller2 = RobotMap.intakeSubsystemIntakeRoller2;
     private final WPI_TalonSRX intakePivot = RobotMap.intakeSubsystemIntakePivot;
@@ -176,7 +177,8 @@ public class IntakeSubsystem extends Subsystem {
 	   haveCube = true;
 	   
 	   //LightSubsystem Call
-		//new LightSubsystem().setEvent("cube", true);
+		lightSubsystem.setEvent("cube", true);
+		
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
@@ -189,7 +191,8 @@ public class IntakeSubsystem extends Subsystem {
 		   haveCube = false;
 		   
 		   //LightSubsystem Call
-		   //new LightSubsystem().setEvent("lift", false);
+		   lightSubsystem.setEvent("lift", false);
+		   
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }

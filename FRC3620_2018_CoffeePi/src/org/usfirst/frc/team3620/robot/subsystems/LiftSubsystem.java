@@ -106,7 +106,7 @@ public class LiftSubsystem extends Subsystem {
 			encoderPosInInches = conversionFactor*-readEncoderInTics();
 		}
 		//LightSubsystem call
-		if (encoderPosInInches >= 8) {
+		if (encoderPosInInches >= 18) {
 			lightSubsystem.setEvent("lift", true);
 		}
 		else {lightSubsystem.setEvent("lift", false);
