@@ -11,6 +11,8 @@ package org.usfirst.frc.team3620.robot;
 import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
+import org.usfirst.frc3620.misc.DoubleTriggerButton;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -84,6 +86,9 @@ public class OI {
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
+	       
+	       Button pivotToTripPointButton = new DoubleTriggerButton(operatorJoystick, 0.6);
+	       pivotToTripPointButton.whenPressed(new PivotToPosition());
 	      
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
