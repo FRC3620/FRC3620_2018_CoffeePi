@@ -32,11 +32,11 @@ public class HoldLift extends Command {
     	currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	logger.info("Starting HoldLift Command at {}", currentEncoderPos);
     	
-    	if(!Robot.liftSubsystem.isBottomLimitDepressed()) {
-    		noPowerToHold = false;
+    	if(Robot.liftSubsystem.isBottomLimitDepressed() && currentEncoderPos < 1) {
+    		noPowerToHold = true;
     		
     	} else {
-    		noPowerToHold = true;
+    		noPowerToHold = false;
     	}
     	
     
