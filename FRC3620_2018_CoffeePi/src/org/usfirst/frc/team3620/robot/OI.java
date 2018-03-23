@@ -119,8 +119,12 @@ public class OI {
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
+
+           SmartDashboard.putData("Left Scale Side to Alley Cube", new Path2_LeftScaleSide_AlleyCube());
+
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
            SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
+
 	}
 	       
 	public double getDriveVerticalJoystick() {

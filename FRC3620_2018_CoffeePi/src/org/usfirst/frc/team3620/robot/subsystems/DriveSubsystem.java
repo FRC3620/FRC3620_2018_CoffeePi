@@ -60,7 +60,7 @@ public class DriveSubsystem extends Subsystem {
 	double automaticHeading;
 	
 	// Allows double squaring to be turned on and off, while avoiding another qual9 mistake
-	private boolean doubleSquaredTurn = true; // Set to true to re-square the turn input.
+	private boolean doubleSquaredTurn = false; // Set to true to re-square the turn input.
 	private double turnReducer = 0.8; // Multiplied by turn value to scale it down	
 	private boolean heightBasedSpeed = true; // Set to true to reduce speed for lift height, false to override.
 	private boolean gotCompBot;

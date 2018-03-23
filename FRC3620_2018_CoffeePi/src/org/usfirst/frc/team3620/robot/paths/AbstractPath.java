@@ -363,3 +363,4 @@ public abstract class AbstractPath extends Command {
 			EventLogging.commandMessage(logger);
 		}
 	}
+

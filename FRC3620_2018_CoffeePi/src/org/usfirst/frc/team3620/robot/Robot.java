@@ -24,9 +24,10 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
-import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
-import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_RightScaleSide;
+import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
+import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
+import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -52,6 +53,9 @@ public class Robot extends TimedRobot {
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 	static Logger logger;
 	public static DataLogger robotDataLogger;
+	boolean goForTwoScale = false;
+	boolean goForTwoSwitch = false;
+	
 	
 	// subsystems
 	public static ExampleSubsystem kExampleSubsystem;
@@ -195,6 +199,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
+	goForTwoScale = false;
+	goForTwoSwitch = true;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -211,6 +217,7 @@ public class Robot extends TimedRobot {
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 
+
 				if (autonomousDescriptor != null) {
 					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
 
@@ -219,9 +226,10 @@ public class Robot extends TimedRobot {
 
 					commandGroup.addSequential(new LiftShiftHighGear());
 					commandGroup.addSequential(new ClampCommand());
+					CommandGroup unfoldandlift = new CommandGroup();
 					if(startingPos != 'C') {
-						CommandGroup unfoldandlift = new CommandGroup();
-						unfoldandlift.addSequential(new PivotDownCommand());
+						
+						unfoldandlift.addSequential(new PivotUpCommand());
 						if(whereToPutCube == whereToPutCube.SCALE) {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 						} else {
@@ -230,21 +238,76 @@ public class Robot extends TimedRobot {
 
 						unfoldandlift.addSequential(new HoldLift());
 						commandGroup.addParallel(unfoldandlift);
+
 					}
 
 					commandGroup.addSequential(autonomousDescriptor.getPath());
-
-					if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-						commandGroup.addSequential(new AutonomousPukeCubeCommand());
-
-						if(whereToPutCube == whereToPutCube.SCALE) {
-							commandGroup.addSequential(new Path_BackUpFromScale());
-							commandGroup.addSequential(new AutoMoveLiftDown());
-						}
-					}
-					commandGroup.addSequential(new AllDoneCommand());
-					autonomousCommand = commandGroup;
+				
+				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				}
+				//Add Boolean for shooting for two
+				if(whereToPutCube == whereToPutCube.SCALE) {
+					CommandGroup unfoldAndDrop = new CommandGroup();
+
+					if(((gameMessage.substring(0).charAt(0) == gameMessage.substring(1).charAt(0)) 
+							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwoScale == true){
+						
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addParallel(new Path2_RightScaleSide_AlleyCube());
+						}
+						
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+						unfoldAndDrop.addSequential(new PivotDownCommand());
+						unfoldAndDrop.addSequential(new UnClampCommand());
+						
+						unfoldAndDrop.addSequential(new ClampCommand());
+						unfoldAndDrop.addParallel(unfoldandlift);
+						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
+						
+						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+						
+						
+						
+						//DOES UNFOLDANDLIFT EXIST OUTSIDE OF THE IF STATEMENT?
+						
+						
+					} else{								
+						
+													//Needs to be run forwards
+						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+					} 
+					commandGroup.addSequential(unfoldAndDrop);
+					goForTwoScale = false;
+					
+					
+					
+				} else if(whereToPutCube == whereToPutCube.SWITCH && goForTwoSwitch == true) {
+					CommandGroup switchUnfoldAndUnclamp = new CommandGroup();
+					switchUnfoldAndUnclamp.addSequential(new PivotDownCommand());
+					switchUnfoldAndUnclamp.addSequential(new UnClampCommand());
+					commandGroup.addParallel(switchUnfoldAndUnclamp);
+					if(gameMessage.substring(0).charAt(0) == 'L') {
+			//			commandGroup.addSequential(new Path2_RightSwitch_CubeZone());
+					}
+					
+					CommandGroup clampAndFoldUp = new CommandGroup();
+					clampAndFoldUp.addSequential(new ClampCommand());
+					commandGroup.addSequential(clampAndFoldUp);
+					commandGroup.addParallel(new PivotUpCommand());
+			//		commandGroup.addSequential(new Path2_CubeZone_RightSwitch());
+					commandGroup.addSequential(new AutonomousPukeCubeCommand());
+				}
+				
+				commandGroup.addSequential(new AllDoneCommand());
+				autonomousCommand = commandGroup;
+				goForTwoScale = false;
+
 			}
 
 			// do we have a calculated autonomous, but we have not started it yet?
@@ -277,6 +340,24 @@ public class Robot extends TimedRobot {
 			Scheduler.getInstance().run();
 			endPeriodic();
 		}
+
+		 
+		// has a long time gone without any game data?
+		if(autonomousCommand == null && elapsedTime > 10) {
+			// yes. just advance to line
+			autonomousCommand = new AutonomousBailCommand();
+			logger.info("Starting {}", autonomousCommand);
+			autonomousCommand.start();
+			autonomousCommandIsStarted = true;
+		}
+	}
+		
+	/*	CommandGroup autoCommandTester = new CommandGroup();
+		autonomousCommand = autoCommandTester; */
+		// now do autonomous stuff
+		Scheduler.getInstance().run();
+		endPeriodic();
+		
 	}
 
 	@Override

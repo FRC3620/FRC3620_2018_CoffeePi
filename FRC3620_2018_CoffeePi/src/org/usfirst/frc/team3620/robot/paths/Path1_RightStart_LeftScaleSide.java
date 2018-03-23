@@ -12,52 +12,45 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-			/*	new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
-				new Waypoint(12.0, 4.0, Pathfinder.d2r(0)),
-				new Waypoint(17.00, 8.5, Pathfinder.d2r(90)),
-				new Waypoint(17.00, 17.5, Pathfinder.d2r(90)),
-				new Waypoint(22.00, 22.15, Pathfinder.d2r(0)),  */
+
+				//Kinda works
+			/*	new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+				new Waypoint(7.05, 3.69, Pathfinder.d2r(4)),
+				new Waypoint(16.5, 5.55, Pathfinder.d2r(0)), */
 				
-		/*		new Waypoint(1.58, 21.5, Pathfinder.d2r(0)),
-				new Waypoint(12.0, 23.0, Pathfinder.d2r(0)),
-				new Waypoint(17.25, 18.5, Pathfinder.d2r(-90)),
-				new Waypoint(17.25, 9.5, Pathfinder.d2r(-90)),
-				new Waypoint(20.25, 5.85, Pathfinder.d2r(0)),  */
-				// 27 - y for reflection from the left side
-				/*
-				//Auton penalties				
-				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
-				// Straightaway
-				new Waypoint(9.50, 4.0, Pathfinder.d2r(0)),
-				//First Alley Point
-				new Waypoint(13.50, 8.5, Pathfinder.d2r(90)),
-				//Second Alley Point Straightaway
-				new Waypoint(13.50, 17.5, Pathfinder.d2r(90)),
-				//Turn for the endpoint
-				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
-				*/
-				new Waypoint(1.58, 5.5, Pathfinder.d2r(0)),
-				// Straightaway
-				new Waypoint(10.5, 4.0, Pathfinder.d2r(0)),
-				//First Alley Point
-				new Waypoint(15.00, 8.5, Pathfinder.d2r(90)),
-				//Second Alley Point Straightaway
-				new Waypoint(15.00, 18.0, Pathfinder.d2r(90)),
-				//Turn for the endpoint
-				new Waypoint(20.25, 19.5, Pathfinder.d2r(-6)),
+			/*	new Waypoint(1.58, 4.09, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+				new Waypoint(7.05, 3.69, Pathfinder.d2r(4)),
+				new Waypoint(16.5, 5.55, Pathfinder.d2r(0)), */
+				
+				
+				new Waypoint(1.58, 4.09, Pathfinder.d2r(0)),
+				new Waypoint(12.60, 3.49, Pathfinder.d2r(0)),
+				new Waypoint(18.95, 8.8, Pathfinder.d2r(90)),
+				new Waypoint(18.05, 14.5, Pathfinder.d2r(90)),
+				new Waypoint(21.10, 18.05, Pathfinder.d2r(0)),
+	
 		};
 	}
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.68;
+		return 1.0;
 	}
-//	@Override
-//	double getPathfinderP() {
-//		return 0.001;
-//	}
-//	
+	@Override
+	double getPathfinderP() {
+		return 0.003;
+	}
+	
 	@Override
 	double getPathfinderOutputMultiplier() {
+
 		return 0.55;
+
+	}
+	
+	@Override
+	boolean getPathfinderReverseMode() {
+		return true;
 	}
 }

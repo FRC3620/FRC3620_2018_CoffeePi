@@ -17,22 +17,31 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 			new Waypoint(15.0, 2.0, Pathfinder.d2r(0)),
 			new Waypoint(23.5, 4.5, Pathfinder.d2r(40)),
 			*/
+
+		/*	new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
+			new Waypoint(24.4, 4.99, Pathfinder.d2r(18)) */
+			//Hecka fast
 			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
-			new Waypoint(20.2, 5.05, Pathfinder.d2r(20))
-			
+			//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+			new Waypoint(12.40, 4.00, Pathfinder.d2r(4)),
+			new Waypoint(21.60, 4.81, Pathfinder.d2r(0)),
 		};
 	}
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.68;		//Slightly slower to keep sharp-turn motor output below 1.0
+		return 1.0;		//Slightly slower to keep sharp-turn motor output below 1.0
 	}
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
 
-		return 0.62;
-
+		return 0.6;
+	}
+	
+	@Override
+	double getPathfinderP() {
+		return 0.09;
 	}
 	
 	@Override
@@ -43,6 +52,6 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 	
 	@Override
 	boolean getPathfinderReverseMode() {
-		return false;
+		return true;
 	}
 }

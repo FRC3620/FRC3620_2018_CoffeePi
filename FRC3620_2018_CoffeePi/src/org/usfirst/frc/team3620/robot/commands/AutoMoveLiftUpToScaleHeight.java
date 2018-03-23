@@ -6,10 +6,13 @@ public class AutoMoveLiftUpToScaleHeight extends AutoMoveLiftUp {
 	public double getRequestedEndPos() {
 		// TODO Auto-generated method stub
 		return 40;
+
+		
 	}
 	@Override
 	public double getMaxPower() {
 		return 1.0;
+
 	}
 
 	@Override
