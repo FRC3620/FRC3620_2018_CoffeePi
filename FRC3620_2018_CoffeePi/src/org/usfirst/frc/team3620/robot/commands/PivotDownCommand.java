@@ -33,10 +33,10 @@ public class PivotDownCommand extends Command {
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
     	if (isClampClosed) {
-    		if (pivotEncoder < 65) {
+    		if (pivotEncoder < 73) {
     			Robot.intakeSubsystem.pivotDown(0.40);
     		}
-    		else if (pivotEncoder < 117) {
+    		else if (pivotEncoder < 122) {
     			Robot.intakeSubsystem.pivotDown(0.20);
     		}
     		else {
