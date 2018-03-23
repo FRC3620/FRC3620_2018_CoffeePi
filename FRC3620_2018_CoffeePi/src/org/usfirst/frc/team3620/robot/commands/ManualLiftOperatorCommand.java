@@ -49,8 +49,11 @@ public class ManualLiftOperatorCommand extends Command {
     		}
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {
-    				if( Robot.liftSubsystem.readEncoderInInches() < 20){
-    					joyPos = joyPos * 0.23;
+    				if(Robot.liftSubsystem.readEncoderInInches() < 20) {
+    					joyPos = joyPos*0.23;
+    				}
+    				else if(Robot.liftSubsystem.readEncoderInInches() < 30){
+    					joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/10)*0.77));
     				}
     				//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
     				//		joyPos = joyPos * 0.2;
