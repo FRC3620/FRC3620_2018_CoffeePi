@@ -290,6 +290,7 @@ public class LiftSubsystem extends Subsystem {
 			SmartDashboard.putNumber("Lift Talon 1 Percent Output: ", talon.getMotorOutputVoltage());
 		}
 		SmartDashboard.putNumber("Lift Joystick Value", Robot.m_oi.getLiftJoystick());
+		SmartDashboard.putBoolean("gotCompBot", gotCompBot());
 	
 	//	SmartDashboard.putNumber("Lift Percent Output",)
 	}

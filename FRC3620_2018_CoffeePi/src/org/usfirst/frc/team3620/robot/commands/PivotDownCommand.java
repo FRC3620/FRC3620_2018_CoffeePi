@@ -33,8 +33,8 @@ public class PivotDownCommand extends Command {
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
     	if (isClampClosed) {
-    		if (pivotEncoder < 105) {
-    			Robot.intakeSubsystem.pivotDown(0.7);
+    		if (pivotEncoder < 65) {
+    			Robot.intakeSubsystem.pivotDown(0.50);
     		}
     		else if (pivotEncoder < 110) {
     			Robot.intakeSubsystem.pivotDown(0.1);
@@ -54,7 +54,7 @@ public class PivotDownCommand extends Command {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	if (Robot.intakeSubsystem.readPivotAngleInDegress() > 160) {
+    	if (Robot.intakeSubsystem.readPivotAngleInDegress() > 130) {
     		logger.info("Ending Pivot because we're too far");
     		return true;
     	}

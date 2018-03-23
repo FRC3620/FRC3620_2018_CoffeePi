@@ -50,7 +50,7 @@ public class PivotUpCommand extends Command {
     	boolean haveCube = Robot.intakeSubsystem.haveCube ;
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
-    	if (pivotEncoder < 110) {
+    	if (pivotEncoder < 95) {
     		return true;
     	}
     	if (!isClampClosed) {

@@ -61,7 +61,7 @@ public class IntakeSubsystem extends Subsystem {
 			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
 		resetEncoder();
-		gotCompBot = RobotMap.practiceBotJumper.get();
+		gotCompBot = !RobotMap.practiceBotJumper.get();
 	}
 	
 	public boolean isEncoderValid;
