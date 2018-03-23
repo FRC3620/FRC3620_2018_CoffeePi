@@ -37,10 +37,10 @@ public class ManualCubeCommand extends Command {
     	joyPos = Robot.m_oi.getCubeJoystick();
     	
     	if(joyPos < -0.2 ) {
-    		Robot.intakeSubsystem.pushCubeOut(0.6* joyPos*competitionMultiplier);
+    		Robot.intakeSubsystem.pushCubeOut(0.8* joyPos*competitionMultiplier);
     	}
     	else if(joyPos > 0.2) {
-    		Robot.intakeSubsystem.bringCubeIn(0.6 * -joyPos*competitionMultiplier);
+    		Robot.intakeSubsystem.bringCubeIn(0.8 * -joyPos*competitionMultiplier);
     	} else if(joyPos < 0.2 && joyPos > -0.2) {
     		Robot.intakeSubsystem.pushCubeOut(0);
     	}

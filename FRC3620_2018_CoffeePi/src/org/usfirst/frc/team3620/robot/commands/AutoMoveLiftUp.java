@@ -30,19 +30,18 @@ public abstract class AutoMoveLiftUp extends Command {
 	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
 	//1 revolution = 3 inches
 	double oneFoot;
-	double slowDownPoint = requestedEncoderPos - oneFoot;
-	double speedUpPoint = startingEncoderPos + oneFoot;
+	double slowDownPoint;
+	double speedUpPoint;
 	double desiredStartingPower;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.3;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.15;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
-    	maxPower = getMaxPower();
-    	requestedEncoderPos = getRequestedEndPos();
+    	
     }
     
     
@@ -63,9 +62,14 @@ public abstract class AutoMoveLiftUp extends Command {
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+    	startingEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	weAreDoneSenor = false;
     	desiredStartingPower = getStartingPower();
     	oneFoot = getAccelDecelDistance();
+    	maxPower = getMaxPower();
+    	requestedEncoderPos = getRequestedEndPos();
+    	slowDownPoint = requestedEncoderPos - oneFoot;
+    	speedUpPoint = startingEncoderPos + oneFoot;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -89,7 +93,7 @@ public abstract class AutoMoveLiftUp extends Command {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
 
-    		//System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+    		System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
 
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);

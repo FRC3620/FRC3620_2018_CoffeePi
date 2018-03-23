@@ -5,24 +5,24 @@ public class AutoMoveLiftUpToScaleHeight extends AutoMoveLiftUp {
 	@Override
 	public double getRequestedEndPos() {
 		// TODO Auto-generated method stub
-		return 40;
+		return 50;
 
 		
 	}
 	@Override
 	public double getMaxPower() {
-		return 1.0;
+		return 0.6;
 
 	}
 
 	@Override
 	public double getStartingPower() {
-		return 0.7;
+		return 0.3;
 	}
 	
 	@Override
 	public double getAccelDecelDistance() {
-		return 1.0;
+		return 4.0;
 	}
 }
 
