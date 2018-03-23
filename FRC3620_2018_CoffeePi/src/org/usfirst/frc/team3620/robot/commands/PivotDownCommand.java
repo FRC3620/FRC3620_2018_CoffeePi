@@ -34,10 +34,10 @@ public class PivotDownCommand extends Command {
 
     	if (isClampClosed) {
     		if (pivotEncoder < 65) {
-    			Robot.intakeSubsystem.pivotDown(0.50);
+    			Robot.intakeSubsystem.pivotDown(0.30);
     		}
     		else if (pivotEncoder < 110) {
-    			Robot.intakeSubsystem.pivotDown(0.1);
+    			Robot.intakeSubsystem.pivotDown(0.15);
     		}
     		else {
     			Robot.intakeSubsystem.pivotDown(0);
