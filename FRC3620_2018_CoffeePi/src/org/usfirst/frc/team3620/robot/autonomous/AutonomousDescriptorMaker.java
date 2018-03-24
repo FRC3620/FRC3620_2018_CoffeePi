@@ -9,16 +9,16 @@ public class AutonomousDescriptorMaker {
 	static SortedMap<String,AutonomousDescriptor> firstPathMap = new TreeMap<>();
 	static {
 		firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("LLRY",new AutonomousDescriptor(Path1_LeftStart_DriveAcrossLine.class, WhereToPutCube.NOWHERE));
+		firstPathMap.put("LLRY",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("LRRY",new AutonomousDescriptor(Path1_LeftStart_DriveAcrossLine.class, WhereToPutCube.NOWHERE));
+		firstPathMap.put("LRRY",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftSwitchEnd.class, WhereToPutCube.SWITCH));
 		firstPathMap.put("LLRN",new AutonomousDescriptor(Path1_LeftStart_LeftSwitchEnd.class, WhereToPutCube.SWITCH));
 		firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("RLLY",new AutonomousDescriptor(Path1_RightStart_DriveAcrossLine.class, WhereToPutCube.NOWHERE));
+		firstPathMap.put("RLLY",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
-		firstPathMap.put("RRLY",new AutonomousDescriptor(Path1_RightStart_DriveAcrossLine.class, WhereToPutCube.NOWHERE));		
+		firstPathMap.put("RRLY",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));		
 		firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RLLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE));
