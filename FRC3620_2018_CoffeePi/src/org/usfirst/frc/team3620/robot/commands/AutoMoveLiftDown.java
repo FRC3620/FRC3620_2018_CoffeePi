@@ -30,14 +30,19 @@ public class AutoMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
+    	double joyPos = 0.6;
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(encoderPos > 5){
-    		Robot.liftSubsystem.setElevatorVelocity(0);
-    	} else {
-    		//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
-    		Robot.liftSubsystem.setElevatorVelocity(0.0206);
-    	}
+    	if(Robot.liftSubsystem.readEncoderInInches() < 20) {
+			joyPos = joyPos*0.18;
+		}
+		else if(Robot.liftSubsystem.readEncoderInInches() < 30){
+			joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/10)*0.82));
+		}
+		//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
+		//		joyPos = joyPos * 0.2;
+		//}
+	
+		Robot.liftSubsystem.moveElevatorDown(joyPos);
     	
     	
     	
@@ -50,7 +55,7 @@ public class AutoMoveLiftDown extends Command {
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
 
-    	} else if(Robot.liftSubsystem.readEncoderInInches() < 16) {
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 19) {
 
     		return true;
     	} 
