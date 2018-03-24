@@ -29,18 +29,19 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 1.0;		//Slightly slower to keep sharp-turn motor output below 1.0
+		return 0.68;		//Slightly slower to keep sharp-turn motor output below 1.0
 	}
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
 
-		return 0.6;
+		return 0.62;
+
 	}
 	
 	@Override
 	double getPathfinderP() {
-		return 0.09;
+		return 0.001;
 	}
 	
 	@Override
