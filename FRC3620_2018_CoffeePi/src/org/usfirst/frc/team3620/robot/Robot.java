@@ -23,7 +23,9 @@ import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptor;
 import org.usfirst.frc.team3620.robot.autonomous.AutonomousDescriptorMaker;
 import org.usfirst.frc.team3620.robot.autonomous.WhereToPutCube;
 import org.usfirst.frc.team3620.robot.commands.*;
+import org.usfirst.frc.team3620.robot.paths.AbstractPath;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
+import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
@@ -200,7 +202,7 @@ public class Robot extends TimedRobot {
 	public void autonomousPeriodic() {
 		beginPeriodic();
 	goForTwoScale = false;
-	goForTwoSwitch = true;
+	goForTwoSwitch = false;
 		
 		double elapsedTime = autonomousTimer.get();
 		
@@ -240,8 +242,8 @@ public class Robot extends TimedRobot {
 						commandGroup.addParallel(unfoldandlift);
 
 					}
-
-					commandGroup.addSequential(autonomousDescriptor.getPath());
+					AbstractPath path = autonomousDescriptor.getPath();
+					commandGroup.addSequential(path);
 				
 				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
