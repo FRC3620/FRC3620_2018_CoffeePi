@@ -23,8 +23,8 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 			//Hecka fast
 			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
 			//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
-			new Waypoint(11.90, 4.00, Pathfinder.d2r(4)),
-			new Waypoint(20.80, 6.411, Pathfinder.d2r(0.5)),
+			new Waypoint(10.10, 4.00, Pathfinder.d2r(4)),
+			new Waypoint(20.20, 6.811, Pathfinder.d2r(10)),
 		};
 	}
 	
