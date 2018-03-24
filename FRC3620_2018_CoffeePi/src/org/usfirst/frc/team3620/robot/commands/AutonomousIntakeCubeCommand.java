@@ -5,43 +5,62 @@ import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ClampCommand extends Command {
-	
-	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+public class AutonomousIntakeCubeCommand extends Command {
 
-    public ClampCommand() {
+	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+	double competitionMultiplier;
+	Timer timer = new Timer();
+	
+    public AutonomousIntakeCubeCommand() {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
-    	Robot.intakeSubsystem.clampCube();
+    	timer.reset();
+    	timer.start();
+    	if(Robot.intakeSubsystem.gotCompBot()) {
+    		competitionMultiplier  = -1.0;
+    	}else {
+    		competitionMultiplier = 1.0;
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+    	Robot.intakeSubsystem.bringCubeIn(-0.8*competitionMultiplier);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+    	double howlong = timer.get();
+    	if (howlong > 1) {
+    		return true;
+    	}
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	EventLogging.commandMessage(logger);
+    	Robot.intakeSubsystem.pushCubeOut(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	EventLogging.commandMessage(logger);
+    	Robot.intakeSubsystem.pushCubeOut(0);
     }
 }

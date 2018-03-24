@@ -201,7 +201,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		beginPeriodic();
-	goForTwoScale = false;
+	goForTwoScale = true;
 	goForTwoSwitch = false;
 		
 		double elapsedTime = autonomousTimer.get();
@@ -229,16 +229,21 @@ public class Robot extends TimedRobot {
 					commandGroup.addSequential(new LiftShiftHighGear());
 					commandGroup.addSequential(new ClampCommand());
 					CommandGroup unfoldandlift = new CommandGroup();
+					CommandGroup unfoldandlift2 = new CommandGroup();
 					if(startingPos != 'C') {
 						
 						unfoldandlift.addSequential(new PivotUpCommand());
+						unfoldandlift2.addSequential(new PivotUpCommand());
 						if(whereToPutCube == whereToPutCube.SCALE) {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
 						} else {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
+							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
 						}
 
 						unfoldandlift.addSequential(new HoldLift());
+						unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
 						commandGroup.addParallel(unfoldandlift);
 
 					}
@@ -252,30 +257,34 @@ public class Robot extends TimedRobot {
 				if(whereToPutCube == whereToPutCube.SCALE) {
 					CommandGroup unfoldAndDrop = new CommandGroup();
 
-					if(((gameMessage.substring(0).charAt(0) == gameMessage.substring(1).charAt(0)) 
-							&& (gameMessage.substring(1).charAt(0) == startingPos)) && goForTwoScale == true){
-						
-						if(gameMessage.substring(1).charAt(0) == 'L') {
-							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
-						} else if(gameMessage.substring(1).charAt(0) == 'R') {
-							unfoldAndDrop.addParallel(new Path2_RightScaleSide_AlleyCube());
-						}
+					if(goForTwoScale == true){
+						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+					
 						
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
 						unfoldAndDrop.addSequential(new PivotDownCommand());
 						unfoldAndDrop.addSequential(new UnClampCommand());
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
+						} 
 						
 						unfoldAndDrop.addSequential(new ClampCommand());
-						unfoldAndDrop.addParallel(unfoldandlift);
+						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand());
+						unfoldAndDrop.addSequential(new PivotUpCommand());
+						unfoldAndDrop.addParallel(new AutoMoveLiftUpToScaleHeight());
 						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-						
-						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(new HoldLift());
+					/*	unfoldAndDrop.addSequential(new UnClampCommand());
 						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
+					*/	
 						
 						
 						
 						//DOES UNFOLDANDLIFT EXIST OUTSIDE OF THE IF STATEMENT?
+						
 						
 						
 					} else{								
@@ -284,7 +293,12 @@ public class Robot extends TimedRobot {
 						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
 					} 
+					
+					
 					commandGroup.addSequential(unfoldAndDrop);
+					commandGroup.addSequential(new UnClampCommand());
+					commandGroup.addSequential(new Path_BackUpFromScale());
+					commandGroup.addSequential(new AutoMoveLiftDown());
 					goForTwoScale = false;
 					
 					

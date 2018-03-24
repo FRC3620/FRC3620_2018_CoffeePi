@@ -32,11 +32,11 @@ public class AutoMoveLiftDown extends Command {
     protected void execute() {
     	double joyPos = 0.6;
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(Robot.liftSubsystem.readEncoderInInches() < 20) {
-			joyPos = joyPos*0.18;
-		}
-		else if(Robot.liftSubsystem.readEncoderInInches() < 30){
-			joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/10)*0.82));
+    	
+		 if(Robot.liftSubsystem.readEncoderInInches() < 30){
+			joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/29)*0.82));
+		} else {
+			joyPos = 0.3;
 		}
 		//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
 		//		joyPos = joyPos * 0.2;
@@ -55,7 +55,7 @@ public class AutoMoveLiftDown extends Command {
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
 
-    	} else if(Robot.liftSubsystem.readEncoderInInches() < 19) {
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 1) {
 
     		return true;
     	} 
