@@ -88,7 +88,8 @@ public class OI {
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
 	       
 	       Button pivotToTripPointButton = new DoubleTriggerButton(operatorJoystick, 0.6);
-	       pivotToTripPointButton.whenPressed(new PivotToPosition());
+	       //pivotToTripPointButton.whenPressed(new PivotToPosition());
+	       pivotToTripPointButton.whenPressed(new ActuateRampCommand());
 	      
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);

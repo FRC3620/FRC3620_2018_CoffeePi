@@ -36,6 +36,7 @@ import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.LightSubsystem;
+import org.usfirst.frc.team3620.robot.subsystems.RampSubsystem;
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
 	public static LightSubsystem lightSubsystem;
 	public static IntakeSubsystem intakeSubsystem;
 	public static LiftSubsystem liftSubsystem;
+	public static RampSubsystem rampSubsystem;
 	public static Preferences preferences;
 	
 	// non subsystem globals
@@ -120,6 +122,7 @@ public class Robot extends TimedRobot {
 		intakeSubsystem = new IntakeSubsystem();
 		liftSubsystem = new LiftSubsystem();
 		SmartDashboard.putData("LiftSubsystem",liftSubsystem);
+		rampSubsystem = new RampSubsystem();
 		operatorView = new OperatorView();
 		operatorView.operatorViewInit();
 

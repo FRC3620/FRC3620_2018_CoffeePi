@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -73,6 +74,8 @@ public class RobotMap {
 	public static DoubleSolenoid intakeSubsystemIntakeClamperSolenoid;
 	public static AHRS driveSubsystemAHRS;	//Needs testing. -Kai
 	public static DoubleSolenoid liftSubsystemGearShifter;
+	
+	public static Servo rampServo;
 
 	public static DoubleSolenoid climbingJawEngager;
 	
@@ -259,9 +262,6 @@ public class RobotMap {
 		} else {
 			logger.info("Talon SRX 13 is missing, disabling CAN intake");
 		}
-		
-	
-		
 
 		lightSubsystemLightPWM9 = new Spark(9);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM9", (Spark) lightSubsystemLightPWM9);
@@ -285,8 +285,13 @@ public class RobotMap {
 		} else {
 			logger.info("No Solenoid detected");
 		}
+		
 		practiceBotJumper = new DigitalInput(1);
 		SmartDashboard.putData(practiceBotJumper);
+		
+		rampServo = new Servo(1);
+		rampServo.setDisabled();
+		rampServo.setName("RampSubsystem",  "Servo");
 	}
 	
 	static void resetControllerToKnownState (BaseMotorController x) {
