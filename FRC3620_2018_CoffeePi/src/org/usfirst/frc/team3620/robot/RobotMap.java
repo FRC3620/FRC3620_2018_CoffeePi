@@ -247,17 +247,24 @@ public class RobotMap {
 			resetControllerToKnownState(intakeSubsystemIntakeRoller2);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakeRoller2", (WPI_TalonSRX) intakeSubsystemIntakeRoller2);
 			intakeSubsystemIntakeRoller2.configOpenloopRamp(0, 10);
-
+		} else {
+			logger.info("Talon SRX 13 is missing, disabling CAN intake");
+		}
+		
+		if (competitionRobot|| Robot.canDeviceFinder.isSRXPresent(15)) {
 			intakeSubsystemIntakePivot = new WPI_TalonSRX(15);
 			resetControllerToKnownState(intakeSubsystemIntakePivot);
 			intakeSubsystemIntakePivot.setNeutralMode(NeutralMode.Brake);
 			intakeSubsystemIntakePivot.overrideLimitSwitchesEnable(false);
 			intakeSubsystemIntakePivot.configNeutralDeadband(0.0001, 0);
+			intakeSubsystemIntakePivot.configVoltageCompSaturation(12, 0);
+			intakeSubsystemIntakePivot.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
+			intakeSubsystemIntakePivot.enableVoltageCompensation(true);
 			LiveWindow.addActuator("IntakeSubsystem", "IntakePivot", (WPI_TalonSRX) intakeSubsystemIntakePivot);
 			//intakeSubsystemIntakePivot.configVoltageMeasurementFilter(FILTER_WINDOW_SAMPLES, 0);
 			//intakeSubsystemIntakePivot.configOpenloopRamp(1, 10); //1 second for 0 to max voltage
 		} else {
-			logger.info("Talon SRX 13 is missing, disabling CAN intake");
+			logger.info("Talon SRX 15 is missing, disabling CAN pivot");
 		}
 		
 	

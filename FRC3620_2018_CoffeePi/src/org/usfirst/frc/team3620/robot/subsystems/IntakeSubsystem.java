@@ -74,7 +74,7 @@ public class IntakeSubsystem extends Subsystem {
 	public boolean homeButtonIsPressed() {
 		if (intakePivot != null) {
     		//Should be reverse limit but we're hoping this works.
-			if (intakePivot.getSensorCollection().isRevLimitSwitchClosed()) {
+			if (intakePivot.getSensorCollection().isFwdLimitSwitchClosed()) {
 				isArmDown = false;
 				return true;
 			}
@@ -199,6 +199,7 @@ public class IntakeSubsystem extends Subsystem {
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
+	   clampIsClosed = true;
    }
    
    //releases clamp
@@ -212,20 +213,14 @@ public class IntakeSubsystem extends Subsystem {
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
+	   clampIsClosed = false;
 	   
    }
    
+   boolean clampIsClosed;
+   
    public boolean isClampClosed() {
-	   if (intakeClamperSolenoid != null) {
-		   Value intakeStatus = intakeClamperSolenoid.get(); 
-		//   logger.info("Clamper status: " + intakeStatus);
-		    if (intakeStatus == Value.kForward) {
-		    //	logger.info("Clamper is closed");
-		    	return true;
-		    }
-	   }
-		   logger.info("Clamper is not closed");
-		   return false;  
+	   return clampIsClosed;
    }
  
    public double readPivotAngleInDegress() {
@@ -257,6 +252,7 @@ public class IntakeSubsystem extends Subsystem {
 		   SmartDashboard.putBoolean
 		   ("Pivot home is pressed", homeButtonIsPressed());
 		   SmartDashboard.putBoolean("Pivot encoder valid", isEncoderValid);
+		   SmartDashboard.putBoolean("Pivot is clamped", isClampClosed());
 	   }
    }
    
