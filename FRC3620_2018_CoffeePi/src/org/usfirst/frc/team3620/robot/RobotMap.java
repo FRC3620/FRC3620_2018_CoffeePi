@@ -280,19 +280,13 @@ public class RobotMap {
 		if (Robot.canDeviceFinder.isPCMPresent(0)) {
 			liftSubsystemGearShifter = new DoubleSolenoid(0, 2, 3);
 			LiveWindow.addActuator("LiftSubsystem", "LiftSubsystemGearShifter", liftSubsystemGearShifter);
+			climbingJawEngager = new DoubleSolenoid(0, 4, 5);
+			LiveWindow.addActuator("LiftSubsystem", "ClimbJawEngage", climbingJawEngager);
 		} else {
 			logger.info("No Solenoid detected");
 		}
-		
-
 		practiceBotJumper = new DigitalInput(1);
 		SmartDashboard.putData(practiceBotJumper);
-		
-
-		climbingJawEngager = new DoubleSolenoid(0, 4, 5);
-		LiveWindow.addActuator("LiftSubsystem", "ClimbJawEngage", climbingJawEngager);
-
-
 	}
 	
 	static void resetControllerToKnownState (BaseMotorController x) {
