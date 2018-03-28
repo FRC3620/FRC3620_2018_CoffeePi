@@ -243,7 +243,7 @@ public class Robot extends TimedRobot {
 						}
 
 						unfoldandlift.addSequential(new HoldLift());
-						unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
+						
 						commandGroup.addParallel(unfoldandlift);
 
 					}
@@ -272,14 +272,13 @@ public class Robot extends TimedRobot {
 						
 						unfoldAndDrop.addSequential(new ClampCommand());
 						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand());
-						unfoldAndDrop.addSequential(new PivotUpCommand());
-						unfoldAndDrop.addParallel(new AutoMoveLiftUpToScaleHeight());
+						unfoldAndDrop.addParallel(unfoldandlift2);
 						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-						unfoldAndDrop.addSequential(new HoldLift());
-					/*	unfoldAndDrop.addSequential(new UnClampCommand());
-						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
-						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
-					*/	
+						
+						
+					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown()); */
+					
 						
 						
 						
@@ -296,9 +295,12 @@ public class Robot extends TimedRobot {
 					
 					
 					commandGroup.addSequential(unfoldAndDrop);
-					commandGroup.addSequential(new UnClampCommand());
-					commandGroup.addSequential(new Path_BackUpFromScale());
-					commandGroup.addSequential(new AutoMoveLiftDown());
+					if(whereToPutCube == WhereToPutCube.SCALE) {
+						commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					}
+						
+					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						unfoldAndDrop.addSequential(new AutoMoveLiftDown()); */
 					goForTwoScale = false;
 					
 					
