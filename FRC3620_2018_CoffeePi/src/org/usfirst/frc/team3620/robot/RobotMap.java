@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.PWMTalonSRX;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -73,6 +74,8 @@ public class RobotMap {
 	public static DoubleSolenoid intakeSubsystemIntakeClamperSolenoid;
 	public static AHRS driveSubsystemAHRS;	//Needs testing. -Kai
 	public static DoubleSolenoid liftSubsystemGearShifter;
+	
+	public static Servo rampServo;
 
 	public static DoubleSolenoid climbingJawEngager;
 	
@@ -266,9 +269,6 @@ public class RobotMap {
 		} else {
 			logger.info("Talon SRX 15 is missing, disabling CAN pivot");
 		}
-		
-	
-		
 
 		lightSubsystemLightPWM9 = new Spark(9);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM9", (Spark) lightSubsystemLightPWM9);
@@ -287,19 +287,18 @@ public class RobotMap {
 		if (Robot.canDeviceFinder.isPCMPresent(0)) {
 			liftSubsystemGearShifter = new DoubleSolenoid(0, 2, 3);
 			LiveWindow.addActuator("LiftSubsystem", "LiftSubsystemGearShifter", liftSubsystemGearShifter);
+			climbingJawEngager = new DoubleSolenoid(0, 4, 5);
+			LiveWindow.addActuator("LiftSubsystem", "ClimbJawEngage", climbingJawEngager);
 		} else {
 			logger.info("No Solenoid detected");
 		}
 		
-
 		practiceBotJumper = new DigitalInput(1);
 		SmartDashboard.putData(practiceBotJumper);
 		
-
-		climbingJawEngager = new DoubleSolenoid(0, 4, 5);
-		LiveWindow.addActuator("LiftSubsystem", "ClimbJawEngage", climbingJawEngager);
-
-
+		rampServo = new Servo(1);
+		rampServo.setDisabled();
+		rampServo.setName("RampSubsystem",  "Servo");
 	}
 	
 	static void resetControllerToKnownState (BaseMotorController x) {

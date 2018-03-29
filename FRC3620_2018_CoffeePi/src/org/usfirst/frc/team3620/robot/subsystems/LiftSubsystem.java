@@ -243,14 +243,17 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	public void setHighGear() {
-		liftGearShifter.set(Value.kReverse);
+		if (liftGearShifter != null) {
+			liftGearShifter.set(Value.kReverse);
+		}
 		highGear = true;
 	}
 
 	public void setLowGear() {
-		liftGearShifter.set(Value.kForward);
+		if (liftGearShifter != null) {
+			liftGearShifter.set(Value.kForward);
+		}
 		highGear = false;
-
 	}
 	
 	public boolean isInHighGear() {
@@ -258,7 +261,9 @@ public class LiftSubsystem extends Subsystem {
 	}
 
 	public void deadenShifter() {
-		liftGearShifter.set(Value.kOff);
+		if (liftGearShifter != null) {
+			liftGearShifter.set(Value.kOff);
+		}
 	}
 
 	double lastSetPoint = 0;
