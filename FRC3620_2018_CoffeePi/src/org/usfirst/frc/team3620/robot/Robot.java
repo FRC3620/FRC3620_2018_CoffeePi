@@ -233,6 +233,7 @@ public class Robot extends TimedRobot {
 					commandGroup.addSequential(new ClampCommand());
 					CommandGroup unfoldandlift = new CommandGroup();
 					CommandGroup unfoldandlift2 = new CommandGroup();
+					CommandGroup liftDownAndUnfold = new CommandGroup();
 					if(startingPos != 'C') {
 						
 						unfoldandlift.addSequential(new PivotUpCommand());
@@ -240,6 +241,7 @@ public class Robot extends TimedRobot {
 						if(whereToPutCube == whereToPutCube.SCALE) {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
+							
 						} else {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
@@ -250,6 +252,9 @@ public class Robot extends TimedRobot {
 						commandGroup.addParallel(unfoldandlift);
 
 					}
+					liftDownAndUnfold.addSequential(new AutoMoveLiftDown());
+					liftDownAndUnfold.addSequential(new PivotDownCommand());
+					liftDownAndUnfold.addSequential(new UnClampCommand());
 					AbstractPath path = autonomousDescriptor.getPath();
 					commandGroup.addSequential(path);
 				
@@ -261,12 +266,10 @@ public class Robot extends TimedRobot {
 					CommandGroup unfoldAndDrop = new CommandGroup();
 
 					if(goForTwoScale == true){
-						unfoldAndDrop.addSequential(new Path_BackUpFromScale());
+						
 					
 						
-						unfoldAndDrop.addSequential(new AutoMoveLiftDown());
-						unfoldAndDrop.addSequential(new PivotDownCommand());
-						unfoldAndDrop.addSequential(new UnClampCommand());
+						unfoldAndDrop.addSequential(liftDownAndUnfold);
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
