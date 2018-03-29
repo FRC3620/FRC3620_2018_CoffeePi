@@ -46,7 +46,7 @@ public class AutonomousPukeCubeCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double howlong = timer.get();
-    	if (howlong > 1) {
+    	if (howlong > 0.6) {
     		return true;
     	}
         return false;
