@@ -14,6 +14,10 @@ public class PivotUpCommand extends Command {
 	double lowerLiftWindowLimit = 14.0;
 	double upperLiftWindowLimit = 75.0;
 	double liftEncoderPos;
+	double maxPower;
+	double desiredCutoffPower;
+	double cutoffEncoderPos;
+	double slowDownPoint;
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
@@ -26,6 +30,10 @@ public class PivotUpCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
+    	maxPower = 0.5;
+    	desiredCutoffPower = 0.10;
+    	cutoffEncoderPos = 20;
+    	slowDownPoint = 82;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,17 +42,18 @@ public class PivotUpCommand extends Command {
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     	
     	liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(isClampClosed) {
-    		if (pivotEncoder > 60) {
-    			Robot.intakeSubsystem.pivotUp(0.45);
-    		}
-    		else if(pivotEncoder > 31.5) {
-    			Robot.intakeSubsystem.pivotUp(0.37);
+    	if (isClampClosed) {
+    		if(pivotEncoder <= slowDownPoint) {
+    			Robot.intakeSubsystem.pivotUp(maxPower - ((maxPower - desiredCutoffPower)*((slowDownPoint - pivotEncoder)/(slowDownPoint - cutoffEncoderPos))));
     		} else {
-    			Robot.intakeSubsystem.pivotUp(0.15);
+    			Robot.intakeSubsystem.pivotUp(maxPower);
+    		}
+    	}else {
+    			Robot.intakeSubsystem.pivotUp(0);
     		}
     	}
-    }
+    	
+    
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
@@ -52,7 +61,7 @@ public class PivotUpCommand extends Command {
     	boolean haveCube = Robot.intakeSubsystem.haveCube ;
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
     
-    	if (pivotEncoder < 16) {
+    	if (pivotEncoder < cutoffEncoderPos) {
     		return true;
     	}
     	if (!isClampClosed) {

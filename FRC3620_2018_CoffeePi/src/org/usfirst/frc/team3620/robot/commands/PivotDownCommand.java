@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class PivotDownCommand extends Command {
 	double liftEncoderPos;
 	double pivotEncoder;
+	double maxPower;
+	double desiredCutoffPower;
+	double cutoffEncoderPos;
+	double slowDownPoint;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
     public PivotDownCommand() {
@@ -24,6 +28,10 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	logger.info("Pivoting Down Initialized");
+    	maxPower = 0.5;
+    	desiredCutoffPower = 0.05;
+    	cutoffEncoderPos = 122;
+    	slowDownPoint = 74.0;
     }
 
     
@@ -33,17 +41,16 @@ public class PivotDownCommand extends Command {
     	boolean isClampClosed = Robot.intakeSubsystem.isClampClosed();
 
     	if (isClampClosed) {
-    		if (pivotEncoder < 80) {
-    			Robot.intakeSubsystem.pivotDown(0.40);
+    		if(pivotEncoder >= slowDownPoint) {
+    			Robot.intakeSubsystem.pivotDown(maxPower - ((maxPower - desiredCutoffPower)*((pivotEncoder - slowDownPoint)/(slowDownPoint - cutoffEncoderPos))));
+    		} else {
+    			Robot.intakeSubsystem.pivotDown(maxPower);
     		}
-    		else if (pivotEncoder < 132) {
-    			Robot.intakeSubsystem.pivotDown(0.20);
-    		}
-    		else {
+    	}else {
     			Robot.intakeSubsystem.pivotDown(0);
     		}
     	}
-    }
+    
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
@@ -54,7 +61,7 @@ public class PivotDownCommand extends Command {
     		logger.warn("I can't pivit down: encoder is not valid!");
     		return true;
     	}
-    	if (Robot.intakeSubsystem.readPivotAngleInDegress() > 130) {
+    	if (Robot.intakeSubsystem.readPivotAngleInDegress() > cutoffEncoderPos) {
     		logger.info("Ending Pivot because we're too far");
     		return true;
     	}
