@@ -270,6 +270,7 @@ public class Robot extends TimedRobot {
 					
 						
 						unfoldAndDrop.addSequential(liftDownAndUnfold);
+						unfoldAndDrop.addParallel(new AutonomousIntakeCubeCommand());
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
@@ -277,7 +278,6 @@ public class Robot extends TimedRobot {
 						} 
 						
 						unfoldAndDrop.addSequential(new ClampCommand());
-						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand());
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
 						

@@ -55,7 +55,7 @@ public abstract class AbstractPath extends Command {
 		// **Now in feet**
 		// Check on the 0.75 vmax multiplier and tune as needed
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
-				Trajectory.Config.SAMPLES_LOW, 0.05, (getPathfinderGenVelocityMultiplier() * getPathfinderV_MAX()), getPathfinderGenAcceleration(), 10.0); 
+				Trajectory.Config.SAMPLES_FAST, 0.05, (getPathfinderGenVelocityMultiplier() * getPathfinderV_MAX()), getPathfinderGenAcceleration(), 10.0); 
 		Waypoint[] points = getMyWaypoints();
 		Trajectory trajectory = Pathfinder.generate(points, config);
 
