@@ -239,7 +239,13 @@ public class Robot extends TimedRobot {
 						unfoldandlift.addSequential(new PivotUpCommand());
 						unfoldandlift2.addSequential(new PivotUpCommand());
 						if(whereToPutCube == whereToPutCube.SCALE) {
-							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+							if(startingPos != gameMessage.substring(1).charAt(0)) {
+								unfoldandlift.addSequential(new WaitJustALittle(4));
+								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+							}
+							else{
+								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
+							}
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
 							
 						} else {
