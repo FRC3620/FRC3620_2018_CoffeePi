@@ -32,8 +32,8 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 				new Waypoint(20.20, 6.511, Pathfinder.d2r(10)), */
 			new Waypoint(1.58, 4.08, Pathfinder.d2r(0)),
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
-				new Waypoint(10.55, 4.08, Pathfinder.d2r(4)),
-				new Waypoint(21.10, 6.111, Pathfinder.d2r(10)),
+				new Waypoint(12.25, 4.08, Pathfinder.d2r(0)),
+				new Waypoint(21.10, 6.111, Pathfinder.d2r(0)),
 				
 				
 				

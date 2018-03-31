@@ -8,14 +8,27 @@ import jaci.pathfinder.Waypoint;
 public class Path2_AlleyCube_RightScaleSide extends AbstractPath {
 
 	
-		// TODO Auto-generated method stub
-		@Override
-		Waypoint[] getMyWaypoints() {
-			return new Waypoint[] {
-					new Waypoint(0, 1.25, Pathfinder.d2r(0)),
-					new Waypoint(3.67, 0, Pathfinder.d2r(-30.00)),
-			};
-		}
+	@Override
+	Waypoint[] getMyWaypoints() {
+		return new Waypoint[] {
+				new Waypoint(0, 0, Pathfinder.d2r(0.00)),
+				new Waypoint(2.76, -0.30, Pathfinder.d2r(0.00)),
+		};
+	}
 	
+	@Override
+	public double getPathfinderGenVelocityMultiplier() {
+		return 0.85;
+	}
+	@Override
+	public boolean getPathfinderReverseMode(){
+		return true;
+	}
+	
+	@Override
+	public double getPathfinderP() {
+		return 0.09;
+	}
+
 
 }

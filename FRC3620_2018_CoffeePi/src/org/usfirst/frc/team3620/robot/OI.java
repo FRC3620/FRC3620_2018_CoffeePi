@@ -123,7 +123,9 @@ public class OI {
            SmartDashboard.putData("Auto Move Lift Down", new AutoMoveLiftDown());
 
            SmartDashboard.putData("Left Scale Side to Alley Cube", new Path2_LeftScaleSide_AlleyCube());
-
+           SmartDashboard.putData("AlleyCubeRightSide", new Path2_AlleyCube_RightScaleSide());
+           SmartDashboard.putData("TurnALittleLeft", new Path2_TurnALittle(45.0, false));
+           SmartDashboard.putData("DoALittleTurn", new Path2_TurnALittle(45.0, true));
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
            SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
 

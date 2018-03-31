@@ -28,8 +28,10 @@ import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path1_LeftStart_LeftScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path1_RightStart_DriveAcrossLine;
 import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_LeftScaleSide;
+import org.usfirst.frc.team3620.robot.paths.Path2_AlleyCube_RightScaleSide;
 import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
+import org.usfirst.frc.team3620.robot.paths.Path2_TurnALittle;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
@@ -285,7 +287,13 @@ public class Robot extends TimedRobot {
 						
 						unfoldAndDrop.addSequential(new ClampCommand());
 						unfoldAndDrop.addParallel(unfoldandlift2);
-						unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(45.0, true));
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addSequential(new Path2_AlleyCube_RightScaleSide());
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(45.0, false));
+						}
 						
 						
 					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());
