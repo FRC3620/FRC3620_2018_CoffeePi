@@ -22,7 +22,7 @@ public class Path2_TurnALittle extends AbstractPath {
 				};
 		} else {
 			return new Waypoint[] {
-					new Waypoint(0.50,	-0.50, Pathfinder.d2r(-degreesTurned)),
+					new Waypoint(0.25,	-0.25, Pathfinder.d2r(-(degreesTurned/4))),
 					new Waypoint(0.00, 0.00, Pathfinder.d2r(0)),
 				};
 		}

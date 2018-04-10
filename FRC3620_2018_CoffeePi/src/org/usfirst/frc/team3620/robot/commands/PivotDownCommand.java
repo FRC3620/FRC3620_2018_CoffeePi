@@ -28,9 +28,9 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	logger.info("Pivoting Down Initialized");
-    	maxPower = 0.5;
-    	desiredCutoffPower = 0.05;
-    	cutoffEncoderPos = 122;
+    	maxPower = 0.6;
+    	desiredCutoffPower = 0.02;
+    	cutoffEncoderPos = 120;
     	slowDownPoint = 74.0;
     }
 

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class TeleOpDriveCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double speedAtTopHeight = 0.7;  // TODO change "speed" to "output"
+	double speedAtTopHeight = 0.57;  // TODO change "speed" to "output"
 	double speedMultiplier = 1 - speedAtTopHeight;
     public TeleOpDriveCommand() {
         // Use requires() here to declare subsystem dependencies

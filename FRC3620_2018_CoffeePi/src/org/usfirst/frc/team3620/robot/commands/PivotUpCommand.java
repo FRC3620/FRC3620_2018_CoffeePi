@@ -30,8 +30,8 @@ public class PivotUpCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
-    	maxPower = 0.5;
-    	desiredCutoffPower = 0.10;
+    	maxPower = 0.6;
+    	desiredCutoffPower = 0.05;
     	cutoffEncoderPos = 20;
     	slowDownPoint = 82;
     }

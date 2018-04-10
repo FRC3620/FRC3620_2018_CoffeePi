@@ -21,7 +21,7 @@ public class RampSubsystem extends Subsystem {
     Servo rampServo = RobotMap.rampServo;
     
     public void actuateRampServo() {
-    	rampServo.setAngle(180);
+    	rampServo.setAngle(270);
     }
     
     public void resetRampServo() {
