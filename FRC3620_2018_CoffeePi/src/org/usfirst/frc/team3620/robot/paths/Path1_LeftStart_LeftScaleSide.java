@@ -25,12 +25,17 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 				
 				*/
 				// West Michigan Comp Points
-				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+			/*	new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
 
 				new Waypoint(10.40, 22.91, Pathfinder.d2r(-4)),
-				new Waypoint(19.25, 20.83, Pathfinder.d2r(0)),
+				new Waypoint(19.25, 20.83, Pathfinder.d2r(0)), */
+				//State Points
+				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
 
+				new Waypoint(11.40, 22.91, Pathfinder.d2r(-4)),
+				new Waypoint(20.5, 20.58, Pathfinder.d2r(0)),
 		};
 	}
 	

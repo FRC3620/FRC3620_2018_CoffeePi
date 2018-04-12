@@ -33,6 +33,8 @@ import org.usfirst.frc.team3620.robot.paths.Path2_LeftScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_RightScaleSide_AlleyCube;
 import org.usfirst.frc.team3620.robot.paths.Path2_TurnALittle;
 import org.usfirst.frc.team3620.robot.paths.Path_BackUpFromScale;
+import org.usfirst.frc.team3620.robot.paths.Path_LineUpForCrossLeft;
+import org.usfirst.frc.team3620.robot.paths.Path_LineUpForCrossRight;
 import org.usfirst.frc.team3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team3620.robot.subsystems.IntakeSubsystem;
@@ -221,14 +223,14 @@ public class Robot extends TimedRobot {
 				logger.info("Game Message = {}, Delay = {}, Trust = {}, pos = {}", gameMessage,
 						delayChooser.getSelected(), trustChooser.getSelected(), posChooser.getSelected());
 				char startingPos = posChooser.getSelected().charAt(0);
+				boolean trust = trustChooser.getSelected();
 				AutonomousDescriptor autonomousDescriptor = AutonomousDescriptorMaker.makeAutonomousDescriptor(posChooser.getSelected().charAt(0), gameMessage.substring(0).charAt(0), gameMessage.substring(1).charAt(0), trustChooser.getSelected());
 				logger.info("Autonomous descriptor = {} ", autonomousDescriptor);
 
 
 				if (autonomousDescriptor != null) {
+			
 					WhereToPutCube whereToPutCube = autonomousDescriptor.getWhereToPutCube();
-
-
 					CommandGroup commandGroup = new CommandGroup();
 
 					commandGroup.addSequential(new LiftShiftHighGear());
@@ -236,6 +238,21 @@ public class Robot extends TimedRobot {
 					CommandGroup unfoldandlift = new CommandGroup();
 					CommandGroup unfoldandlift2 = new CommandGroup();
 					CommandGroup liftDownAndUnfold = new CommandGroup();
+					if((trust == true) && (startingPos != gameMessage.substring(1).charAt(0)) && (whereToPutCube == whereToPutCube.SCALE)) {
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							commandGroup.addSequential(new Path_LineUpForCrossLeft());
+							commandGroup.addSequential(new AllDoneCommand());
+							autonomousCommand = commandGroup;
+						}else if(gameMessage.substring(1).charAt(0) == 'R') {
+							commandGroup.addSequential(new Path_LineUpForCrossRight());
+							commandGroup.addSequential(new AllDoneCommand());
+							autonomousCommand = commandGroup;
+						}
+						
+					} else {
+						
+
+					
 					if(startingPos != 'C') {
 						
 						unfoldandlift.addSequential(new PivotUpCommand());
@@ -289,10 +306,10 @@ public class Robot extends TimedRobot {
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(45.0, true));
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(30.0, true));
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_RightScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(45.0, false));
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(30.0, false));
 						}
 						
 						
@@ -345,7 +362,7 @@ public class Robot extends TimedRobot {
 				commandGroup.addSequential(new AllDoneCommand());
 				autonomousCommand = commandGroup;
 				goForTwoScale = false;
-
+					}
 			}
 
 			// do we have a calculated autonomous, but we have not started it yet?

@@ -28,10 +28,14 @@ public class PivotDownCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	logger.info("Pivoting Down Initialized");
+    	//Practice MaxPower = 0.6
+    	//Practice cutoffPower = 0.02
+    	//Practice cutoffPos = 130
+    	//Practice slowDownPoint = 74.0
     	maxPower = 0.6;
-    	desiredCutoffPower = 0.02;
-    	cutoffEncoderPos = 120;
-    	slowDownPoint = 74.0;
+    	desiredCutoffPower = 0.05;
+    	cutoffEncoderPos = 135;
+    	slowDownPoint = 50.0;
     }
 
     
@@ -43,7 +47,7 @@ public class PivotDownCommand extends Command {
     	if (isClampClosed) {
 
     		if(pivotEncoder >= slowDownPoint) {
-    			Robot.intakeSubsystem.pivotDown(maxPower - ((maxPower - desiredCutoffPower)*((pivotEncoder - slowDownPoint)/(slowDownPoint - cutoffEncoderPos))));
+    			Robot.intakeSubsystem.pivotDown(maxPower - ((maxPower - desiredCutoffPower)*((pivotEncoder - slowDownPoint)/(cutoffEncoderPos - slowDownPoint))));
     		} else {
     			Robot.intakeSubsystem.pivotDown(maxPower);
 
