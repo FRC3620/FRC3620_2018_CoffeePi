@@ -239,11 +239,11 @@ public class Robot extends TimedRobot {
 					CommandGroup unfoldandlift2 = new CommandGroup();
 					CommandGroup liftDownAndUnfold = new CommandGroup();
 					if((trust == true) && (startingPos != gameMessage.substring(1).charAt(0)) && (whereToPutCube == whereToPutCube.SCALE)) {
-						if(gameMessage.substring(1).charAt(0) == 'L') {
+						if(gameMessage.substring(1).charAt(0) == 'R') {
 							commandGroup.addSequential(new Path_LineUpForCrossLeft());
 							commandGroup.addSequential(new AllDoneCommand());
 							autonomousCommand = commandGroup;
-						}else if(gameMessage.substring(1).charAt(0) == 'R') {
+						}else if(gameMessage.substring(1).charAt(0) == 'L') {
 							commandGroup.addSequential(new Path_LineUpForCrossRight());
 							commandGroup.addSequential(new AllDoneCommand());
 							autonomousCommand = commandGroup;
@@ -306,10 +306,10 @@ public class Robot extends TimedRobot {
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(30.0, true));
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_RightScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(30.0, false));
+							unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, false));
 						}
 						
 						
