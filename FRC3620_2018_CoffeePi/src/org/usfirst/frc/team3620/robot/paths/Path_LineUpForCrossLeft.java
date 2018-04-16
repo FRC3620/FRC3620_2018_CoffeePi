@@ -13,7 +13,7 @@ public class Path_LineUpForCrossLeft extends AbstractPath {
 				new Waypoint(13.425, 23.0, Pathfinder.d2r(0)),
 				//Mark: "18.45 is smack dab in the middle"
 				new Waypoint(18.45, 18.5, Pathfinder.d2r(-90)),
-				new Waypoint(18.95, 15.35, Pathfinder.d2r(-90)),
+				new Waypoint(18.95, 16.35, Pathfinder.d2r(-90)),
 		};
 	}
 

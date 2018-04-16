@@ -35,7 +35,7 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
 
 				new Waypoint(11.40, 22.91, Pathfinder.d2r(-4)),
-				new Waypoint(20.5, 20.58, Pathfinder.d2r(0)),
+				new Waypoint(20.5, 20.18, Pathfinder.d2r(0)),
 		};
 	}
 	

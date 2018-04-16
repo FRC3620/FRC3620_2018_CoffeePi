@@ -333,7 +333,7 @@ public class Robot extends TimedRobot {
 					
 					commandGroup.addSequential(unfoldAndDrop);
 					if(whereToPutCube == WhereToPutCube.SCALE) {
-						commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					//	commandGroup.addSequential(new AutonomousPukeCubeCommand());
 					}
 						
 					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());

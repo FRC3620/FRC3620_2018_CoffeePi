@@ -12,7 +12,7 @@ public class Path_LineUpForCrossRight extends AbstractPath {
 				new Waypoint(1.58, 4.09, Pathfinder.d2r(0)),
 				new Waypoint(13.20, 3.49, Pathfinder.d2r(0)),
 				new Waypoint(19.05, 8.8, Pathfinder.d2r(90)),
-				new Waypoint(19.75, 13.65, Pathfinder.d2r(90)),
+				new Waypoint(19.75, 10.65, Pathfinder.d2r(90)),
 		};
 	}
 

@@ -33,10 +33,10 @@ public class Path1_RightStart_LeftScaleSide extends AbstractPath {
 				
 				//State Two Cube Points
 				new Waypoint(1.58, 4.09, Pathfinder.d2r(0)),
-				new Waypoint(13.20, 3.49, Pathfinder.d2r(0)),
-				new Waypoint(19.05, 8.8, Pathfinder.d2r(90)),
-				new Waypoint(19.75, 15.15, Pathfinder.d2r(90)),
-				new Waypoint(22.85, 20.75, Pathfinder.d2r(0)),
+				new Waypoint(11.50, 3.49, Pathfinder.d2r(0)),
+				new Waypoint(18.25, 8.8, Pathfinder.d2r(90)),
+				new Waypoint(18.50, 15.15, Pathfinder.d2r(90)),
+				new Waypoint(21.25, 17.70, Pathfinder.d2r(0)),
 	
 		};
 	}

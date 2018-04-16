@@ -17,12 +17,12 @@ public class Path2_TurnALittle extends AbstractPath {
 		// TODO Auto-generated method stub
 		if(left == true) {
 			return new Waypoint[] {
-					new Waypoint(0.50,	0.50, Pathfinder.d2r(degreesTurned)),
+					new Waypoint(0.20,	0.10, Pathfinder.d2r(degreesTurned)),
 					new Waypoint(0.00, 0.00, Pathfinder.d2r(0)),
 				};
 		} else {
 			return new Waypoint[] {
-					new Waypoint(0.25,	-0.25, Pathfinder.d2r(-(degreesTurned/4))),
+					new Waypoint(0.20,	-0.10, Pathfinder.d2r(-degreesTurned)),
 					new Waypoint(0.00, 0.00, Pathfinder.d2r(0)),
 				};
 		}
