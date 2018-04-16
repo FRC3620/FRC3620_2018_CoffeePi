@@ -40,11 +40,6 @@ public class Path1_RightStart_RightScaleSide extends AbstractPath {
 				
 		};
 	}
-	
-	
-		
-					
-				
 			
 			@Override
 			double getPathfinderGenVelocityMultiplier() {

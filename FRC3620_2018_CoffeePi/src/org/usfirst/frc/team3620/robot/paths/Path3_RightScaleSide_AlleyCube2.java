@@ -3,18 +3,14 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-//TODO Finish me!
-//TODO Test me!
+public class Path3_RightScaleSide_AlleyCube2 extends AbstractPath {
 
-public class Path2_RightScaleSide_AlleyCube extends AbstractPath {
-
-	//Status: Not tested, unfinished
 	@Override
 	Waypoint[] getMyWaypoints() {
+		// TODO Auto-generated method stub
 		return new Waypoint[] {
-				new Waypoint(0, 1, Pathfinder.d2r(0)),
-				new Waypoint(3.46, 0.45, Pathfinder.d2r(0.00)),
-
+				new Waypoint(0, 0, Pathfinder.d2r(0)),
+				new Waypoint(3.46, -1.55, Pathfinder.d2r(-37.50)),
 		};
 	}
 	@Override

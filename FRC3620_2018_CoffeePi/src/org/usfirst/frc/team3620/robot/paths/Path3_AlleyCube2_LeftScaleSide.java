@@ -3,7 +3,7 @@ package org.usfirst.frc.team3620.robot.paths;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Waypoint;
 
-public class Path2_AlleyCube_LeftScaleSide extends AbstractPath {
+public class Path3_AlleyCube2_LeftScaleSide extends AbstractPath {
 
 	@Override
 	Waypoint[] getMyWaypoints() {
@@ -26,5 +26,4 @@ public class Path2_AlleyCube_LeftScaleSide extends AbstractPath {
 	public double getPathfinderP() {
 		return 0.09;
 	}
-
 }
