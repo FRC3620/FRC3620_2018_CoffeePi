@@ -284,15 +284,17 @@ public class Robot extends TimedRobot {
 					AbstractPath path = autonomousDescriptor.getPath();
 					commandGroup.addSequential(path);
 				
-				if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+				if (whereToPutCube == WhereToPutCube.SWITCH) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
-				}
+				} 
 				//Add Boolean for shooting for two
 				if(whereToPutCube == whereToPutCube.SCALE) {
 					CommandGroup unfoldAndDrop = new CommandGroup();
 
 					if(goForTwoScale == true){
-						
+						if (whereToPutCube !=WhereToPutCube.NOWHERE) {
+							commandGroup.addParallel(new AutonomousPukeCubeCommand());
+						}
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
