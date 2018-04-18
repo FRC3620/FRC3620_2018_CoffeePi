@@ -9,7 +9,7 @@ public class AutoLiftDownAndFlipDown extends CommandGroup {
 
     public AutoLiftDownAndFlipDown() {
     	addSequential(new AutoMoveLiftDown());
-    	addSequential(new PivotDownCommand());
+    	addSequential(new AutoPivotDown());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

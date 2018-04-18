@@ -30,13 +30,13 @@ public class AutoMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double joyPos = 0.77;
+    	double joyPos = 0.9;
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
     	
 		 if(Robot.liftSubsystem.readEncoderInInches() < 30){
-			joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/29)*0.82));
+			joyPos = joyPos * (1 - (((45 - Robot.liftSubsystem.readEncoderInInches())/44)*0.91));
 		} else {
-			joyPos = 0.6;
+			joyPos = 0.9;
 		}
 		//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
 		//		joyPos = joyPos * 0.2;

@@ -263,6 +263,7 @@ public class Robot extends TimedRobot {
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							else{
+								
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
@@ -292,24 +293,24 @@ public class Robot extends TimedRobot {
 
 					if(goForTwoScale == true){
 						
-					
-						
-						unfoldAndDrop.addSequential(liftDownAndUnfold);
-						unfoldAndDrop.addParallel(new AutonomousIntakeCubeCommand());
 						if(gameMessage.substring(1).charAt(0) == 'L') {
-							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
+							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
-							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
+							unfoldAndDrop.addParallel(new Path2_RightScaleSide_AlleyCube());
 						} 
 						
+						unfoldAndDrop.addSequential(liftDownAndUnfold);
+						
+						
+						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand());
 						unfoldAndDrop.addSequential(new ClampCommand());
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
+			//				unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
 						} else if(gameMessage.substring(1).charAt(0) == 'R') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_RightScaleSide());
-							unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, false));
+				//			unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, false));
 						}
 						
 						

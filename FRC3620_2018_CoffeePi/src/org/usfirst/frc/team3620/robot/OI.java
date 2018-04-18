@@ -121,7 +121,8 @@ public class OI {
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
            SmartDashboard.putData("Auto Move Lift Down", new AutoMoveLiftDown());
-
+           SmartDashboard.putData("AutoPivotDown", new AutoPivotDown());
+           SmartDashboard.putData("AutoMoveLiftDownAndFlip", new AutoLiftDownAndFlipDown());
            SmartDashboard.putData("Left Scale Side to Alley Cube", new Path2_LeftScaleSide_AlleyCube());
            SmartDashboard.putData("AlleyCubeRightSide", new Path2_AlleyCube_RightScaleSide());
            SmartDashboard.putData("TurnALittleLeft", new Path2_TurnALittle(45.0, false));
