@@ -263,7 +263,6 @@ public class Robot extends TimedRobot {
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							else{
-								
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
@@ -281,10 +280,11 @@ public class Robot extends TimedRobot {
 					liftDownAndUnfold.addSequential(new AutoMoveLiftDown());
 					liftDownAndUnfold.addSequential(new PivotDownCommand());
 					liftDownAndUnfold.addSequential(new UnClampCommand());
+					
 					AbstractPath path = autonomousDescriptor.getPath();
 					commandGroup.addSequential(path);
 				
-				if (whereToPutCube == WhereToPutCube.SWITCH) {
+				if (whereToPutCube != WhereToPutCube.NOWHERE) {
 					commandGroup.addSequential(new AutonomousPukeCubeCommand());
 				} 
 				//Add Boolean for shooting for two
@@ -292,20 +292,22 @@ public class Robot extends TimedRobot {
 					CommandGroup unfoldAndDrop = new CommandGroup();
 
 					if(goForTwoScale == true){
-						if (whereToPutCube !=WhereToPutCube.NOWHERE) {
-							commandGroup.addParallel(new AutonomousPukeCubeCommand());
-						}
-						if(gameMessage.substring(1).charAt(0) == 'L') {
-							unfoldAndDrop.addParallel(new Path2_LeftScaleSide_AlleyCube());
-						} else if(gameMessage.substring(1).charAt(0) == 'R') {
-							unfoldAndDrop.addParallel(new Path2_RightScaleSide_AlleyCube());
-						} 
+						
 						
 						unfoldAndDrop.addSequential(liftDownAndUnfold);
 						
+						if(gameMessage.substring(1).charAt(0) == 'L') {
+							unfoldAndDrop.addSequential(new Path2_LeftScaleSide_AlleyCube());
+						} else if(gameMessage.substring(1).charAt(0) == 'R') {
+							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
+						} 
 						
-						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand());
+						
+						
+						
+						
 						unfoldAndDrop.addSequential(new ClampCommand());
+						unfoldAndDrop.addParallel(new AutonomousIntakeCubeCommand(0.3));
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(gameMessage.substring(1).charAt(0) == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());

@@ -14,8 +14,8 @@ import org.slf4j.Logger;
  */
 public class HoldLift extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	double currentEncoderPos;
-	double addedBangBangMultiplier;
+	double initialEncoderPos;
+	double addedBangBangMultiplier = 0.015;
 	double addedBangBangPower = 0.03;
 	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
 	double upperBangBangPowerLimit = 0.23;
@@ -29,10 +29,10 @@ public class HoldLift extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	logger.info("Starting HoldLift Command at {}", currentEncoderPos);
+    	initialEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	logger.info("Starting HoldLift Command at {}", initialEncoderPos);
     	
-    	if(Robot.liftSubsystem.isBottomLimitDepressed() && currentEncoderPos < 1) {
+    	if(Robot.liftSubsystem.isBottomLimitDepressed() && initialEncoderPos < 1) {
     		noPowerToHold = true;
     		
     	} else {
@@ -44,26 +44,27 @@ public class HoldLift extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double variedEncoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	double currentEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	if(noPowerToHold) {
     		Robot.liftSubsystem.moveAtManualSpeedGiven(0);
     		return;
     	}
     	if(Robot.liftSubsystem.isBottomLimitDepressed() == true) {
     		Robot.liftSubsystem.resetEncoder();
-    	} else if(variedEncoderPos < currentEncoderPos) {
-    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
-    	} else if(variedEncoderPos > currentEncoderPos) {
-    		addedBangBangPower = addedBangBangMultiplier*(currentEncoderPos - variedEncoderPos);
+    	} else if(currentEncoderPos < initialEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(initialEncoderPos - currentEncoderPos);
+    	} else if(currentEncoderPos > initialEncoderPos) {
+    		addedBangBangPower = addedBangBangMultiplier*(initialEncoderPos - currentEncoderPos);
     	} else {
     		addedBangBangPower = 0;
     	}
     	
-    	if(addedBangBangPower > lowerBangBangPowerLimit && addedBangBangPower < upperBangBangPowerLimit) {
+    
     		Robot.liftSubsystem.brace(addedBangBangPower);
-    	} else {
-    		Robot.liftSubsystem.brace(0);
-    	}
+    		logger.info("AddedBangBangPower = {}, Height = {}", addedBangBangPower, currentEncoderPos);
+    	
+    	
+    	
     	 
     }
 

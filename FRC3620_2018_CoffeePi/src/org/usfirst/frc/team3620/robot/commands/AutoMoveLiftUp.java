@@ -68,7 +68,7 @@ public abstract class AutoMoveLiftUp extends Command {
     	oneFoot = getAccelDecelDistance();
     	maxPower = getMaxPower();
     	requestedEncoderPos = getRequestedEndPos();
-    	slowDownPoint = requestedEncoderPos - oneFoot;
+    	slowDownPoint = requestedEncoderPos - 18;
     	speedUpPoint = startingEncoderPos + oneFoot;
     }
 

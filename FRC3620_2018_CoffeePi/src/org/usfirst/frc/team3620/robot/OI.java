@@ -110,7 +110,7 @@ public class OI {
            SmartDashboard.putData("Left start, left scale side", new Path1_LeftStart_LeftScaleSide());
            SmartDashboard.putData("Left start, left switch", new Path1_LeftStart_LeftSwitchEnd());
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
-           SmartDashboard.putData("Left start, right scale", new Path1_LeftStart_RightScaleEnd());
+          
            SmartDashboard.putData("Left Start, Right scale side", new Path1_LeftStart_RightScaleSide());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
            SmartDashboard.putData("Right start, right scale end", new Path1_RightStart_RightScaleEnd());

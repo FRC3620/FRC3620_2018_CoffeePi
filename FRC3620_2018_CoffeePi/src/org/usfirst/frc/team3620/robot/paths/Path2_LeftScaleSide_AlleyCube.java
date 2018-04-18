@@ -24,7 +24,8 @@ public class Path2_LeftScaleSide_AlleyCube extends AbstractPath {
 	
 	@Override
 	public double getPathfinderGenVelocityMultiplier() {
-		return 0.4;
+		
+		return 1.0;
 	}
 	
 	@Override

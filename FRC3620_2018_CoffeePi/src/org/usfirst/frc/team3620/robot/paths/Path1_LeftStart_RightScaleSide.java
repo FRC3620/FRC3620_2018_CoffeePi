@@ -28,13 +28,19 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 				new Waypoint(21.30, 9.75, Pathfinder.d2r(0)),  */
 				
 				//State Points
-				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+		/*		new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				new Waypoint(13.425, 23.0, Pathfinder.d2r(0)),
 				//Mark: "18.45 is smack dab in the middle"
 				new Waypoint(18.45, 18.5, Pathfinder.d2r(-90)),
 				new Waypoint(18.95, 12.95, Pathfinder.d2r(-90)),
-				new Waypoint(21.30, 9.75, Pathfinder.d2r(0)), 
+				new Waypoint(21.30, 9.75, Pathfinder.d2r(0)),  */
 				
+				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				new Waypoint(11.425, 23.0, Pathfinder.d2r(0)),
+				//Mark: "18.45 is smack dab in the middle"
+				new Waypoint(17.45, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(17.95, 12.95, Pathfinder.d2r(-90)),
+				new Waypoint(19.30, 9.75, Pathfinder.d2r(0)),
 				
 		};
 	}
@@ -50,7 +56,7 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.5;
+		return 0.7;
 	}
 	
 	@Override

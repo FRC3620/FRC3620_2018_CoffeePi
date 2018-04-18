@@ -16,14 +16,13 @@ public class AutonomousIntakeCubeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double competitionMultiplier;
 	Timer timer = new Timer();
-	
-    public AutonomousIntakeCubeCommand() {
+	double howLong;
+    public AutonomousIntakeCubeCommand(double _howLong) {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	
+    	howLong = _howLong;
     }
-
     // Called just before this Command runs the first time
     protected void initialize() {
     	EventLogging.commandMessage(logger);
@@ -46,7 +45,7 @@ public class AutonomousIntakeCubeCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double howlong = timer.get();
-    	if (howlong > 1.3) {
+    	if (howlong > howLong) {
     		return true;
     	}
         return false;

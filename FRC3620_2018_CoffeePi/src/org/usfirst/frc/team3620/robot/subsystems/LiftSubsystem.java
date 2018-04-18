@@ -356,6 +356,7 @@ public class LiftSubsystem extends Subsystem {
 	
 	public void brace(double addedBangBangPower) {
 			setLiftTalon(ControlMode.PercentOutput, bracingVoltage + addedBangBangPower);
+			logger.info("Percent Output Brace = {}", (bracingVoltage + addedBangBangPower));
 	}
 	
 	void setLiftTalon(ControlMode controlMode, double value) {
