@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 public class HoldLift extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double initialEncoderPos;
-	double addedBangBangMultiplier = 0.015;
+	double addedBangBangMultiplier = 0.02;
 	double addedBangBangPower = 0.03;
 	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
 	double upperBangBangPowerLimit = 0.23;

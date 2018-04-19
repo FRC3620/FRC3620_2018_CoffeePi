@@ -31,6 +31,7 @@ public class ManualLiftOperatorCommand extends Command {
     protected void execute() {
     	double joyPos = Robot.m_oi.getLiftJoystick();
     	boolean highGear = Robot.liftSubsystem.isInHighGear();
+    	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
     	//	logger.info("" + joyPos);
     	logger.info("High Gear? = {}", highGear);
     	if(highGear == false){
@@ -49,20 +50,24 @@ public class ManualLiftOperatorCommand extends Command {
     		}
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {
-    				if(Robot.liftSubsystem.readEncoderInInches() < 20) {
+    				double originalJoyPos = joyPos;
+    				double h = 40;
+    				double l = 7;
+    				
+    			
+    				if(encoderPos < l) {
     					joyPos = joyPos*0.18;
+    				
     				}
-    				else if(Robot.liftSubsystem.readEncoderInInches() < 35){
-    					joyPos = joyPos * (1 - (((30 - Robot.liftSubsystem.readEncoderInInches())/15)*0.82));
-    				} else if(Robot.liftSubsystem.readEncoderInInches() > 35) {
+    				else if(encoderPos < h){
+    					joyPos = joyPos * (1 - (((h - encoderPos)/(h-l))*0.82));
+    				} else if(encoderPos > h) {
     					joyPos = 0.8*joyPos;
     				}
-    				//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
-    				//		joyPos = joyPos * 0.2;
-    				//}
     				if( joyPos > 0.85) {
     					joyPos = 1.0;
     				}
+    				logger.info("encoder Pos = {}, original JoystickPos = {}, final JoystickPos = {}", encoderPos, originalJoyPos, joyPos);
     				Robot.liftSubsystem.moveElevatorDown(joyPos);
     				//   		System.out.println("Moving Lift Down");
     			} else {

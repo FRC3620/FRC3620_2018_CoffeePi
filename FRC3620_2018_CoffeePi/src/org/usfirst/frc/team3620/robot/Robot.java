@@ -263,6 +263,7 @@ public class Robot extends TimedRobot {
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							else{
+								unfoldandlift.addSequential(new WaitJustALittle(1));
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());

@@ -1,5 +1,9 @@
 package org.usfirst.frc.team3620.robot.commands;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class WaitJustALittle extends Command {
 	double liftDelay;
+	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	Timer timer = new Timer();
     public WaitJustALittle(double liftDelaySeconds) {
         // Use requires() here to declare subsystem dependencies
@@ -17,6 +22,7 @@ public class WaitJustALittle extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	EventLogging.commandMessage(logger);
     	timer.reset();
     	timer.start();
     }
@@ -27,7 +33,7 @@ public class WaitJustALittle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(timer.get() > 4) {
+    	if(timer.get() > liftDelay) {
     		return true;
     	}
         return false;
@@ -35,10 +41,12 @@ public class WaitJustALittle extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	EventLogging.commandMessage(logger);
     }
 }
