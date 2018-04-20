@@ -8,14 +8,14 @@ public class Path2_AlleyCube_LeftScaleSide extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				new Waypoint(0, 0, Pathfinder.d2r(0.00)),
-				new Waypoint(1.86, 0.36, Pathfinder.d2r(0.00)),
+				new Waypoint(0, 0, Pathfinder.d2r(60.00)),
+				new Waypoint(3.16, 0.26, Pathfinder.d2r(0.00)),
 		};
 	}
 	
 	@Override
 	public double getPathfinderGenVelocityMultiplier() {
-		return 0.85;
+		return 1.0;
 	}
 	@Override
 	public boolean getPathfinderReverseMode(){

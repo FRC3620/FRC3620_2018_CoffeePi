@@ -263,7 +263,7 @@ public class Robot extends TimedRobot {
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							else{
-								unfoldandlift.addSequential(new WaitJustALittle(1));
+								unfoldandlift.addSequential(new WaitJustALittle(2.15));
 								unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 							}
 							unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
@@ -339,12 +339,13 @@ public class Robot extends TimedRobot {
 					
 					commandGroup.addSequential(unfoldAndDrop);
 					if(whereToPutCube == WhereToPutCube.SCALE) {
-					//	commandGroup.addSequential(new AutonomousPukeCubeCommand());
+						commandGroup.addSequential(new AutonomousPukeCubeCommand());
 					}
 						
 					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());
 						unfoldAndDrop.addSequential(new AutoMoveLiftDown()); */
 					goForTwoScale = false;
+					//PATH 3 LOGIC GOES HERE -- BASICALLY JUST COPY PATH 2 STUFF BUT MAKE IT PATH 3 paths
 					
 					
 					

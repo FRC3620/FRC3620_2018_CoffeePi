@@ -15,7 +15,8 @@ import org.slf4j.Logger;
 public class HoldLift extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double initialEncoderPos;
-	double addedBangBangMultiplier = 0.02;
+	//0.02
+	double addedBangBangMultiplier = 0.00;
 	double addedBangBangPower = 0.03;
 	double lowerBangBangPowerLimit = -Robot.liftSubsystem.bracingVoltage;
 	double upperBangBangPowerLimit = 0.23;
@@ -30,7 +31,7 @@ public class HoldLift extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	initialEncoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	logger.info("Starting HoldLift Command at {}", initialEncoderPos);
+ //   	logger.info("Starting HoldLift Command at {}", initialEncoderPos);
     	
     	if(Robot.liftSubsystem.isBottomLimitDepressed() && initialEncoderPos < 1) {
     		noPowerToHold = true;
@@ -61,7 +62,7 @@ public class HoldLift extends Command {
     	
     
     		Robot.liftSubsystem.brace(addedBangBangPower);
-    		logger.info("AddedBangBangPower = {}, Height = {}", addedBangBangPower, currentEncoderPos);
+  //  		logger.info("AddedBangBangPower = {}, Height = {}", addedBangBangPower, currentEncoderPos);
     	
     	
     	

@@ -67,7 +67,8 @@ public class ManualLiftOperatorCommand extends Command {
     				if( joyPos > 0.85) {
     					joyPos = 1.0;
     				}
-    				logger.info("encoder Pos = {}, original JoystickPos = {}, final JoystickPos = {}", encoderPos, originalJoyPos, joyPos);
+    				
+    		//		logger.info("encoder Pos = {}, original JoystickPos = {}, final JoystickPos = {}", encoderPos, originalJoyPos, joyPos);
     				Robot.liftSubsystem.moveElevatorDown(joyPos);
     				//   		System.out.println("Moving Lift Down");
     			} else {
