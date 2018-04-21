@@ -166,7 +166,8 @@ public abstract class AbstractPath extends Command {
 
 	double lastLeftEncoder = 0;
 	double lastRightEncoder = 0;
-
+	double startingAbsoluteHeading; 
+	
 	@Override
 	protected void initialize() {
 		EventLogging.commandMessage(logger);
@@ -176,14 +177,18 @@ public abstract class AbstractPath extends Command {
 		finishedFlag = false;
 
 		Robot.driveSubsystem.resetEncoders();
-		Robot.driveSubsystem.resetNavX();
+		//Robot.driveSubsystem.resetNavX();
+		startingAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		
 		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getAngle());
 		left.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
 		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getAngle());
 		right.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
-
+		
+		
+		
 		logger.info("PIDVAs configured.");
 		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getAngle());
 		lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
@@ -241,7 +246,8 @@ public abstract class AbstractPath extends Command {
 		double outputLeft = left.calculate(encoderPosLeft);
 		double outputRight = right.calculate(encoderPosRight);
 
-		double navx_heading = Robot.driveSubsystem.getAngle();
+		double currentAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		double navx_heading = currentAbsoluteHeading - startingAbsoluteHeading;
 
 		// change desired heading to positive right
 		double desired_heading = - Pathfinder.r2d(left.getHeading()); // seems to be outputting a range of 0-360 degrees.

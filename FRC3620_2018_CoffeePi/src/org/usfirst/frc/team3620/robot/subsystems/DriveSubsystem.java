@@ -69,6 +69,7 @@ public class DriveSubsystem extends Subsystem {
 		super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		ahrs.enableLogging(false);
+		resetNavX();
 		
 		gotCompBot = RobotMap.practiceBotJumper.get();
 	}
