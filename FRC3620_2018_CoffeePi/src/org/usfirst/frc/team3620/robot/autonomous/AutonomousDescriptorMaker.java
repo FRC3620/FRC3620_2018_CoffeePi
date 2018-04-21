@@ -40,10 +40,18 @@ public class AutonomousDescriptorMaker {
 		firstPathMap.put("RRLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));	
 		
 		//we are staring from the right, and we own the right side of the scale
-		firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));	
-		firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+		if (eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube) {
+			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));	
+			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
+			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
+			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
+		}
+		else {
+			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));	
+			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+		}
 		
 		//firstPathMap.put("",Path_#_L.class);
 	}
