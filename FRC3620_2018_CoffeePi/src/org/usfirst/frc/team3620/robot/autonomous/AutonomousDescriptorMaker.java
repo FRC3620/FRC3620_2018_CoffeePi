@@ -8,7 +8,7 @@ import org.usfirst.frc.team3620.robot.paths.*;
 public class AutonomousDescriptorMaker {
 	static SortedMap<String,AutonomousDescriptor> firstPathMap = new TreeMap<>();
 	static {
-		firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
+		firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LLRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE));
 		firstPathMap.put("LRRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE));

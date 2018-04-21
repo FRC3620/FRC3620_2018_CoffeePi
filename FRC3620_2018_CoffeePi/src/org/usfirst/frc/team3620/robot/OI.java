@@ -129,7 +129,7 @@ public class OI {
            SmartDashboard.putData("DoALittleTurn", new Path2_TurnALittle(45.0, true));
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
            SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
-
+           SmartDashboard.putData("LeftScaleEnd", new Path1_LeftStart_LeftScaleEnd());
 	}
 	       
 	public double getDriveVerticalJoystick() {
