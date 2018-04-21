@@ -3,17 +3,18 @@ package org.usfirst.frc.team3620.robot.autonomous;
 import org.usfirst.frc.team3620.robot.paths.AbstractPath;
 
 public class AutonomousDescriptor {
-	Class<? extends AbstractPath> pathClass;
+	Class<? extends AbstractPath> pathClass; 
 	WhereToPutCube whereToPutCube;
-	
-	public AutonomousDescriptor (Class<? extends AbstractPath> clazz, WhereToPutCube _whereToPutCube) {
+	TwoCube twoCube;
+	public AutonomousDescriptor (Class<? extends AbstractPath> clazz, WhereToPutCube _whereToPutCube, TwoCube _twoCube) {
 		this.pathClass = clazz;
 		this.whereToPutCube = _whereToPutCube;
+		this.twoCube = _twoCube;
 	}
 
 	@Override
 	public String toString() {
-		return "AutonomousDescriptor [pathClass=" + pathClass + ", whereToPutCube=" + whereToPutCube + "]";
+		return "AutonomousDescriptor [pathClass=" + pathClass + ", whereToPutCube=" + whereToPutCube + ", twoCube=" + twoCube + "]";
 	}
 
 	public AbstractPath getPath() {
@@ -27,5 +28,9 @@ public class AutonomousDescriptor {
 
 	public WhereToPutCube getWhereToPutCube() {
 		return whereToPutCube;
+	}
+
+	public TwoCube getTwoCube() {
+		return twoCube;
 	}
 }
