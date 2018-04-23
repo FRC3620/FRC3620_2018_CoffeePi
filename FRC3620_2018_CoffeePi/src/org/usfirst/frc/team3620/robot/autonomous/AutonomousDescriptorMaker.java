@@ -8,7 +8,7 @@ import org.usfirst.frc.team3620.robot.paths.*;
 public class AutonomousDescriptorMaker {
 	static SortedMap<String,AutonomousDescriptor> firstPathMap = new TreeMap<>();
 	
-	static boolean eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube = true;
+	static boolean eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube = false;
 	static {
 		// we are starting from left, and we own the left side of the scale, and we trust our partner
 		if (eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube) {

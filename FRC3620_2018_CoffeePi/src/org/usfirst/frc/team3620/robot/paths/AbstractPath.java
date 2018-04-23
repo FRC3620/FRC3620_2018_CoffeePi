@@ -161,8 +161,10 @@ public abstract class AbstractPath extends Command {
 	double getPathfinderGenAcceleration() {
 		return 3.0;
 	}
-
-
+	
+	double getHeadingCorrectionFactor() {
+		return 0.8 / 80.0;
+	}
 
 	double lastLeftEncoder = 0;
 	double lastRightEncoder = 0;
@@ -261,7 +263,7 @@ public abstract class AbstractPath extends Command {
 		double angleDifference = Pathfinder.boundHalfDegrees(navx_heading - desired_heading);
 		// Included example angle calculation:
 		// positive angle difference means we are pointed too far to the rigvht
-		double turn = 0.8 * (-1.0 / 80.0) * angleDifference; // tune this to tune turn rate??
+		double turn = -getHeadingCorrectionFactor() * angleDifference; // tune this to tune turn rate??
 		// negative turn means we are pointed too far right, and need to boost RH power
 		
 		// Custom angle calculation:

@@ -35,12 +35,20 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 				new Waypoint(18.95, 12.95, Pathfinder.d2r(-90)),
 				new Waypoint(21.30, 9.75, Pathfinder.d2r(0)),  */
 				
-				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//Kind of good
+		/*		new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				new Waypoint(11.5, 23.0, Pathfinder.d2r(0)),  // was new Waypoint(11.425, 23.0, Pathfinder.d2r(0)),
 				//Mark: "18.45 is smack dab in the middle"
-				new Waypoint(17, 18.5, Pathfinder.d2r(-90)),
-				new Waypoint(17.8, 12.95, Pathfinder.d2r(-90)),
-				new Waypoint(19.30, 9.75, Pathfinder.d2r(0)),
+				new Waypoint(18.2, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(18.3, 12.95, Pathfinder.d2r(-90)),
+				new Waypoint(21.0, 9.75, Pathfinder.d2r(0)), */
+				
+				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				new Waypoint(15.0, 23.0, Pathfinder.d2r(0)),  // was new Waypoint(11.425, 23.0, Pathfinder.d2r(0)),
+				//Mark: "18.45 is smack dab in the middle"
+				new Waypoint(18.4, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(18.4, 12.95, Pathfinder.d2r(-90)),
+				new Waypoint(21.0, 9.75, Pathfinder.d2r(0)),
 				
 		};
 	}
@@ -63,4 +71,17 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 	public boolean getPathfinderReverseMode() {
 		return true;
 	}
+	@Override
+	double getPathfinderGenAcceleration() {
+		// TODO Auto-generated method stub
+		return 1.5;
+	}
+	
+	@Override
+	double getHeadingCorrectionFactor() {
+		// return 0.8 / 80.0;
+		return 2 * 0.8 / 80.0;
+	}
+
+
 }
