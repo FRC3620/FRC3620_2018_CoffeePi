@@ -27,7 +27,7 @@ public class Path2_AlleyCube_RightScaleSide extends AbstractPath {
 	
 	@Override
 	public double getPathfinderP() {
-		return 0.09;
+		return 0.2;
 	}
 
 

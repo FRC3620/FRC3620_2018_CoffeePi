@@ -303,11 +303,11 @@ public class Robot extends TimedRobot {
 					unfoldandlift2.addSequential(new PivotUpCommand());
 					if(whereToPutCube == WhereToPutCube.SCALE) {
 						if(startingPos != whichSideOfScaleIsOurs) {
-							unfoldandlift.addSequential(new WaitJustALittle(4));
+							unfoldandlift.addSequential(new WaitJustALittle(5));
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 						}
 						else{
-							unfoldandlift.addSequential(new WaitJustALittle(2.15));
+							unfoldandlift.addSequential(new WaitJustALittle(1.65));
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 						}
 						unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());

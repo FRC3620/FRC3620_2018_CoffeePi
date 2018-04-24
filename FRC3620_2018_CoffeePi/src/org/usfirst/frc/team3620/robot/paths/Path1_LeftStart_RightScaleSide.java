@@ -48,14 +48,14 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 				//Mark: "18.45 is smack dab in the middle"
 				new Waypoint(18.4, 18.5, Pathfinder.d2r(-90)),
 				new Waypoint(18.4, 11.5, Pathfinder.d2r(-90)),
-				new Waypoint(22.5, 7.50, Pathfinder.d2r(0)),
+				new Waypoint(23, 6.3, Pathfinder.d2r(15)),
 				
 		};
 	}
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.85;
+		return 0.9;
 	}
 	@Override
 	double getPathfinderP() {
