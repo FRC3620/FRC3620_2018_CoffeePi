@@ -6,7 +6,8 @@ public class AutonomousDescriptor {
 	Class<? extends AbstractPath> pathClass; 
 	WhereToPutCube whereToPutCube;
 	TwoCube twoCube;
-	public AutonomousDescriptor (Class<? extends AbstractPath> clazz, WhereToPutCube _whereToPutCube, TwoCube _twoCube) {
+	ThreeCube threeCube;
+	public AutonomousDescriptor (Class<? extends AbstractPath> clazz, WhereToPutCube _whereToPutCube, TwoCube _twoCube, ThreeCube _threeCube) {
 		this.pathClass = clazz;
 		this.whereToPutCube = _whereToPutCube;
 		this.twoCube = _twoCube;
@@ -32,5 +33,8 @@ public class AutonomousDescriptor {
 
 	public TwoCube getTwoCube() {
 		return twoCube;
+	}
+	public ThreeCube getThreeCube() {
+		return threeCube;
 	}
 }

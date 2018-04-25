@@ -33,7 +33,7 @@ public class ManualLiftOperatorCommand extends Command {
     	boolean highGear = Robot.liftSubsystem.isInHighGear();
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
     	//	logger.info("" + joyPos);
-    	logger.info("High Gear? = {}", highGear);
+    //	logger.info("High Gear? = {}", highGear);
     	if(highGear == false){
     		if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false){
     			Robot.liftSubsystem.climb(joyPos);
@@ -51,7 +51,7 @@ public class ManualLiftOperatorCommand extends Command {
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {
     				double originalJoyPos = joyPos;
-    				double h = 40;
+    				double h = 60;
     				double l = 7;
     				
     			
@@ -60,7 +60,7 @@ public class ManualLiftOperatorCommand extends Command {
     				
     				}
     				else if(encoderPos < h){
-    					joyPos = joyPos * (1 - (((h - encoderPos)/(h-l))*0.82));
+    					joyPos = joyPos * (1 - (((h - encoderPos)/(h-l))*0.5));
     				} else if(encoderPos > h) {
     					joyPos = 0.8*joyPos;
     				}

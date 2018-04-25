@@ -8,49 +8,49 @@ import org.usfirst.frc.team3620.robot.paths.*;
 public class AutonomousDescriptorMaker {
 	static SortedMap<String,AutonomousDescriptor> firstPathMap = new TreeMap<>();
 	
-	static boolean eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube = false;
+	static boolean eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube = false; 
 	static {
 		// we are starting from left, and we own the left side of the scale, and we trust our partner
 		if (eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube) {
-			firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
-			firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
-			firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
-			firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
+			firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.YES));
+			firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));
+			firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.YES));
+			firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));
 		} else {
-			firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-			firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-			firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-			firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+			firstPathMap.put("LLLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+			firstPathMap.put("LRLY",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+			firstPathMap.put("LLLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.YES));
+			firstPathMap.put("LRLN",new AutonomousDescriptor(Path1_LeftStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
 		}
 
 		// we are starting from left, and we own the right side of the scale, and we DO trust our partner
-		firstPathMap.put("LLRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("LRRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE, TwoCube.YES));
+		firstPathMap.put("LLRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+		firstPathMap.put("LRRY",new AutonomousDescriptor(Path_LineUpForCrossLeft.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
 		
 		// we are starting from left, and we own the right side of the scale, and we DO NOT trust our partner
-		firstPathMap.put("LLRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("LRRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+		firstPathMap.put("LLRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+		firstPathMap.put("LRRN",new AutonomousDescriptor(Path1_LeftStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
 		
 		//we are staring from the right, and we own the left side of the scale, and we DO trust our partner
-		firstPathMap.put("RLLY",new AutonomousDescriptor(Path_LineUpForCrossRight.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("RRLY",new AutonomousDescriptor(Path_LineUpForCrossRight.class, WhereToPutCube.SCALE, TwoCube.YES));
+		firstPathMap.put("RLLY",new AutonomousDescriptor(Path_LineUpForCrossRight.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+		firstPathMap.put("RRLY",new AutonomousDescriptor(Path_LineUpForCrossRight.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
 		
 		//we are staring from the right, and we own the left side of the scale, and we DO NOT trust our partner
-		firstPathMap.put("RLLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-		firstPathMap.put("RRLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));	
+		firstPathMap.put("RLLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+		firstPathMap.put("RRLN",new AutonomousDescriptor(Path1_RightStart_LeftScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));	
 		
 		//we are staring from the right, and we own the right side of the scale
 		if (eliminationsSoWeDoTheScaleFromTheEndWithNoTwoCube) {
-			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));	
-			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
-			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
-			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO));
+			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));	
+			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));
+			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));
+			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleEnd.class, WhereToPutCube.SCALE, TwoCube.NO, ThreeCube.NO));
 		}
 		else {
-			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));	
-			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
-			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES));
+			firstPathMap.put("RLRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));	
+			firstPathMap.put("RRRY",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+			firstPathMap.put("RLRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
+			firstPathMap.put("RRRN",new AutonomousDescriptor(Path1_RightStart_RightScaleSide.class, WhereToPutCube.SCALE, TwoCube.YES, ThreeCube.NO));
 		}
 		
 		//firstPathMap.put("",Path_#_L.class);
@@ -59,9 +59,9 @@ public class AutonomousDescriptorMaker {
 		AutonomousDescriptor autonomousDescriptor;
 		if(myPosition == 'C') {
 			if(switchPosition == 'L') {
-				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_LeftSwitch.class, WhereToPutCube.SWITCH, TwoCube.NO);
+				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_LeftSwitch.class, WhereToPutCube.SWITCH, TwoCube.NO, ThreeCube.NO);
 			} else {
-				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_RightSwitch.class, WhereToPutCube.SWITCH, TwoCube.NO);
+				autonomousDescriptor = new AutonomousDescriptor(Path1_CenterStart_RightSwitch.class, WhereToPutCube.SWITCH, TwoCube.NO, ThreeCube.NO);
 			}
 		}else if(myPosition == 'N') {
 				return null;
