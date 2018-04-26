@@ -32,10 +32,10 @@ public class PivotDownCommand extends Command {
     	//Practice cutoffPower = 0.02
     	//Practice cutoffPos = 130
     	//Practice slowDownPoint = 74.0
-    	maxPower = 0.6;
+    	maxPower = 0.7;
     	desiredCutoffPower = 0.05;
-    	cutoffEncoderPos = 135;
-    	slowDownPoint = 50.0;
+    	cutoffEncoderPos = 150;
+    	slowDownPoint = 30.0;
     }
 
     

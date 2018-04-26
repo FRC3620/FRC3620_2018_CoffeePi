@@ -289,6 +289,7 @@ public class Robot extends TimedRobot {
 			commandGroup.addSequential(new ClampCommand());
 			CommandGroup unfoldandlift = new CommandGroup();
 			CommandGroup unfoldandlift2 = new CommandGroup();
+			CommandGroup unfoldandlift3 = new CommandGroup();
 			CommandGroup liftDownAndUnfold = new CommandGroup();
 			CommandGroup liftDownAndUnfold2 = new CommandGroup();
 
@@ -318,10 +319,12 @@ public class Robot extends TimedRobot {
 							unfoldandlift.addSequential(new AutoMoveLiftUpToScaleHeight());
 						}
 						unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
+						unfoldandlift3.addSequential(new AutoMoveLiftUpToScaleHeight());
 
 					} else {
 						unfoldandlift.addSequential(new AutoMoveLiftUpToSwitchHeight());
 						unfoldandlift2.addSequential(new AutoMoveLiftUpToScaleHeight());
+						unfoldandlift3.addSequential(new AutoMoveLiftUpToScaleHeight());
 					}
 
 					unfoldandlift.addSequential(new HoldLift());
@@ -403,7 +406,7 @@ public class Robot extends TimedRobot {
 
 						unfoldAndDrop2.addSequential(new ClampCommand());
 						unfoldAndDrop2.addParallel(new AutonomousIntakeCubeCommand(0.3));
-						unfoldAndDrop2.addParallel(unfoldandlift2);
+						unfoldAndDrop2.addParallel(unfoldandlift3);
 						if(whichSideOfScaleIsOurs == 'L') {
 							unfoldAndDrop2.addSequential(new Path3_AlleyCube2_LeftScaleSide());
 							//				unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
