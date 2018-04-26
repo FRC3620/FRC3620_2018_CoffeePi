@@ -154,6 +154,7 @@ public class LiftSubsystem extends Subsystem {
 	public void moveElevatorUp(double joyPos) {
 		// runs lift motor for vertSpeed
 		setLiftTalon(ControlMode.PercentOutput, bracingVoltage + (joyPos * peakVoltageHigh));
+	//	System.out.println("Setting Lift to " + (bracingVoltage + (joyPos * peakVoltageHigh)));
 	}
 	public void moveElevatorUp(double joyPos, boolean highGear) {
 		if(highGear == false){

@@ -45,8 +45,11 @@ public class ManualLiftOperatorCommand extends Command {
     	} else{
 
     		if(joyPos <  -0.2 && Robot.liftSubsystem.isTopLimitDepressed() == false) {
+    			if(joyPos < -0.85) {
+    				joyPos = -1.0;
+    			}
     			Robot.liftSubsystem.moveElevatorUp(-joyPos);
-    			//    		System.out.println("Moving Lift Up");
+    			 //  		System.out.println("Moving Lift Up at JoyPos = " + joyPos);
     		}
     		else if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false) {
     			if (true) {

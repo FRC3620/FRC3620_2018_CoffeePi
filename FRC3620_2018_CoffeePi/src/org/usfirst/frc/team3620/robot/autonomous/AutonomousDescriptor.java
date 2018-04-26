@@ -11,11 +11,12 @@ public class AutonomousDescriptor {
 		this.pathClass = clazz;
 		this.whereToPutCube = _whereToPutCube;
 		this.twoCube = _twoCube;
+		this.threeCube = _threeCube;
 	}
 
 	@Override
 	public String toString() {
-		return "AutonomousDescriptor [pathClass=" + pathClass + ", whereToPutCube=" + whereToPutCube + ", twoCube=" + twoCube + "]";
+		return "AutonomousDescriptor [pathClass=" + pathClass + ", whereToPutCube=" + whereToPutCube + ", twoCube=" + twoCube + ", threecube=" + threeCube + "]";
 	}
 
 	public AbstractPath getPath() {

@@ -10,7 +10,7 @@ public class Path3_LeftScaleSide_AlleyCube2 extends AbstractPath {
 		// TODO Auto-generated method stub
 		return new Waypoint[] {
 				new Waypoint(0, 0, Pathfinder.d2r(0)),
-				new Waypoint(4.76, 1.55, Pathfinder.d2r(37.50)),
+				new Waypoint(4.76, 1.55, Pathfinder.d2r(20.50)),
 		};
 	}
 	
