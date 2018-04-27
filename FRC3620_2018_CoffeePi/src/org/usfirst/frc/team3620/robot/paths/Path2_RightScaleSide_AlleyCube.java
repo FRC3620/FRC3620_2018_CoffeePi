@@ -13,7 +13,7 @@ public class Path2_RightScaleSide_AlleyCube extends AbstractPath {
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
 				new Waypoint(0, 1, Pathfinder.d2r(15)),
-				new Waypoint(4, -0.3, Pathfinder.d2r(-15)),
+				new Waypoint(6, -0.5, Pathfinder.d2r(-15)),
 
 		};
 	}

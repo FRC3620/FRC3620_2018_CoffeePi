@@ -309,6 +309,8 @@ public class Robot extends TimedRobot {
 					// build up the command to unfold and lift if we need it
 					unfoldandlift.addSequential(new PivotUpCommand());
 					unfoldandlift2.addSequential(new PivotUpCommand());
+					unfoldandlift3.addSequential(new AutonomousIntakeCubeCommand(0.4));
+					unfoldandlift3.addSequential(new PivotUpCommand());
 					if(whereToPutCube == WhereToPutCube.SCALE) {
 						if(startingPos != whichSideOfScaleIsOurs) {
 							unfoldandlift.addSequential(new WaitJustALittle(5));
@@ -361,9 +363,9 @@ public class Robot extends TimedRobot {
 						} else { 
 							unfoldAndDrop.addSequential(new Path2_RightScaleSide_AlleyCube());
 						} 
-
+						unfoldAndDrop.addSequential(new AutonomousIntakeCubeCommand(0.3));
 						unfoldAndDrop.addSequential(new ClampCommand());
-						unfoldAndDrop.addParallel(new AutonomousIntakeCubeCommand(0.3));
+						
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(whichSideOfScaleIsOurs == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
@@ -405,8 +407,8 @@ public class Robot extends TimedRobot {
 						} 
 
 						unfoldAndDrop2.addSequential(new ClampCommand());
-						unfoldAndDrop2.addParallel(new AutonomousIntakeCubeCommand(0.3));
-						unfoldAndDrop2.addParallel(unfoldandlift3);
+						unfoldAndDrop2.addSequential(new AutonomousIntakeCubeCommand(0.3));
+					/*	unfoldAndDrop2.addParallel(unfoldandlift3);
 						if(whichSideOfScaleIsOurs == 'L') {
 							unfoldAndDrop2.addSequential(new Path3_AlleyCube2_LeftScaleSide());
 							//				unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
@@ -414,7 +416,7 @@ public class Robot extends TimedRobot {
 							unfoldAndDrop2.addSequential(new Path3_AlleyCube2_RightScaleSide());
 							//			unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, false));
 						}
-
+					*/
 						
 					} else {								
 						//Needs to be run forwards
