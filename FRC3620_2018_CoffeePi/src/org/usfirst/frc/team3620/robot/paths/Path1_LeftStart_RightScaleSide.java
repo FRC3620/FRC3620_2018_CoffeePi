@@ -48,7 +48,7 @@ public class Path1_LeftStart_RightScaleSide extends AbstractPath {
 				//Mark: "18.45 is smack dab in the middle"
 				new Waypoint(18.4, 18.5, Pathfinder.d2r(-90)),
 				new Waypoint(18.4, 11.5, Pathfinder.d2r(-90)),
-				new Waypoint(23, 6.3, Pathfinder.d2r(15)),
+				new Waypoint(23, 5.8, Pathfinder.d2r(15)),
 				
 		};
 	}

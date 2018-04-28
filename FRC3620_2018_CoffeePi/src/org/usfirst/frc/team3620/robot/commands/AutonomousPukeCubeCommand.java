@@ -16,9 +16,10 @@ public class AutonomousPukeCubeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	double competitionMultiplier;
 	Timer timer = new Timer();
+	double pushingPower;
 	
-    public AutonomousPukeCubeCommand() {
-    	
+    public AutonomousPukeCubeCommand(double _pushingPower) {
+    	pushingPower = _pushingPower;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.intakeSubsystem);
@@ -39,7 +40,7 @@ public class AutonomousPukeCubeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	Robot.intakeSubsystem.pushCubeOut(-0.8*competitionMultiplier);
+    	Robot.intakeSubsystem.pushCubeOut(pushingPower*competitionMultiplier);
 
     }
 

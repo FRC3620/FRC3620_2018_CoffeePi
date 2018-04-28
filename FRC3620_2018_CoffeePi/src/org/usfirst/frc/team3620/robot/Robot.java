@@ -347,7 +347,7 @@ public class Robot extends TimedRobot {
 				commandGroup.addSequential(path);
 
 				if (whereToPutCube != WhereToPutCube.NOWHERE) {
-					commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					commandGroup.addSequential(new AutonomousPukeCubeCommand(-0.8));
 				} 
 
 				if(whereToPutCube == whereToPutCube.SCALE) {
@@ -388,7 +388,7 @@ public class Robot extends TimedRobot {
 
 					commandGroup.addSequential(unfoldAndDrop);
 					if(whereToPutCube == WhereToPutCube.SCALE) {
-						commandGroup.addSequential(new AutonomousPukeCubeCommand());
+						commandGroup.addSequential(new AutonomousPukeCubeCommand(-0.7));
 					}
 
 					/*	unfoldAndDrop.addSequential(new Path_BackUpFromScale());
@@ -441,7 +441,7 @@ public class Robot extends TimedRobot {
 					commandGroup.addSequential(clampAndFoldUp);
 					commandGroup.addParallel(new PivotUpCommand());
 					//		commandGroup.addSequential(new Path2_CubeZone_RightSwitch());
-					commandGroup.addSequential(new AutonomousPukeCubeCommand());
+					commandGroup.addSequential(new AutonomousPukeCubeCommand(-0.8));
 				}
 
 				commandGroup.addSequential(new AllDoneCommand());
