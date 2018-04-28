@@ -10,10 +10,10 @@ public class Path_LineUpForCrossLeft extends AbstractPath {
 		// TODO Auto-generated method stub
 		return new Waypoint[] {
 				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
-				new Waypoint(13.425, 23.0, Pathfinder.d2r(0)),
+				new Waypoint(14.025, 23.0, Pathfinder.d2r(0)),
 				//Mark: "18.45 is smack dab in the middle"
-				new Waypoint(18.45, 18.5, Pathfinder.d2r(-90)),
-				new Waypoint(18.95, 16.35, Pathfinder.d2r(-90)),
+				new Waypoint(18.65, 18.5, Pathfinder.d2r(-90)),
+				new Waypoint(18.65, 16.35, Pathfinder.d2r(-90)),
 		};
 	}
 

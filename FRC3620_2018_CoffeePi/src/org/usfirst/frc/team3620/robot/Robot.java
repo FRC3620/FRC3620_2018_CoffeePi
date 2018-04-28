@@ -369,7 +369,7 @@ public class Robot extends TimedRobot {
 						unfoldAndDrop.addParallel(unfoldandlift2);
 						if(whichSideOfScaleIsOurs == 'L') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_LeftScaleSide());
-							//				unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
+										unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, true));
 						} else if(whichSideOfScaleIsOurs == 'R') {
 							unfoldAndDrop.addSequential(new Path2_AlleyCube_RightScaleSide());
 							//			unfoldAndDrop.addSequential(new Path2_TurnALittle(15.0, false));
