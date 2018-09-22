@@ -14,13 +14,14 @@ import edu.wpi.first.wpilibj.command.Command;
 public class AutonomousPukeCubeCommand extends Command {
 	
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+	double competitionMultiplier;
 	Timer timer = new Timer();
 	
     public AutonomousPukeCubeCommand() {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -28,17 +29,24 @@ public class AutonomousPukeCubeCommand extends Command {
     	EventLogging.commandMessage(logger);
     	timer.reset();
     	timer.start();
+    	if(Robot.intakeSubsystem.gotCompBot()) {
+    		competitionMultiplier  = -1.0;
+    	}else {
+    		competitionMultiplier = 1.0;
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.intakeSubsystem.pushCubeOut(1.0);
+    	
+    	Robot.intakeSubsystem.pushCubeOut(-0.8*competitionMultiplier);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double howlong = timer.get();
-    	if (howlong > 1) {
+    	if (howlong > 0.3) {
     		return true;
     	}
         return false;

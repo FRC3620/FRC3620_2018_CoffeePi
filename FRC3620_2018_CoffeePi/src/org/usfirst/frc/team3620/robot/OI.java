@@ -8,18 +8,11 @@
 package org.usfirst.frc.team3620.robot;
 
 
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftDown;
-import org.usfirst.frc.team3620.robot.commands.AutoMoveLiftUp;
-import org.usfirst.frc.team3620.robot.commands.ClampCommand;
-import org.usfirst.frc.team3620.robot.commands.ManualLiftOperatorCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotDownCommand;
-import org.usfirst.frc.team3620.robot.commands.PivotUpCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetDriveEncodersCommand;
-import org.usfirst.frc.team3620.robot.commands.ResetLiftEncoderCommand;
-import org.usfirst.frc.team3620.robot.commands.UnClampCommand;
 import org.usfirst.frc.team3620.robot.paths.*;
 import org.usfirst.frc3620.misc.AnalogValueButton;
 import org.usfirst.frc3620.misc.DPad;
+import org.usfirst.frc3620.misc.DoubleTriggerButton;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -75,7 +68,7 @@ public class OI {
 	       Button pivotUp = new JoystickButton(operatorJoystick, 2);
 	       pivotUp.whenActive(new PivotUpCommand());
 	       Button pivotDown = new JoystickButton(operatorJoystick, 3);
-	       pivotDown.whenActive(new PivotDownCommand());
+	       pivotDown.whileHeld(new CreepIntakeUp()); 
 	     Button moveLiftUp = new JoystickButton(operatorJoystick, 4);
 	      moveLiftUp.whenPressed(new AutoMoveLiftUpToScaleHeight());
 	       
@@ -93,6 +86,10 @@ public class OI {
 	       
 	       Button liftOnManualControl = new AnalogValueButton(()-> Math.abs(getLiftJoystick()), 0.2);
 	       liftOnManualControl.whileHeld(new ManualLiftOperatorCommand());
+	       
+	       Button pivotToTripPointButton = new DoubleTriggerButton(operatorJoystick, 0.6);
+	       //pivotToTripPointButton.whenPressed(new PivotToPosition());
+	       pivotToTripPointButton.whenPressed(new ActuateRampCommand());
 	      
 	       Button posSet8 = new JoystickButton(kaiBox, 8);
 	       Button posSet9 = new JoystickButton(kaiBox, 9);
@@ -101,6 +98,7 @@ public class OI {
 	       SmartDashboard.putData("ResetPivotEncoder", new ResetPivotEncoder());
 	       SmartDashboard.putData("Pivot Down Command", new PivotDownCommand());
 	       SmartDashboard.putData("Pivot Up Command", new PivotUpCommand());
+	       SmartDashboard.putData("Pivot to position command", new PivotToPosition());
 	       // SmartDashboard Buttons:
 //	       SmartDashboard.putData("AutonomousLeft", new AutonomousLeft());
 //	       SmartDashboard.putData("AutonomousCenter", new AutonomousCenter());
@@ -112,7 +110,7 @@ public class OI {
            SmartDashboard.putData("Left start, left scale side", new Path1_LeftStart_LeftScaleSide());
            SmartDashboard.putData("Left start, left switch", new Path1_LeftStart_LeftSwitchEnd());
 //           SmartDashboard.putData("Left start, left switch", new Path_LeftStart_LeftSwitch());
-           SmartDashboard.putData("Left start, right scale", new Path1_LeftStart_RightScaleEnd());
+          
            SmartDashboard.putData("Left Start, Right scale side", new Path1_LeftStart_RightScaleSide());
 //           SmartDashboard.putData("Right start, left scale", new Path_RightStart_LeftScale());
            SmartDashboard.putData("Right start, right scale end", new Path1_RightStart_RightScaleEnd());
@@ -122,7 +120,16 @@ public class OI {
            SmartDashboard.putData("Move Lift to Transport Height", new AutoMoveLiftUpToSwitchHeight());
            SmartDashboard.putData("Move Lift to Scale Height", new AutoMoveLiftUpToScaleHeight());
            SmartDashboard.putData("Pivot180", new Auto180PointTurn(90));
+           SmartDashboard.putData("Auto Move Lift Down", new AutoMoveLiftDown());
+           SmartDashboard.putData("AutoPivotDown", new AutoPivotDown());
+           SmartDashboard.putData("AutoMoveLiftDownAndFlip", new AutoLiftDownAndFlipDown());
+           SmartDashboard.putData("Left Scale Side to Alley Cube", new Path2_LeftScaleSide_AlleyCube());
+           SmartDashboard.putData("AlleyCubeRightSide", new Path2_AlleyCube_RightScaleSide());
+           SmartDashboard.putData("TurnALittleLeft", new Path2_TurnALittle(45.0, false));
+           SmartDashboard.putData("DoALittleTurn", new Path2_TurnALittle(45.0, true));
            SmartDashboard.putData("BackUpFromScale", new Path_BackUpFromScale());
+           SmartDashboard.putData("PID Tuning Paths", new ZeHomelessPathHaven());
+           SmartDashboard.putData("LeftScaleEnd", new Path1_LeftStart_LeftScaleEnd());
 	}
 	       
 	public double getDriveVerticalJoystick() {

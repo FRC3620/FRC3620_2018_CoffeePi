@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class PivotDownCommand extends Command {
+public class AutoPivotDown extends Command {
+
 	double liftEncoderPos;
 	double pivotEncoder;
 	double maxPower;
@@ -19,7 +20,7 @@ public class PivotDownCommand extends Command {
 	double slowDownPoint;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public PivotDownCommand() {
+    public AutoPivotDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.intakeSubsystem);
@@ -32,10 +33,10 @@ public class PivotDownCommand extends Command {
     	//Practice cutoffPower = 0.02
     	//Practice cutoffPos = 130
     	//Practice slowDownPoint = 74.0
-    	maxPower = 0.6;
-    	desiredCutoffPower = 0.05;
-    	cutoffEncoderPos = 135;
-    	slowDownPoint = 50.0;
+    	maxPower = 0.9;
+    	desiredCutoffPower = -0.03;
+    	cutoffEncoderPos = 138;
+    	slowDownPoint = 20.0;
     }
 
     

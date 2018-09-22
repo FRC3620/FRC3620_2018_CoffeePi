@@ -8,21 +8,20 @@ public class Path_BackUpFromScale extends AbstractPath {
 	@Override
 	Waypoint[] getMyWaypoints() {
 		return new Waypoint[] {
-				
 				new Waypoint(0, 0, Pathfinder.d2r(0)),
-				new Waypoint(2, 0, Pathfinder.d2r(0)),
+				new Waypoint(1, 0, Pathfinder.d2r(0)),
 		};
 		// TODO Auto-generated method stub
 	}
 	@Override
 	double getPathfinderP() {
-		return 0.001;
+		return 0.5;
 	}
 	
 	
 	@Override
 	boolean getPathfinderReverseMode() {
-		return true;
+		return false;
 	}
 	@Override
 	double getPathfinderOutputMultiplier() {
