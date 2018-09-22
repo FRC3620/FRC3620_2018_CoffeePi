@@ -2,9 +2,7 @@ package org.usfirst.frc.team3620.robot.subsystems;
 
 
 
-import org.usfirst.frc.team3620.robot.Robot;
 import org.usfirst.frc.team3620.robot.RobotMap;
-import org.usfirst.frc.team3620.robot.commands.IntakeCubeCommand;
 import org.usfirst.frc.team3620.robot.commands.ManualCubeCommand;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -14,15 +12,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import java.security.Key;
 
 import org.slf4j.Logger;
 /**
@@ -48,12 +42,14 @@ public class IntakeSubsystem extends Subsystem {
 	public double encoderAt180 = 1330;
 	//public double encoderAt90 = 330;
 	//public double startingPivotAngle;
-	public double maxPivotSpeed = 0.3;
+	public double maxPivotSpeed = 0.3; //WAS 0.3 CHANGED UNTIL ENCODER IS FIXED
 	public double encoderErrorMargin = 50;
 	public double pivotAngleDeg;
 	public double cosMultiplier;
 	public double finalSpeed;
 	public boolean haveCube;
+	public boolean gotCompBot;
+	
 	
 	public IntakeSubsystem() {
 		super();
@@ -65,9 +61,11 @@ public class IntakeSubsystem extends Subsystem {
 			intakePivot.setNeutralMode(NeutralMode.Brake);
 		}
 		resetEncoder();
+		gotCompBot = !RobotMap.practiceBotJumper.get();
 	}
 	
 	public boolean isEncoderValid;
+	public boolean isArmDown;
 	
 	public boolean getEncoderIsValid(){
 		return isEncoderValid;
@@ -76,19 +74,30 @@ public class IntakeSubsystem extends Subsystem {
 	public boolean homeButtonIsPressed() {
 		if (intakePivot != null) {
     		//Should be reverse limit but we're hoping this works.
-    		return intakePivot.getSensorCollection().isRevLimitSwitchClosed();
-    		
+			if (intakePivot.getSensorCollection().isFwdLimitSwitchClosed()) {
+				isArmDown = false;
+				return true;
+			}
+		}
+			else {
+    		return false;
     	}
     	return false; 
 	}
 	
+	public boolean gotCompBot() {
+		return gotCompBot;
+	}
+	
 	
 	double readEncoder() {
+		
 		if(intakePivot != null) {
-			//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
 			int encoderPos = intakePivot.getSelectedSensorPosition(kSpeedPositionLoopIdx);
+			
 			return encoderPos;
 		}
+		
 		return 0;
 	}
 	
@@ -101,7 +110,7 @@ public class IntakeSubsystem extends Subsystem {
 		}
 	}
 
-	public void movePivotDown(int position) {
+	/*public void movePivotDown(int position) {
 		
 		if (isEncoderValid) {
 			if (intakePivot != null) {
@@ -111,7 +120,7 @@ public class IntakeSubsystem extends Subsystem {
 			}
 		}
 		
-	}
+	}*/
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -154,7 +163,12 @@ public class IntakeSubsystem extends Subsystem {
    }
    public void pivotUp(double speed){
 	   if(intakePivot != null) {
-		   intakePivot.set(ControlMode.PercentOutput, speed);
+		   if(speed == 0) {
+			   intakePivot.neutralOutput();
+		   }
+		   else {
+			   intakePivot.set(ControlMode.PercentOutput, speed);
+		   }
 	   } else { 
 		   
 		  logger.info("Tried to pivot up - no CANTalons!");
@@ -163,7 +177,12 @@ public class IntakeSubsystem extends Subsystem {
    
    public void pivotDown(double speed){
 	   if(intakePivot != null) {
-		   intakePivot.set(ControlMode.PercentOutput, -speed);
+		   if(speed == 0) {
+			   intakePivot.neutralOutput();
+		   }
+		   else {
+			   intakePivot.set(ControlMode.PercentOutput, -speed);
+		   }
 	   } else {
 		  logger.info("Tried to pivot down - no CANTalons!");
 	   }
@@ -180,6 +199,7 @@ public class IntakeSubsystem extends Subsystem {
 	   } else {
 		  logger.info("Tried to clamp - no solenoid!");
 	   }
+	   clampIsClosed = true;
    }
    
    //releases clamp
@@ -193,27 +213,28 @@ public class IntakeSubsystem extends Subsystem {
 	   } else {
 		  logger.info("Tried to unclamp - no solenoid!");
 	   }
+	   clampIsClosed = false;
 	   
    }
    
+   boolean clampIsClosed;
+   
    public boolean isClampClosed() {
-	   if (intakeClamperSolenoid != null) {
-		   Value intakeStatus = intakeClamperSolenoid.get(); 
-		//   logger.info("Clamper status: " + intakeStatus);
-		    if (intakeStatus == Value.kForward) {
-		    //	logger.info("Clamper is closed");
-		    	return true;
-		    }
-	   }
-		   logger.info("Clamper is not closed");
-		   return false;  
+	   return clampIsClosed;
    }
  
    public double readPivotAngleInDegress() {
 	   double encoderPositon = readEncoder();
 	   double pivotAngleDeg = (encoderPositon * (180.0/encoderAt180));
+	   if(pivotAngleDeg >= 120) {
+			isArmDown = true;
+		//int encoderPos = intakePivot.getSensorCollection().getQuadraturePosition();
+		
+		
+		}
 	   return pivotAngleDeg;
    }
+   
    
    @Override
    public void periodic() {
@@ -230,6 +251,8 @@ public class IntakeSubsystem extends Subsystem {
 		   SmartDashboard.putNumber("Pivot Angle in degrees", readPivotAngleInDegress());
 		   SmartDashboard.putBoolean
 		   ("Pivot home is pressed", homeButtonIsPressed());
+		   SmartDashboard.putBoolean("Pivot encoder valid", isEncoderValid);
+		   SmartDashboard.putBoolean("Pivot is clamped", isClampClosed());
 	   }
    }
    

@@ -29,34 +29,47 @@ public abstract class AutoMoveLiftUp extends Command {
 	double startingEncoderPos;
 	double requestedEncoderPos; //  TODO was 4700, changed it for testing purposes
 	//1 revolution = 3 inches
-	int oneFoot = 12;
-	double slowDownPoint = requestedEncoderPos - oneFoot;
-	double speedUpPoint = startingEncoderPos + oneFoot;
-	double desiredStartingPower = 0.3;
+	double oneFoot;
+	double slowDownPoint;
+	double speedUpPoint;
+	double desiredStartingPower;
 	double maxPower;
-	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.12;
+	double desiredEndingPower = Robot.liftSubsystem.bracingVoltage + 0.15;
 	
 	boolean weAreDoneSenor = false;
     public AutoMoveLiftUp() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.liftSubsystem);
-    	maxPower = getMaxPower();
-    	requestedEncoderPos = getRequestedEndPos();
+    	
     }
+    
     
     public abstract double getRequestedEndPos();
     public double getMaxPower() {
     	return 0.6;
     }
     
-
+    public double getStartingPower() {
+    	return 0.35;
+    }
+    
+    public double getAccelDecelDistance() {
+    	return 9;
+    }
     // Called just before this Command runs the first time
     //1440 ticks of encoder = 16.875 inches
     //TO-DO ADD EXPERIMENTAL VALUES TO INITIALIZE THE VARIABLES
     protected void initialize() {
     	logger.info("Starting AutoMoveLiftUp Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
+    	startingEncoderPos = Robot.liftSubsystem.readEncoderInInches();
     	weAreDoneSenor = false;
+    	desiredStartingPower = getStartingPower();
+    	oneFoot = getAccelDecelDistance();
+    	maxPower = getMaxPower();
+    	requestedEncoderPos = getRequestedEndPos();
+    	slowDownPoint = requestedEncoderPos - 18;
+    	speedUpPoint = startingEncoderPos + oneFoot;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -75,16 +88,16 @@ public abstract class AutoMoveLiftUp extends Command {
     double encoderPos = Math.abs(Robot.liftSubsystem.readEncoderInInches());
 	    if(encoderPos > requestedEncoderPos || Robot.liftSubsystem.isTopLimitDepressed() == true) {
 	    	weAreDoneSenor = true;
-	    	System.out.println("We're done");
+	  //  	System.out.println("We're done");
 	    } else if((encoderPos <= (speedUpPoint) && encoderPos < slowDownPoint) || Robot.liftSubsystem.isBottomLimitDepressed()){
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
 
-    		//System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
+    	//	System.out.println(Robot.liftSubsystem.calculatePowerHyperbolic(desiredStartingPower, encoderPos, startingEncoderPos, speedUpPoint, maxPower));
 
     	} else if(encoderPos > speedUpPoint && encoderPos < slowDownPoint){
     		Robot.liftSubsystem.setElevatorVelocity(maxPower);
-    		System.out.println("We're set to maximum overdrive.");
+  //  		System.out.println("We're set to maximum overdrive.");
     	} else if(encoderPos >= slowDownPoint) {
     		Robot.liftSubsystem.autoMoveElevatorUp(
     				Robot.liftSubsystem.calculatePowerHyperbolic(desiredEndingPower, encoderPos, requestedEncoderPos, slowDownPoint, maxPower));
@@ -103,7 +116,8 @@ public abstract class AutoMoveLiftUp extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-
+    	
+    	
     	if(weAreDoneSenor == true) {
 
     		return true;

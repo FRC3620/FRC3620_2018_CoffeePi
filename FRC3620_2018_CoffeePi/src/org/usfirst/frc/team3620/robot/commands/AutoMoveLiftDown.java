@@ -13,7 +13,8 @@ public class AutoMoveLiftDown extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
 	double slowDownPoint;
-	double fallingPower = 0;
+	double fallingPower = -0.40;
+
     public AutoMoveLiftDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -29,14 +30,19 @@ public class AutoMoveLiftDown extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
+    	double joyPos = 1.0;
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
-    	if(encoderPos > 14){
-    		Robot.liftSubsystem.setElevatorVelocity(0);
-    	} else {
-    		//The maximum speed at which the lift moves during teleop when slowing down for a smooth landing.
-    		Robot.liftSubsystem.setElevatorVelocity(0.0206);
-    	}
+    	
+		 if(Robot.liftSubsystem.readEncoderInInches() < 45){ //Was at 0.82 and 0.9 for JoyPos, 0.77 and 1.0
+			joyPos = joyPos * (1 - (((45 - Robot.liftSubsystem.readEncoderInInches())/44)*0.63));
+		} else {
+			joyPos = 1.0;
+		}
+		//		if( Robot.liftSubsystem.readEncoderInInches() < 8){
+		//		joyPos = joyPos * 0.2;
+		//}
+	
+		Robot.liftSubsystem.moveElevatorDown(joyPos);
     	
     	
     	
@@ -49,9 +55,8 @@ public class AutoMoveLiftDown extends Command {
     		Robot.liftSubsystem.resetEncoder();
     		 return true;
 
-    	//} else if(encoderPos < 12) {
-    		
-    	}  else if(Robot.liftSubsystem.readEncoderInInches() < 12) {
+    	} else if(Robot.liftSubsystem.readEncoderInInches() < 2) {
+
     		return true;
     	} 
         return false;

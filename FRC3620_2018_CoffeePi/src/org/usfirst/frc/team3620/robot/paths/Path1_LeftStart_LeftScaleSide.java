@@ -17,25 +17,47 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 				new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
 				new Waypoint(23.5, 22.5, Pathfinder.d2r(-40)),
 				*/
+			/*	Right Shape
+			 * new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+				new Waypoint(16.00, 22.91, Pathfinder.d2r(-18)),
+				new Waypoint(24.4, 20.25, Pathfinder.d2r(0)),
+				
+				*/
+				// West Michigan Comp Points
+			/*	new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
+				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
+
+				new Waypoint(10.40, 22.91, Pathfinder.d2r(-4)),
+				new Waypoint(19.25, 20.83, Pathfinder.d2r(0)), */
+				//State Points
 				new Waypoint(1.58, 22.91, Pathfinder.d2r(0)),
 				//new Waypoint(15.0, 25.0, Pathfinder.d2r(0)),
-				new Waypoint(32.4, 21.00, Pathfinder.d2r(-21)),
+
+				new Waypoint(12.30, 22.91, Pathfinder.d2r(-3)),
+				new Waypoint(23.05, 20.23, Pathfinder.d2r(0)),
 		};
 	}
 	
 	@Override
 	double getPathfinderP() {
-		return 0.001;
+		return 0.5;
 	}
+	
+/*	@Override
+	double getPathfinderD() {
+		return 0.05;
+	} */
 	
 	@Override
 	double getPathfinderGenVelocityMultiplier() {
-		return 0.68;		//Slightly slower to keep sharp-turn motor output below 1.0
+		return 1.0;		//Slightly slower to keep sharp-turn motor output below 1.0
 	}
 	
 	@Override
 	double getPathfinderOutputMultiplier() {
-		return 0.5;
+		return 1.0;
+
 	}
 	
 	@Override
@@ -44,14 +66,14 @@ public class Path1_LeftStart_LeftScaleSide extends AbstractPath {
 		return 4.5;
 	}
 	
-//	@Override
-//	double getPathfinderGenAcceleration() {
-//		// TODO Auto-generated method stub
-//		return 4;
-//	}
+	@Override
+	double getPathfinderGenAcceleration() {
+		// TODO Auto-generated method stub
+		return 2;
+	}
 	
 	@Override
 	boolean getPathfinderReverseMode() {
-		return false;
+		return true;
 	}
 }

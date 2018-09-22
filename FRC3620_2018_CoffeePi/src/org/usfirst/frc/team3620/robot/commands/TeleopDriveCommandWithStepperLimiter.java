@@ -23,6 +23,8 @@ Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     }
 
     // Called repeatedly when this Command is scheduled to run
+    
+    // TODO Abstract out from the subsystem; investigate lift NPE
     protected void execute() {
     	double liftEncoderPos = Robot.liftSubsystem.readEncoderInInches();
 			if(liftEncoderPos <= 40.0) {
