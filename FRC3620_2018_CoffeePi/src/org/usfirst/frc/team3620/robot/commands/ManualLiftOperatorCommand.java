@@ -104,7 +104,14 @@ public class ManualLiftOperatorCommand extends Command {
     			}
     		}
     	}
+    
+    	if(Robot.intakeSubsystem.homeButtonIsPressed()) {
+    		logger.info("Arm is down, cancelling ManualLiftCommand");
+    		return true;
+    	}
     	return false;
+    	
+    	
     }
     
     // Called once after isFinished returns true
