@@ -116,12 +116,14 @@ public class ManualLiftOperatorCommand extends Command {
     
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.liftSubsystem.killMotors();
     	logger.info("Ending Manual Lift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.liftSubsystem.killMotors();
     	logger.info("Interrupting Manual Lift Command, encoder inches = {}", Robot.liftSubsystem.readEncoderInInches());
     }
 }

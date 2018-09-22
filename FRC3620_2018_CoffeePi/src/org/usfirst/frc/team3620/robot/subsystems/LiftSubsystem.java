@@ -360,6 +360,10 @@ public class LiftSubsystem extends Subsystem {
 			logger.info("Percent Output Brace = {}", (bracingVoltage + addedBangBangPower));
 	}
 	
+	public void killMotors() {
+		setLiftTalon(ControlMode.PercentOutput, 0);
+	}
+	
 	void setLiftTalon(ControlMode controlMode, double value) {
 		if (talon != null) {
 			talon.set(controlMode, value);
