@@ -38,8 +38,8 @@ public class ManualLiftOperatorCommand extends Command {
     //	logger.info("High Gear? = {}", highGear);
     	if(((Robot.intakeSubsystem.homeButtonIsPressed() == false) && (Robot.liftSubsystem.readEncoderInInches() > 20) && (joyPos < 0
     			))){	
-    		Robot.liftSubsystem.brace(Robot.liftSubsystem.bracingVoltage);
     		end();
+    		Robot.liftSubsystem.brace(Robot.liftSubsystem.bracingVoltage);
     	}
     	else if(!((Robot.intakeSubsystem.homeButtonIsPressed() == false) && (Robot.liftSubsystem.readEncoderInInches() > 20) && (joyPos < 0
     			))) {
