@@ -32,11 +32,17 @@ public class ManualLiftOperatorCommand extends Command {
     	double joyPos = Robot.m_oi.getLiftJoystick();
     	boolean highGear = Robot.liftSubsystem.isInHighGear();
     	double encoderPos = Robot.liftSubsystem.readEncoderInInches();
+    	
+    	
     	//	logger.info("" + joyPos);
     //	logger.info("High Gear? = {}", highGear);
-    	if(!((Robot.intakeSubsystem.homeButtonIsPressed() == false) && (Robot.liftSubsystem.readEncoderInInches() > 20) && (joyPos < 0
-    			)))
-    	{	if(highGear == false){
+    	if(((Robot.intakeSubsystem.homeButtonIsPressed() == false) && (Robot.liftSubsystem.readEncoderInInches() > 20) && (joyPos < 0
+    			))){	
+    		
+    	}
+    	else if(!((Robot.intakeSubsystem.homeButtonIsPressed() == false) && (Robot.liftSubsystem.readEncoderInInches() > 20) && (joyPos < 0
+    			))) {
+    			if(highGear == false){
     		if(joyPos > 0.2 && Robot.liftSubsystem.isBottomLimitDepressed() == false){
     			Robot.liftSubsystem.climb(joyPos);
     			logger.info("Starting HighGear? = {}", highGear);
@@ -81,8 +87,11 @@ public class ManualLiftOperatorCommand extends Command {
     			}
     		}
     	}
+    		
     }
+    		
     }
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double joyPos = Robot.m_oi.getLiftJoystick();
